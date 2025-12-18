@@ -339,6 +339,7 @@ export const surveySections = [
           { value: "weird", label: "Weird & trippy (surrealism is truth)" },
           { value: "dark", label: "Dark & seductive (noir, vampires)" },
           { value: "crime", label: "Crime, hustle & heist" },
+          { value: "adrenalin", label: "Adrenalin Explosions" },
           { value: "other", label: "Other" }
         ]
       },
