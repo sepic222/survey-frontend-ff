@@ -22,7 +22,7 @@ export const SurveyProvider = ({ children }) => {
   const [submissionId, setSubmissionId] = useState(null);
   const [chartId, setChartId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  
+
   const saveTimeoutRef = useRef({});
 
   const totalSteps = surveySections.length;
@@ -44,13 +44,20 @@ export const SurveyProvider = ({ children }) => {
 
     try {
       const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+
+      // Serialize the value if it's an object (for "Other" options and multi-entry arrays)
+      let serializedValue = value;
+      if (typeof value === 'object' && value !== null) {
+        serializedValue = JSON.stringify(value);
+      }
+
       const response = await fetch(`${apiBase}/api/survey/save-answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           submissionId,
           questionKey: questionId,
-          answerValue: value,
+          answerValue: serializedValue,
           userEmail: userEmail,
         }),
       });
@@ -79,12 +86,12 @@ export const SurveyProvider = ({ children }) => {
         ...prev,
         [questionId]: value,
       };
-      
+
       // Save to server in real-time (if submission exists)
       if (submissionId) {
         debouncedSave(questionId, value, submissionId, userEmail);
       }
-      
+
       return newAnswers;
     });
   }, [submissionId, userEmail, debouncedSave]);
