@@ -23,6 +23,11 @@ const CitySearch = ({ onLocationSelect }) => {
 
             place.address_components.forEach(component => {
               if (component.types.includes("locality")) city = component.long_name;
+              else if (!city && component.types.includes("postal_town")) city = component.long_name;
+              else if (!city && component.types.includes("sublocality")) city = component.long_name;
+              else if (!city && component.types.includes("administrative_area_level_2")) city = component.long_name; // e.g. County
+              else if (!city && component.types.includes("administrative_area_level_1")) city = component.long_name; // e.g. State (last resort)
+
               if (component.types.includes("country")) country = component.long_name;
             });
 
