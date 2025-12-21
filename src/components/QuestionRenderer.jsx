@@ -61,72 +61,109 @@ const RadioInput = ({ options, value, onChange }) => {
   );
 };
 
-const CheckboxInput = ({ options, value = [], onChange }) => {
+const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowCustomInput }) => {
   // Handle both array of strings and object with selected array + otherText
   const selectedValues = Array.isArray(value) ? value : (value?.selected || []);
   const otherText = typeof value === 'object' && !Array.isArray(value) ? value.otherText : '';
 
-  const hasOtherOption = options.some(opt => opt.value === 'other');
-  const isOtherSelected = selectedValues.includes('other');
+  // Determine if we should show custom input (either explicit flag or 'other' option exists)
+  // If using groups, we check if any group has 'other' OR if allowCustomInput is true
+  const hasCustomInput = allowCustomInput || options.some(opt => opt.value === 'other') ||
+    groups.some(g => g.options.some(opt => opt.value === 'other'));
+
+  const isCustomInputActive = selectedValues.includes('heading_custom_input') || (hasCustomInput && selectedValues.includes('other')) || (allowCustomInput && otherText.length > 0);
 
   const handleChange = (optionValue) => {
-    const newSelected = selectedValues.includes(optionValue)
-      ? selectedValues.filter((v) => v !== optionValue)
-      : [...selectedValues, optionValue];
+    let newSelected;
+    if (selectedValues.includes(optionValue)) {
+      newSelected = selectedValues.filter((v) => v !== optionValue);
+    } else {
+      newSelected = [...selectedValues, optionValue];
+    }
 
     // If "other" is in the new selection, return object format
-    if (newSelected.includes('other')) {
+    if (newSelected.includes('other') || (allowCustomInput && otherText)) {
       onChange({ selected: newSelected, otherText: otherText || '' });
     } else {
-      // Otherwise return simple array
       onChange(newSelected);
     }
   };
 
-  const handleOtherTextChange = (text) => {
+  const handleCustomTextChange = (text) => {
+    // Ensure we keep the state valid. If there's text, we treat it as if 'other' (or a custom key) is selected implicitely or we just store the text.
+    // The existing pattern expects { selected: [...], otherText: ... }
     onChange({ selected: selectedValues, otherText: text });
   };
 
-  return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {options.map((option) => {
-          const isSelected = selectedValues.includes(option.value);
-          return (
-            <button
-              key={option.value}
-              onClick={() => handleChange(option.value)}
-              className={`
-                px-4 py-3 rounded-lg text-left text-sm font-medium transition-all duration-200
-                border-2 relative overflow-hidden
-                ${isSelected
-                  ? 'bg-cyan-900/30 border-cyan-400 text-cyan-100 shadow-[0_0_15px_rgba(34,211,238,0.2)]'
-                  : 'bg-zinc-800/50 border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:border-gray-500'}
-              `}
-            >
-              <div className="flex justify-between items-center">
-                <span>{option.label}</span>
-                {isSelected && (
-                  <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full">
-                    Selected
-                  </span>
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
+  // Helper to render a single option button
+  const renderOptionBtn = (option) => {
+    const isSelected = selectedValues.includes(option.value);
+    return (
+      <button
+        key={option.value}
+        onClick={() => handleChange(option.value)}
+        className={`
+          flex flex-col items-start px-4 py-3 rounded-lg text-left text-sm font-medium transition-all duration-200
+          border-2 relative overflow-hidden w-full
+          ${isSelected
+            ? 'bg-cyan-900/30 border-cyan-400 text-cyan-100 shadow-[0_0_15px_rgba(34,211,238,0.2)]'
+            : 'bg-zinc-800/50 border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:border-gray-500'}
+        `}
+      >
+        <div className="flex justify-between items-center w-full">
+          <span className="font-bold text-base">{option.label || option.value}</span>
+          {isSelected && (
+            <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full ml-2 shrink-0">
+              Selected
+            </span>
+          )}
+        </div>
+        {option.description && (
+          <span className="text-xs text-zinc-400 mt-1 block font-normal leading-relaxed">
+            {option.description}
+          </span>
+        )}
+      </button>
+    );
+  };
 
-      {/* Show text input when "Other" is selected */}
-      {hasOtherOption && isOtherSelected && (
-        <div className="mt-3 animate-slide-up">
+  return (
+    <div className="space-y-6">
+      {/* 1. Render Groups if they exist */}
+      {groups.length > 0 ? (
+        <div className="space-y-8">
+          {groups.map((group, idx) => (
+            <div key={idx} className="space-y-3">
+              {group.group_name && (
+                <h4 className="text-orange-400/80 text-sm font-bold uppercase tracking-widest border-b border-orange-500/20 pb-1 mb-3">
+                  {group.group_name}
+                </h4>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {group.options.map((opt) => renderOptionBtn(opt))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* 2. Fallback to Flat List (original behavior) */
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {options.map((option) => renderOptionBtn(option))}
+        </div>
+      )}
+
+      {/* 3. Custom Input / "Other" Field */}
+      {hasCustomInput && (
+        <div className="mt-4 pt-4 border-t border-zinc-800 animate-fade-in">
+          <label className="block text-sm text-zinc-400 mb-2">
+            {allowCustomInput ? "Cinematic Crush (write in):" : "Other:"}
+          </label>
           <input
             type="text"
             value={otherText}
-            onChange={(e) => handleOtherTextChange(e.target.value)}
-            placeholder="Please specify..."
+            onChange={(e) => handleCustomTextChange(e.target.value)}
+            placeholder="Type here..."
             className="w-full bg-black border-2 border-cyan-400/50 rounded-lg p-3 text-white placeholder:text-zinc-500 outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300"
-            autoFocus
           />
         </div>
       )}
@@ -386,6 +423,8 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
       {question.type === 'checkbox' && (
         <CheckboxInput
           options={question.options}
+          groups={question.options_groups}
+          allowCustomInput={question.allow_custom_input}
           value={value}
           onChange={onChange}
         />

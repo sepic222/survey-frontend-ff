@@ -421,28 +421,156 @@ export const surveySections = [
         id: "directors",
         text: "Do you care about directing styles?",
         type: "checkbox",
-        helpText: "Pick up to 5.",
-        options: [
-          { value: "gerwig", label: "Greta Gerwig" },
-          { value: "coppola", label: "Sofia Coppola" },
-          { value: "peele", label: "Jordan Peele" },
-          { value: "tarantino", label: "Quentin Tarantino" },
-          { value: "wes_anderson", label: "Wes Anderson" },
-          { value: "jenkins", label: "Barry Jenkins" },
-          { value: "spike_lee", label: "Spike Lee" },
-          { value: "daniels", label: "The Daniels" },
-          { value: "nolan", label: "Christopher Nolan" },
-          { value: "lynch", label: "David Lynch" },
-          { value: "burton", label: "Tim Burton" },
-          { value: "scorsese", label: "Martin Scorsese" },
-          { value: "kubrick", label: "Stanley Kubrick" },
-          { value: "wong_kar_wai", label: "Wong Kar-wai" },
-          { value: "miyazaki", label: "Hayao Miyazaki" },
-          { value: "bong_joon_ho", label: "Bong Joon-ho" },
-          { value: "almodovar", label: "Pedro Almodóvar" },
-          { value: "varda", label: "Agnès Varda" },
-          { value: "other", label: "Other" },
-          { value: "none", label: "I don't know any directors / don't care" }
+        helpText: "Pick up to 5 — or write in your cinematic crush below",
+        allow_custom_input: true,
+        max_selections: 5,
+        options_groups: [
+          {
+            group_name: "Special",
+            options: [
+              {
+                value: "I don’t know any directors and I don’t care lol",
+                label: "I don’t know any directors and I don’t care lol",
+                is_exclusive: true
+              }
+            ]
+          },
+          {
+            group_name: "Modern Icons & Crowd Pleasers",
+            options: [
+              { value: "Greta Gerwig", description: "Lady Bird, Barbie, Little Women" },
+              { value: "Jordan Peele", description: "Get Out, Us, Nope" },
+              { value: "Quentin Tarantino", description: "Pulp Fiction, Kill Bill, Inglourious Basterds" },
+              { value: "Paul Thomas Anderson", description: "Boogie Nights, There Will Be Blood, Licorice Pizza" },
+              { value: "The Daniels", description: "Everything Everywhere All at Once, Swiss Army Man" },
+              { value: "Christopher Nolan", description: "Inception, Interstellar, Oppenheimer" },
+              { value: "Emerald Fennell", description: "Promising Young Woman, Saltburn" },
+              { value: "George Lucas", description: "Star Wars, THX 1138, American Graffiti" },
+              { value: "Peter Jackson", description: "The Lord of the Rings, Heavenly Creatures, King Kong" },
+              { value: "Ron Howard", description: "A Beautiful Mind, Apollo 13, Frost/Nixon" },
+              { value: "James Cameron", description: "Titanic, Terminator, Avatar" },
+              { value: "Todd Phillips", description: "The Hangover, Joker, War Dogs" },
+              { value: "Ridley Scott", description: "Alien, Gladiator, Thelma & Louise" },
+              { value: "Danny Boyle", description: "Trainspotting, Slumdog Millionaire, 28 Days Later" },
+              { value: "Hayao Miyazaki", description: "Spirited Away, My Neighbor Totoro, Princess Mononoke" },
+              { value: "Bong Joon-ho", description: "Parasite, Snowpiercer, Memories of Murder" }
+            ]
+          },
+          {
+            group_name: "Dark, Surreal & Mind-Bending",
+            options: [
+              { value: "David Lynch", description: "Mulholland Drive, Blue Velvet, Eraserhead" },
+              { value: "Stanley Kubrick", description: "2001: A Space Odyssey, The Shining, A Clockwork Orange" },
+              { value: "Spike Jonze", description: "Her, Being John Malkovich, Adaptation" },
+              { value: "Jonathan Glazer", description: "Under the Skin, Sexy Beast, The Zone of Interest" },
+              { value: "Ruben Östlund", description: "Force Majeure, The Square, Triangle of Sadness" },
+              { value: "Dario Argento", description: "Suspiria, Deep Red, Tenebrae" },
+              { value: "Yorgos Lanthimos", description: "The Favourite, The Lobster, Poor Things" },
+              { value: "Gaspar Noé", description: "Enter the Void, Climax, Irreversible" },
+              { value: "Lars von Trier", description: "Melancholia, Dancer in the Dark, Antichrist" },
+              { value: "Andrei Tarkovsky", description: "Stalker, Solaris, The Mirror" },
+              { value: "Michael Haneke", description: "Amour, Funny Games, Caché" },
+              { value: "Ulrich Seidl", description: "Paradise Love, Rimini, Safari" },
+              { value: "Park Chan-wook", description: "Oldboy, The Handmaiden, Decision to Leave" },
+              { value: "Nagisa Oshima", description: "In the Realm of the Senses, Merry Christmas Mr. Lawrence, Death by Hanging" },
+              { value: "Apichatpong Weerasethakul", description: "Uncle Boonmee Who Can Recall His Past Lives, Memoria, Tropical Malady" }
+            ]
+          },
+          {
+            group_name: "Stylized Vibes & Aesthetics",
+            options: [
+              { value: "Sofia Coppola", description: "Lost in Translation, Marie Antoinette, The Virgin Suicides" },
+              { value: "Wes Anderson", description: "The Royal Tenenbaums, Moonrise Kingdom, The Grand Budapest Hotel" },
+              { value: "Harmony Korine", description: "Gummo, Spring Breakers, Trash Humpers" },
+              { value: "Tim Burton", description: "Edward Scissorhands, Beetlejuice, Big Fish" },
+              { value: "Julian Schnabel", description: "The Diving Bell and the Butterfly, Basquiat, Before Night Falls" },
+              { value: "John Waters", description: "Pink Flamingos, Hairspray, Female Trouble" },
+              { value: "Rob Marshall", description: "Chicago, Memoirs of a Geisha, Into the Woods" },
+              { value: "Nicolas Roeg", description: "Don't Look Now, The Man Who Fell to Earth, Walkabout" },
+              { value: "Sally Potter", description: "Orlando, The Tango Lesson, Ginger & Rosa" },
+              { value: "Isaac Julien", description: "Looking for Langston, Young Soul Rebels, Lessons of the Hour" },
+              { value: "Ken Russell", description: "Women in Love, The Devils, Tommy" },
+              { value: "Pedro Almodóvar", description: "All About My Mother, Talk to Her, Pain and Glory" },
+              { value: "Luca Guadagnino", description: "Call Me by Your Name, I Am Love, Bones and All" },
+              { value: "Claire Denis", description: "Beau Travail, High Life, Trouble Every Day" },
+              { value: "Jean-Jacques Beineix", description: "Diva, Betty Blue, The Moon in the Gutter" },
+              { value: "Peter Greenaway", description: "The Cook, the Thief, His Wife & Her Lover, Prospero’s Books, A Zed & Two Noughts" },
+              { value: "Zhang Yimou", description: "Raise the Red Lantern, Hero, House of Flying Daggers" },
+              { value: "Wong Kar-wai", description: "In the Mood for Love, Chungking Express, Happy Together" }
+            ]
+          },
+          {
+            group_name: "Grit, Crime & Intensity",
+            options: [
+              { value: "Spike Lee", description: "Do the Right Thing, Malcolm X, BlacKkKlansman" },
+              { value: "Larry Clark", description: "Kids, Bully, Ken Park" },
+              { value: "Adrian Lyne", description: "Fatal Attraction, 9½ Weeks, Unfaithful" },
+              { value: "Martin Scorsese", description: "Goodfellas, Taxi Driver, The Wolf of Wall Street" },
+              { value: "Brian De Palma", description: "Carrie, Scarface, Blow Out" },
+              { value: "Safdie Brothers", description: "Uncut Gems, Good Time" },
+              { value: "Coen Brothers", description: "Fargo, No Country for Old Men, The Big Lebowski" },
+              { value: "Clint Eastwood", description: "Million Dollar Baby, Gran Torino, American Sniper" },
+              { value: "David Fincher", description: "Fight Club, The Social Network, Gone Girl" },
+              { value: "Michael Mann", description: "Heat, Collateral, The Insider" },
+              { value: "James Mangold", description: "Walk the Line, Logan, Ford v Ferrari" },
+              { value: "Steve McQueen", description: "Shame, 12 Years a Slave, Widows" },
+              { value: "Guy Ritchie", description: "Snatch, Lock, Stock and Two Smoking Barrels, The Gentlemen" },
+              { value: "Jacques Audiard", description: "A Prophet, Rust and Bone, Dheepan" }
+            ]
+          },
+          {
+            group_name: "Humanist, Indie & Emotional",
+            options: [
+              { value: "Barry Jenkins", description: "Moonlight, If Beale Street Could Talk" },
+              { value: "Gus Van Sant", description: "Good Will Hunting, My Own Private Idaho, Elephant" },
+              { value: "Woody Allen", description: "Annie Hall, Manhattan, Midnight in Paris" },
+              { value: "Noah Baumbach", description: "Marriage Story, Frances Ha, The Squid and the Whale" },
+              { value: "Chloé Zhao", description: "Nomadland, The Rider, Eternals" },
+              { value: "Richard Linklater", description: "Before Sunrise trilogy, Dazed and Confused, Boyhood" },
+              { value: "Sean Baker", description: "The Florida Project, Red Rocket, Tangerine" },
+              { value: "Ava DuVernay", description: "Selma, 13th, When They See Us" },
+              { value: "Nancy Meyers", description: "The Holiday, Something’s Gotta Give, It’s Complicated" },
+              { value: "Amy Heckerling", description: "Clueless, Fast Times at Ridgemont High, Look Who’s Talking" },
+              { value: "Stephen Daldry", description: "The Hours, Billy Elliot, The Reader" },
+              { value: "Andrea Arnold", description: "Fish Tank, American Honey, Wasp" },
+              { value: "Ken Loach", description: "I, Daniel Blake, The Wind That Shakes the Barley, Sorry We Missed You" },
+              { value: "Andrew Haigh", description: "Weekend, 45 Years, All of Us Strangers" },
+              { value: "Mike Leigh", description: "Secrets & Lies, Vera Drake, Another Year" },
+              { value: "Lynne Ramsay", description: "We Need to Talk About Kevin, You Were Never Really Here, Ratcatcher" },
+              { value: "Céline Sciamma", description: "Portrait of a Lady on Fire, Girlhood, Petite Maman" },
+              { value: "Agnès Varda", description: "Cléo from 5 to 7, Vagabond, The Gleaners and I" },
+              { value: "Wim Wenders", description: "Paris, Texas, Wings of Desire, Buena Vista Social Club" },
+              { value: "Maren Ade", description: "Toni Erdmann, Everyone Else, The Forest for the Trees" },
+              { value: "Abdellatif Kechiche", description: "Blue Is the Warmest Colour, The Secret of the Grain, Games of Love and Chance" },
+              { value: "Ferzan Özpetek", description: "Nuovo Olimpo, Naples In Veils, Diamonds" },
+              { value: "Éric Rohmer", description: "My Night at Maud’s, The Green Ray, Claire’s Knee" },
+              { value: "Hirokazu Kore-eda", description: "Shoplifters, Still Walking, Broker" },
+              { value: "Naomi Kawase", description: "Sweet Bean, The Mourning Forest, Still the Water" },
+              { value: "Ryusuke Hamaguchi", description: "Drive My Car, Asako I & II, Happy Hour" },
+              { value: "Hou Hsiao-hsien", description: "A City of Sadness, Flowers of Shanghai, The Assassin" }
+            ]
+          },
+          {
+            group_name: "The Legends & Classics",
+            options: [
+              { value: "Orson Welles", description: "Citizen Kane, Touch of Evil, The Magnificent Ambersons" },
+              { value: "John Ford", description: "The Searchers, Stagecoach, The Grapes of Wrath" },
+              { value: "Howard Hawks", description: "His Girl Friday, Rio Bravo, Bringing Up Baby" },
+              { value: "Sidney Lumet", description: "12 Angry Men, Dog Day Afternoon, Network" },
+              { value: "Carol Reed", description: "The Third Man, Oliver!, Odd Man Out" },
+              { value: "Jean-Luc Godard", description: "Breathless, Contempt, Pierrot le Fou" },
+              { value: "Michelangelo Antonioni", description: "L’Avventura, Blow-Up, The Passenger" },
+              { value: "Bernardo Bertolucci", description: "The Conformist, Last Tango in Paris, The Dreamers" },
+              { value: "David Lean", description: "Lawrence of Arabia, Doctor Zhivago, The Bridge on the River Kwai" },
+              { value: "Federico Fellini", description: "La Dolce Vita, 8½, Amarcord" },
+              { value: "Roberto Rossellini", description: "Rome, Open City, Journey to Italy" },
+              { value: "François Truffaut", description: "The 400 Blows, Jules and Jim, Day for Night" },
+              { value: "Louis Malle", description: "Au revoir les enfants, Elevator to the Gallows, Atlantic City" },
+              { value: "Pier Paolo Pasolini", description: "The Gospel According to St. Matthew, Salò, Teorema" },
+              { value: "Kenji Mizoguchi", description: "Ugetsu, Sansho the Bailiff, Street of Shame" },
+              { value: "Yasujiro Ozu", description: "Tokyo Story, Late Spring, An Autumn Afternoon" }
+            ]
+          }
         ]
       },
       {
