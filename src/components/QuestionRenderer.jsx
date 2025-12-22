@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import CitySearch from './CitySearch';
+import InfoIcon from './InfoIcon';
+import BottomSheet from './BottomSheet';
 
 const RadioInput = ({ options, value, onChange }) => {
   // Handle both simple string values and object values with otherText
@@ -31,14 +33,19 @@ const RadioInput = ({ options, value, onChange }) => {
               key={option.value}
               onClick={() => handleOptionChange(option.value)}
               className={`
-                px-4 py-3 rounded-lg text-left text-sm font-medium transition-all duration-200
+                flex flex-col items-start px-4 py-3 rounded-lg text-left text-sm font-medium transition-all duration-200
                 border-2
                 ${isSelected
                   ? 'bg-orange-600/20 border-orange-500 text-white shadow-[0_0_15px_rgba(249,115,22,0.3)]'
                   : 'bg-zinc-800/50 border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:border-gray-500'}
               `}
             >
-              {option.label}
+              <span className="font-bold text-base">{option.label}</span>
+              {option.description && (
+                <span className="text-xs text-zinc-400 mt-1 block font-normal leading-relaxed">
+                  {option.description}
+                </span>
+              )}
             </button>
           );
         })}
@@ -61,7 +68,9 @@ const RadioInput = ({ options, value, onChange }) => {
   );
 };
 
-const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowCustomInput }) => {
+const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowCustomInput, uiType }) => {
+  const [expandedGroups, setExpandedGroups] = useState({});
+
   // Handle both array of strings and object with selected array + otherText
   const selectedValues = Array.isArray(value) ? value : (value?.selected || []);
   const otherText = typeof value === 'object' && !Array.isArray(value) ? value.otherText : '';
@@ -72,6 +81,17 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
     groups.some(g => g.options.some(opt => opt.value === 'other'));
 
   const isCustomInputActive = selectedValues.includes('heading_custom_input') || (hasCustomInput && selectedValues.includes('other')) || (allowCustomInput && otherText.length > 0);
+
+  const toggleGroup = (groupName) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [groupName]: !prev[groupName]
+    }));
+  };
+
+  const getGroupSelectedCount = (group) => {
+    return group.options.filter(opt => selectedValues.includes(opt.value)).length;
+  };
 
   const handleChange = (optionValue) => {
     let newSelected;
@@ -90,8 +110,6 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
   };
 
   const handleCustomTextChange = (text) => {
-    // Ensure we keep the state valid. If there's text, we treat it as if 'other' (or a custom key) is selected implicitely or we just store the text.
-    // The existing pattern expects { selected: [...], otherText: ... }
     onChange({ selected: selectedValues, otherText: text });
   };
 
@@ -106,14 +124,14 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
           flex flex-col items-start px-4 py-3 rounded-lg text-left text-sm font-medium transition-all duration-200
           border-2 relative overflow-hidden w-full
           ${isSelected
-            ? 'bg-cyan-900/30 border-cyan-400 text-cyan-100 shadow-[0_0_15px_rgba(34,211,238,0.2)]'
+            ? 'bg-orange-500/20 border-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.2)]'
             : 'bg-zinc-800/50 border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:border-gray-500'}
         `}
       >
         <div className="flex justify-between items-center w-full">
           <span className="font-bold text-base">{option.label || option.value}</span>
           {isSelected && (
-            <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full ml-2 shrink-0">
+            <span className="text-orange-400 text-[10px] font-black bg-orange-950/50 px-2 py-0.5 rounded-full ml-2 shrink-0 uppercase tracking-tighter">
               Selected
             </span>
           )}
@@ -127,10 +145,56 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
     );
   };
 
+  const isAccordion = uiType === 'accordion_group' && groups.length > 0;
+
   return (
     <div className="space-y-6">
-      {/* 1. Render Groups if they exist */}
-      {groups.length > 0 ? (
+      {isAccordion ? (
+        /* Accordion Style Groups */
+        <div className="space-y-4">
+          {groups.map((group, idx) => {
+            const count = getGroupSelectedCount(group);
+            const isExpanded = expandedGroups[group.group_name];
+            return (
+              <div
+                key={idx}
+                className={`border-2 rounded-2xl transition-all duration-300 overflow-hidden ${isExpanded ? 'border-orange-500/40 bg-orange-500/5' : 'border-zinc-800 hover:border-zinc-700'}`}
+              >
+                {/* Header */}
+                <button
+                  onClick={() => toggleGroup(group.group_name)}
+                  className="w-full flex items-center justify-between p-5 text-left transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-lg font-bold text-white tracking-tight">{group.group_name}</span>
+                    {count > 0 && (
+                      <span className="bg-orange-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                        {count} Selected
+                      </span>
+                    )}
+                  </div>
+                  <svg
+                    className={`w-5 h-5 text-zinc-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Content */}
+                <div className={`transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[1500px] opacity-100 p-5 pt-0' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {group.options.map((opt) => renderOptionBtn(opt))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : groups.length > 0 ? (
+        /* Original Group Style */
         <div className="space-y-8">
           {groups.map((group, idx) => (
             <div key={idx} className="space-y-3">
@@ -146,24 +210,24 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
           ))}
         </div>
       ) : (
-        /* 2. Fallback to Flat List (original behavior) */
+        /* Flat List Style */
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {options.map((option) => renderOptionBtn(option))}
         </div>
       )}
 
-      {/* 3. Custom Input / "Other" Field */}
+      {/* Custom Input / "Other" Field */}
       {hasCustomInput && (
         <div className="mt-4 pt-4 border-t border-zinc-800 animate-fade-in">
           <label className="block text-sm text-zinc-400 mb-2">
-            {allowCustomInput ? "Cinematic Crush (write in):" : "Other:"}
+            {allowCustomInput ? "Any other roots or vibes?" : "Other:"}
           </label>
           <input
             type="text"
             value={otherText}
             onChange={(e) => handleCustomTextChange(e.target.value)}
             placeholder="Type here..."
-            className="w-full bg-black border-2 border-cyan-400/50 rounded-lg p-3 text-white placeholder:text-zinc-500 outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300"
+            className="w-full bg-black border-2 border-orange-400/30 rounded-lg p-3 text-white placeholder:text-zinc-500 outline-none focus:border-orange-500 focus:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all duration-300"
           />
         </div>
       )}
@@ -368,114 +432,210 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
   );
 };
 
-export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalAnswer }) => {
-  // Hide manual inputs that are handled by CitySearch
-  if (question.id === 'latitude' || question.id === 'longitude' || question.id === 'country') return null;
+export const QuestionRenderer = ({ question, value, onChange, onLocationSelect, setGlobalAnswer, onNext }) => {
+  const containerRef = useRef(null);
+  const [infoModal, setInfoModal] = useState({ isOpen: false, title: '', content: '' });
 
-  if (question.type === 'hero_start') {
-    return <HeroStart question={question} onNext={onNext} />;
-  }
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [question.id]);
 
-  if (question.uiType === 'hero_card') {
-    return <HeroCard question={question} value={value} onChange={onChange} />;
-  }
+  const openInfo = () => {
+    if (question.info) {
+      setInfoModal({
+        isOpen: true,
+        title: question.info.title,
+        content: question.info.content
+      });
+    }
+  };
 
-  // Handle multi-entry input (for character_match)
-  if (question.uiType === 'multi_entry') {
-    return <MultiEntryInput question={question} value={value} onChange={onChange} maxEntries={question.maxEntries || 5} />;
-  }
+  const renderQuestion = () => {
+    // Hide manual inputs that are handled by CitySearch
+    if (question.id === 'latitude' || question.id === 'longitude' || question.id === 'country') return null;
 
-  // Render CitySearch for the 'city' question
-  if (question.id === 'city') {
-    return (
-      <CitySearch
-        onLocationSelect={({ city, country, lat, lng }) => {
-          if (setGlobalAnswer) {
-            setGlobalAnswer('city', city);
-            setGlobalAnswer('country', country);
-            setGlobalAnswer('latitude', lat);
-            setGlobalAnswer('longitude', lng);
-          }
-        }}
-      />
-    );
-  }
+    if (question.type === 'hero_start') {
+      // Assuming HeroStart component is defined elsewhere and takes 'onNext' prop
+      return <HeroStart question={question} onNext={() => { /* handle next logic */ }} />;
+    }
+
+    if (question.uiType === 'hero_card') {
+      // Assuming HeroCard component is defined elsewhere
+      return <HeroCard question={question} value={value} onChange={onChange} />;
+    }
+
+    // Handle multi-entry input (for character_match)
+    if (question.uiType === 'multi_entry') {
+      // Assuming MultiEntryInput component is defined elsewhere
+      return <MultiEntryInput question={question} value={value} onChange={onChange} maxEntries={question.maxEntries || 5} />;
+    }
+
+    switch (question.type) {
+      case 'text':
+      case 'email': // Added email type to be handled by TextInput
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <TextInput
+              type={question.type}
+              value={value || ''}
+              onChange={onChange}
+              placeholder={question.placeholder}
+            />
+          </div>
+        );
+
+      case 'textarea':
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <TextAreaInput
+              value={value || ''}
+              onChange={onChange}
+              placeholder={question.placeholder}
+            />
+          </div>
+        );
+
+      case 'radio':
+        // Assuming RadioInput component is defined elsewhere
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <RadioInput options={question.options} value={value} onChange={onChange} />
+          </div>
+        );
+
+      case 'checkbox':
+        // Assuming CheckboxInput component is defined elsewhere
+        return (
+          <div className="w-full max-w-3xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <CheckboxInput
+              options={question.options || []}
+              groups={question.options_groups || []}
+              value={value || []}
+              onChange={onChange}
+              maxSelections={question.max_selections}
+              allowCustomInput={question.allow_custom_input}
+              uiType={question.uiType}
+            />
+          </div>
+        );
+
+      case 'date':
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <input
+              type="date"
+              value={value || ''}
+              onChange={(e) => onChange(e.target.value)}
+              className="w-full bg-zinc-900/50 border-2 border-zinc-800 rounded-2xl p-6 text-2xl text-white focus:border-orange-500 outline-none transition-all [color-scheme:dark]"
+            />
+          </div>
+        );
+
+      case 'time':
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-8">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            <div className="flex flex-col gap-6">
+              <input
+                type="time"
+                value={value?.time || ''}
+                onChange={(e) => onChange({ ...value, time: e.target.value })}
+                className="w-full bg-zinc-900/50 border-2 border-zinc-800 rounded-2xl p-6 text-2xl text-white focus:border-orange-500 outline-none transition-all [color-scheme:dark]"
+              />
+              <div className="flex gap-4">
+                {['exact', 'approximate', 'none'].map((acc) => (
+                  <button
+                    key={acc}
+                    onClick={() => onChange({ ...value, accuracy: acc })}
+                    className={`flex-1 py-4 rounded-xl text-sm font-bold transition-all border-2 capitalize
+                      ${value?.accuracy === acc
+                        ? 'bg-orange-500/20 border-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.1)]'
+                        : 'bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700'}`}
+                  >
+                    {acc === 'none' ? 'I legend tell me' : acc}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'number':
+        return (
+          <div className="w-full max-w-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-black text-white tracking-tight">{question.text}</h2>
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            {question.helpText && <p className="text-zinc-400 mb-8 font-light text-lg">{question.helpText}</p>}
+            <input
+              type="number"
+              step="any"
+              placeholder={question.placeholder}
+              value={value || ''}
+              onChange={(e) => onChange(e.target.value)}
+              className="w-full bg-zinc-900/50 border-2 border-zinc-800 rounded-2xl p-6 text-2xl text-white focus:border-orange-500 outline-none transition-all"
+            />
+          </div>
+        );
+
+      case 'city':
+        // Assuming CitySearch component is defined elsewhere
+        return (
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-3 mb-2">
+              {question.info && <InfoIcon onClick={openInfo} />}
+            </div>
+            <CitySearch onLocationSelect={onLocationSelect} />
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="space-y-3 animate-slide-up">
-      <div className="mb-4">
-        <label className="block text-lg font-semibold text-white mb-1">
-          {question.text}
-        </label>
-        {question.helpText && (
-          <p className="text-sm text-zinc-400 italic">{question.helpText}</p>
-        )}
-      </div>
+    <div ref={containerRef} className="w-full flex justify-center py-12 px-4 min-h-[50vh] transition-all duration-700">
+      {renderQuestion()}
 
-      {question.type === 'radio' && (
-        <RadioInput
-          options={question.options}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-
-      {question.type === 'checkbox' && (
-        <CheckboxInput
-          options={question.options}
-          groups={question.options_groups}
-          allowCustomInput={question.allow_custom_input}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-
-      {(question.type === 'text' || question.type === 'email') && (
-        <TextInput
-          type={question.type}
-          placeholder={question.placeholder}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-
-      {/* New Inputs for Task 2 */}
-      {question.type === 'date' && (
-        <input
-          type="date"
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black border-2 border-zinc-700 rounded-lg p-4 text-white placeholder:text-zinc-600 outline-none focus:border-cyan-400 focus:bg-zinc-900 transition-all duration-300 [color-scheme:dark]"
-        />
-      )}
-
-      {question.type === 'time' && (
-        <input
-          type="time"
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black border-2 border-zinc-700 rounded-lg p-4 text-white placeholder:text-zinc-600 outline-none focus:border-cyan-400 focus:bg-zinc-900 transition-all duration-300 [color-scheme:dark]"
-        />
-      )}
-
-      {question.type === 'number' && (
-        <input
-          type="number"
-          step="any"
-          placeholder={question.placeholder}
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black border-2 border-zinc-700 rounded-lg p-4 text-white placeholder:text-zinc-600 outline-none focus:border-cyan-400 focus:bg-zinc-900 transition-all duration-300"
-        />
-      )}
-
-      {question.type === 'textarea' && (
-        <TextAreaInput
-          placeholder={question.placeholder}
-          value={value}
-          onChange={onChange}
-        />
-      )}
+      <BottomSheet
+        isOpen={infoModal.isOpen}
+        onClose={() => setInfoModal(prev => ({ ...prev, isOpen: false }))}
+        title={infoModal.title}
+      >
+        {infoModal.content}
+      </BottomSheet>
     </div>
   );
 };

@@ -121,24 +121,24 @@ export const surveySections = [
       },
       {
         id: "escapism_style",
-        text: "Your Emotional Escapism Style?",
-        helpText: "How do you use movies to deal (or not deal) with your emotions?",
+        text: "How do you use movies to deal (or not deal) with your emotions?",
+        helpText: "Select the strategy that best describes your cinematic survival mode.",
         type: "radio",
         options: [
-          { value: "heartbreak", label: "Heartbreak Healer (Breakup, loss, longing)" },
-          { value: "hangover", label: "Hangover Hero (Fragile, fuzzy, gentle recovery)" },
-          { value: "floodgate", label: "Emotional Floodgate (I want to cry/release)" },
-          { value: "analyzer", label: "Chaos Analyzer (Process life through stories)" },
-          { value: "cozy", label: "Cozy Comedown (Safe, soothed, soft)" },
-          { value: "creative", label: "Creative Kickstart (Spark ideas/ambition)" },
-          { value: "romance", label: "Romance Igniter (Butterflies, chemistry)" },
-          { value: "distraction", label: "Emotional Distraction (Laugh, forget, disassociate)" },
-          { value: "romanticizer", label: "Life Romanticizer (Make pain cinematic)" },
-          { value: "beauty", label: "Beauty Seeker (Vibes & aesthetics over story)" },
-          { value: "control", label: "Control Watcher (Choose what I feel)" },
-          { value: "decoder", label: "People Decoder (Understand psychology)" },
-          { value: "offline", label: "Emotionally Offline (Don't feel them emotionally)" },
-          { value: "ambience", label: "Ambience-Only Watcher (Background energy)" },
+          { value: "heartbreak", label: "💔 Heartbreak Healer", description: "I need something when love crashes — breakup, loss, longing." },
+          { value: "hangover", label: "🤕 Hangover Hero", description: "When I’m fragile, fuzzy, or need gentle recovery." },
+          { value: "floodgate", label: "🌊 Emotional Floodgate", description: "I want to cry, release, and feel everything without explaining it." },
+          { value: "analyzer", label: "🧠 Chaos Analyzer", description: "I use movies to process life — mine, others’, or humanity’s patterns." },
+          { value: "cozy", label: "🧸 Cozy Comedown", description: "I want to feel safe, soothed, soft. (Sundays, sadness, sick days)" },
+          { value: "creative", label: "🔥 Creative Kickstart", description: "I need stories to spark my ideas, art, or ambition." },
+          { value: "romance", label: "💘 Romance Igniter", description: "When I want butterflies, chemistry, and connection." },
+          { value: "distraction", label: "🎭 Emotional Distraction", description: "I want to laugh, forget, or disassociate — just make it entertaining." },
+          { value: "romanticizer", label: "✨ Life Romanticizer", description: "Even pain feels cinematic when scored right." },
+          { value: "beauty", label: "🪐 Beauty Seeker", description: "I don’t need story — just vibes, visuals, aesthetics." },
+          { value: "control", label: "🎮 Control Watcher", description: "When everything feels chaotic, I want to choose what I feel." },
+          { value: "decoder", label: "👤 People Decoder", description: "I use characters to understand psychology + relationships." },
+          { value: "offline", label: "💨 Emotionally Offline", description: "I enjoy movies, but I don’t really feel them emotionally." },
+          { value: "ambience", label: "🎧 Ambience-Only Watcher", description: "Sometimes I just need background energy — no emotional engagement." },
           { value: "other", label: "Other" }
         ]
       },
@@ -147,7 +147,11 @@ export const surveySections = [
         text: "Who was your first cinematic obsession or role model?",
         helpText: "That one character, actor, or moment that rewired your brain.",
         type: "textarea",
-        placeholder: "e.g. Wednesday Addams, Heath Ledger in 10 Things..."
+        placeholder: "e.g. Wednesday Addams, Heath Ledger in 10 Things...",
+        info: {
+          title: "Inspo Sparks",
+          content: "Was it a rebel? A romantic? A femme fatale? A scene that made you want to be someone else or be more you?\n\n(Could be a character, actor, director, or just one unforgettable moment. The kind you’d reenact in front of a mirror.)\n\n💡 **Example sparks:**\n\n• **Julia Roberts in Erin Brockovich** — the scene where she tears the lawyer apart in court\n\n• **Tarantino (any film)** — because he made you realize there are no rules — not for story, structure, or style\n\n• **Wednesday Addams or Matilda** — for the strange girls who felt too much\n\n• **Trinity in The Matrix** — leather, logic, and the coolest backbend in cinema\n\n• **Heath Ledger in 10 Things I Hate About You** singing on the bleachers\n\n• **Sharon Stone in Basic Instinct** — that one scene. Enough said."
+        }
       }
     ]
   },
@@ -182,6 +186,7 @@ export const surveySections = [
         type: "checkbox",
         options: [
           { value: "silent", label: "Silent Era (The Originals)" },
+          { value: "1930s", label: "1930s (Dawn of the Golden Age, Screwball wit & Escapist glamour)" },
           { value: "1940s", label: "1940s (Shadows, Smoke & Suspense)" },
           { value: "1950s", label: "1950s (Studio Magic & Technicolor)" },
           { value: "1960s", label: "1960s (Revolution & Cool Chaos)" },
@@ -197,29 +202,91 @@ export const surveySections = [
       {
         id: "culture_background",
         text: "Where did you grow up (or feel culturally shaped by)?",
+        helpText: "Choose all that apply, based on your household culture, language, or media DNA.",
         type: "checkbox",
-        options: [
-          { value: "usa", label: "United States" },
-          { value: "canada", label: "Canada" },
-          { value: "uk_ireland", label: "United Kingdom / Ireland" },
-          { value: "germany_dach", label: "Germany / Austria / Switzerland" },
-          { value: "france", label: "France" },
-          { value: "italy", label: "Italy" },
-          { value: "spain", label: "Spain" },
-          { value: "latin_america_sp", label: "Spanish-speaking Latin America" },
-          { value: "brazil", label: "Brazil" },
-          { value: "caribbean", label: "Caribbean / Afro-Caribbean" },
-          { value: "africa_west", label: "West African" },
-          { value: "africa_east_south", label: "East or Southern African" },
-          { value: "asia_east", label: "Japan / Korea / China / Taiwan" },
-          { value: "asia_se", label: "SE Asia (Thailand, Vietnam, etc)" },
-          { value: "asia_south", label: "South Asia (India, Pakistan, etc)" },
-          { value: "middle_east", label: "Middle East / Arabic / Persian" },
-          { value: "eastern_europe", label: "Eastern Europe / Balkans" },
-          { value: "mixed", label: "Mixed heritage / Third culture kid" },
-          { value: "queer", label: "Queer culture / chosen family" },
-          { value: "other", label: "Other" }
-        ]
+        uiType: "accordion_group",
+        options_groups: [
+          {
+            group_name: "The Americas 🌎",
+            options: [
+              { value: "usa", label: "🇺🇸 United States" },
+              { value: "canada", label: "🇨🇦 Canada" },
+              { value: "caribbean", label: "🏝️ Caribbean / Afro-Caribbean" },
+              { value: "indigenous_na", label: "🪶 Indigenous North American" },
+              { value: "brazil", label: "🇧🇷 Brazil" },
+              { value: "latam_sp", label: "🇲🇽 Spanish-speaking Latin America" },
+              { value: "indigenous_latam", label: "🌿 Indigenous or Afro-Latin heritage" }
+            ]
+          },
+          {
+            group_name: "Europe & UK 🇪🇺",
+            options: [
+              { value: "uk_ireland", label: "🇬🇧 United Kingdom / Ireland" },
+              { value: "germany_dach", label: "🇩🇪 Germany / Austria / Switzerland" },
+              { value: "france", label: "🇫🇷 France" },
+              { value: "italy", label: "🇮🇹 Italy" },
+              { value: "spain", label: "🇪🇸 Spain" },
+              { value: "portugal", label: "🇵🇹 Portugal" },
+              { value: "greece", label: "🇬🇷 Greece" },
+              { value: "benelux", label: "🇧🇪 Benelux (Belgium, Netherlands, Lux)" },
+              { value: "eastern_europe", label: "🇵🇱 Eastern Europe (Poland, Ukraine etc.)" },
+              { value: "balkans", label: "🇷🇸 Balkans" }
+            ]
+          },
+          {
+            group_name: "Middle East & West Asia 🕌",
+            options: [
+              { value: "arabic_speaking", label: "🕌 Arabic-speaking" },
+              { value: "persian", label: "🏺 Persian / Iranian" },
+              { value: "turkish", label: "🧿 Turkish" },
+              { value: "israeli", label: "🇮🇱 Israeli / Hebrew-speaking" },
+              { value: "armenian_kurdisch", label: "🪔 Armenian / Kurdish / Minorities" },
+              { value: "central_asian", label: "🌐 Central Asian (Kazakhstan, Uzbekistan etc.)" }
+            ]
+          },
+          {
+            group_name: "Africa & Diaspora 🥁",
+            options: [
+              { value: "africa_west", label: "🥁 West African" },
+              { value: "africa_east_south", label: "🐘 East or Southern African" },
+              { value: "africa_north", label: "🧣 North African" },
+              { value: "africa_diaspora", label: "🌍 African diasporic (UK, US, Caribbean etc.)" }
+            ]
+          },
+          {
+            group_name: "Asia & Pacific 🥢",
+            options: [
+              { value: "japan", label: "🇯🇵 Japan" },
+              { value: "korea", label: "🇰🇷 South Korea" },
+              { value: "china", label: "🇨🇳 Mainland China" },
+              { value: "taiwan", label: "🇹🇼 Taiwan" },
+              { value: "hong_kong", label: "🇭🇰 Hong Kong" },
+              { value: "philippines", label: "🇵🇭 Philippines" },
+              { value: "thailand", label: "🇹🇭 Thailand" },
+              { value: "vietnam", label: "🇻🇳 Vietnam" },
+              { value: "indonesia", label: "🇮🇩 Indonesia" },
+              { value: "se_asia_other", label: "🧧 Other Southeast Asian" },
+              { value: "india", label: "🇮🇳 India" },
+              { value: "pakistan", label: "🇵🇰 Pakistan" },
+              { value: "bangladesh", label: "🇧🇩 Bangladesh" },
+              { value: "sri_lanka", label: "🇱🇰 Sri Lanka" },
+              { value: "nepal", label: "🇳🇵 Nepal" }
+            ]
+          },
+          {
+            group_name: "Interwoven Identity & Heritage ✨",
+            options: [
+              { value: "mixed_heritage", label: "🌀 Mixed heritage / Third culture kid" },
+              { value: "queer_culture", label: "🏳️‍🌈 Queer culture / chosen family" },
+              { value: "high_mobility", label: "✈️ I moved around a lot" },
+              { value: "nomad", label: "💻 Digital Nomad / Borderless soul" },
+              { value: "polyglot", label: "🗣️ Polyglot / Multi-lingual home" },
+              { value: "jewish_heritage", label: "✡️ Jewish / Ashkenazi / Sephardic" },
+              { value: "romani_traveller", label: "🎪 Romani / Traveller communities" }
+            ]
+          }
+        ],
+        allow_custom_input: true
       },
       {
         id: "environment_growing_up",

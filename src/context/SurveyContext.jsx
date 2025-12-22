@@ -17,7 +17,15 @@ function debounce(func, wait) {
 }
 
 export const SurveyProvider = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(() => {
+    // Check for 'step' in URL if in browser
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const stepParam = params.get('step');
+      if (stepParam !== null) return parseInt(stepParam, 10);
+    }
+    return 0;
+  });
   const [answers, setAnswers] = useState({});
   const [submissionId, setSubmissionId] = useState(null);
   const [chartId, setChartId] = useState(null);

@@ -408,7 +408,7 @@ const CurrentSection = ({ nextStep }) => {
 
 
   return (
-    <div className="animate-fade-in">
+    <div>
       {!isSwipeSection && !isIntroHero && (
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-2">
@@ -536,7 +536,7 @@ const SurveyContent = () => {
 
         <ProgressBar />
 
-        <div className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500`}>
+        <div key={currentStep} className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500 animate-fade-in`}>
           <CurrentSection nextStep={nextStep} />
           <SurveyControls
             submitStatus={submitStatus}
