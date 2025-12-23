@@ -457,8 +457,7 @@ export const QuestionRenderer = ({ question, value, onChange, onLocationSelect, 
     if (question.id === 'latitude' || question.id === 'longitude' || question.id === 'country') return null;
 
     if (question.type === 'hero_start') {
-      // Assuming HeroStart component is defined elsewhere and takes 'onNext' prop
-      return <HeroStart question={question} onNext={() => { /* handle next logic */ }} />;
+      return <HeroStart question={question} onNext={onNext} />;
     }
 
     if (question.uiType === 'hero_card') {
