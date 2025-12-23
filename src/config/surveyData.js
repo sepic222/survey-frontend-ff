@@ -40,7 +40,7 @@ export const surveySections = [
           { value: "unknown", label: "🤷 I have no idea (still works, but a bit more vague)" }
         ]
       },
-      { id: "city", text: "Birth City", type: "text", placeholder: "e.g. Düsseldorf" },
+      { id: "city", text: "Birth City", type: "city", placeholder: "e.g. Düsseldorf" },
       // Keeping manual Lat/Long for now as requested for the Dev Endpoint
       { id: "latitude", text: "Latitude", type: "number", placeholder: "e.g. 51.22" },
       { id: "longitude", text: "Longitude", type: "number", placeholder: "e.g. 6.77" }

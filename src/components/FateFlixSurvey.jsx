@@ -445,6 +445,12 @@ const CurrentSection = ({ nextStep }) => {
                     }
                   }}
                   onNext={nextStep} // Pass nextStep for Hero Button
+                  onLocationSelect={({ city, country, lat, lng }) => {
+                    setAnswer('city', city);
+                    if (country) setAnswer('country', country);
+                    if (lat) setAnswer('latitude', lat);
+                    if (lng) setAnswer('longitude', lng);
+                  }}
                 />
               </div>
             ))}
