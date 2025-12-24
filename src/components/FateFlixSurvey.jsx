@@ -156,9 +156,11 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       // After Section 1: Compute chart and create submission (for real-time saving)
       try {
         const isUnknownTime = answers['time_accuracy'] === 'unknown';
+        const timeVal = answers['time'];
+        const timeString = (typeof timeVal === 'object' && timeVal?.time) ? timeVal.time : timeVal;
         const chartPayload = {
           date: answers['date'],
-          time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
+          time: (isUnknownTime || !timeString) ? "12:00" : timeString,
           latitude: parseFloat(answers['latitude']),
           longitude: parseFloat(answers['longitude']),
           city: answers['city'],
@@ -203,11 +205,13 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
 
       // 1. Logic: Handle Unknown Time
       const isUnknownTime = answers['time_accuracy'] === 'unknown';
+      const timeVal = answers['time'];
+      const timeString = (typeof timeVal === 'object' && timeVal?.time) ? timeVal.time : timeVal;
 
       const payload = {
         date: answers['date'],
         // If unknown or empty, default to 12:00
-        time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
+        time: (isUnknownTime || !timeString) ? "12:00" : timeString,
         latitude: parseFloat(answers['latitude']),
         longitude: parseFloat(answers['longitude']),
         city: answers['city'],
