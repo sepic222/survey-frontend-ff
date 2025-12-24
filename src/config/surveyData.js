@@ -489,6 +489,7 @@ export const surveySections = [
         text: "Do you care about directing styles?",
         type: "checkbox",
         helpText: "Pick up to 5 — or write in your cinematic crush below",
+        uiType: "accordion_group",
         allow_custom_input: true,
         max_selections: 5,
         options_groups: [

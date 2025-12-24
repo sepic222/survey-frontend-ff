@@ -68,8 +68,14 @@ const RadioInput = ({ options, value, onChange }) => {
   );
 };
 
-const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowCustomInput, uiType }) => {
-  const [expandedGroups, setExpandedGroups] = useState({});
+const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowCustomInput, uiType, maxSelections = 99 }) => {
+  const [expandedGroups, setExpandedGroups] = useState(() => {
+    // If we're in accordion mode, default the first group to open
+    if (uiType === 'accordion_group' && groups.length > 0) {
+      return { [groups[0].group_name]: true };
+    }
+    return {};
+  });
 
   // Handle both array of strings and object with selected array + otherText
   const selectedValues = Array.isArray(value) ? value : (value?.selected || []);
@@ -94,11 +100,30 @@ const CheckboxInput = ({ options = [], groups = [], value = [], onChange, allowC
   };
 
   const handleChange = (optionValue) => {
+    const allOptions = [...options, ...groups.flatMap(g => g.options)];
+    const selectedOption = allOptions.find(opt => opt.value === optionValue);
+    const isExclusive = selectedOption?.is_exclusive;
+
     let newSelected;
     if (selectedValues.includes(optionValue)) {
       newSelected = selectedValues.filter((v) => v !== optionValue);
     } else {
-      newSelected = [...selectedValues, optionValue];
+      if (isExclusive) {
+        // If exclusive option picked, clear everything else
+        newSelected = [optionValue];
+      } else {
+        // If non-exclusive picked, filter out any currently selected exclusive options
+        const filteredCurrent = selectedValues.filter(val => {
+          const opt = allOptions.find(o => o.value === val);
+          return !opt?.is_exclusive;
+        });
+
+        // Check max selections limit
+        if (maxSelections && filteredCurrent.length >= maxSelections) {
+          return; // Don't add if at limit
+        }
+        newSelected = [...filteredCurrent, optionValue];
+      }
     }
 
     // If "other" is in the new selection, return object format
