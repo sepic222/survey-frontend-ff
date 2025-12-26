@@ -65,11 +65,7 @@ const ResultsDashboard = ({ results }) => {
             <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Badge
             </a>
-            {results.svg && results.svg.trim() && (
-              <a href="#chart" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-                Chart
-              </a>
-            )}
+
             <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Part I
             </a>
@@ -88,12 +84,7 @@ const ResultsDashboard = ({ results }) => {
           />
         </div>
 
-        {/* Chart Section (optional) */}
-        {results.svg && results.svg.trim() && (
-          <div id="chart" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-orange-900/5">
-            <ResultIframe content={results.svg} title="Natal Chart" />
-          </div>
-        )}
+
 
         {/* Reading Content via Iframes */}
         <div className="space-y-12">
@@ -293,17 +284,14 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         }
 
         // 3. Fetch the Results (The backend auto-adjusts based on data)
-        const [svgRes, badgeRes, html1Res, html2Res] = await Promise.all([
-          fetch(`${apiBase}/reading/${returnedSubmissionId}/chart.svg`),
+        const [badgeRes, html1Res, html2Res] = await Promise.all([
           fetch(`${apiBase}/reading/${returnedSubmissionId}/badge`),
           fetch(`${apiBase}/reading/${returnedSubmissionId}/html`),
           fetch(`${apiBase}/reading/${returnedSubmissionId}/html/2`)
         ]);
 
         // Check if all requests succeeded
-        if (!svgRes.ok) {
-          console.warn(`Chart SVG failed: ${svgRes.status} ${svgRes.statusText}`);
-        }
+
         if (!badgeRes.ok) {
           throw new Error(`Badge failed: ${badgeRes.status} ${badgeRes.statusText}`);
         }
@@ -315,15 +303,14 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         }
 
         // Read responses (use empty string for SVG if it failed)
-        const [svgText, badgeText, html1Text, html2Text] = await Promise.all([
-          svgRes.ok ? svgRes.text() : Promise.resolve(''),
+        const [badgeText, html1Text, html2Text] = await Promise.all([
           badgeRes.text(),
           html1Res.text(),
           html2Res.text()
         ]);
 
         setResults({
-          svg: svgText,
+          svg: '',
           badge: badgeText,
           html1: html1Text,
           html2: html2Text
@@ -490,20 +477,19 @@ const SurveyContent = () => {
           setSubmitStatus('loading');
 
           const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
-          const [svgRes, badgeRes, html1Res, html2Res] = await Promise.all([
-            fetch(`${apiBase}/reading/${submissionId}/chart.svg`),
+          const [badgeRes, html1Res, html2Res] = await Promise.all([
             fetch(`${apiBase}/reading/${submissionId}/badge`),
             fetch(`${apiBase}/reading/${submissionId}/html`),
             fetch(`${apiBase}/reading/${submissionId}/html/2`)
           ]);
 
           // Check if all requests succeeded
-          if (!svgRes.ok || !badgeRes.ok || !html1Res.ok || !html2Res.ok) {
+          if (!badgeRes.ok || !html1Res.ok || !html2Res.ok) {
             throw new Error('Failed to load results');
           }
 
           setResults({
-            svg: await svgRes.text(),
+            svg: '',
             badge: await badgeRes.text(),
             html1: await html1Res.text(),
             html2: await html2Res.text()
