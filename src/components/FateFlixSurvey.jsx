@@ -12,11 +12,13 @@ const ProgressBar = () => {
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   return (
-    <div className="w-full bg-gray-800 h-2 mb-8 rounded-full overflow-hidden">
+    <div className="w-full bg-zinc-900 h-1.5 mb-12 rounded-full overflow-hidden relative shadow-[0_0_10px_rgba(249,115,22,0.1)]">
       <div
-        className="h-full bg-gradient-to-r from-orange-500 to-cyan-400 transition-all duration-500 ease-out"
+        className="h-full bg-gradient-to-r from-orange-500 via-orange-400 to-cyan-400 transition-all duration-700 ease-out relative"
         style={{ width: `${progress}%` }}
-      />
+      >
+        <div className="absolute right-0 top-0 h-full w-8 bg-white/20 blur-md animate-pulse" />
+      </div>
     </div>
   );
 };
@@ -65,7 +67,7 @@ const ResultsDashboard = ({ results }) => {
             <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Badge
             </a>
-
+            {/* Chart nav hidden for now */}
             <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Part I
             </a>
@@ -84,7 +86,7 @@ const ResultsDashboard = ({ results }) => {
           />
         </div>
 
-
+        {/* Chart Section hidden for now */}
 
         {/* Reading Content via Iframes */}
         <div className="space-y-12">
@@ -147,11 +149,9 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       // After Section 1: Compute chart and create submission (for real-time saving)
       try {
         const isUnknownTime = answers['time_accuracy'] === 'unknown';
-        const timeVal = answers['time'];
-        const timeString = (typeof timeVal === 'object' && timeVal?.time) ? timeVal.time : timeVal;
         const chartPayload = {
           date: answers['date'],
-          time: (isUnknownTime || !timeString) ? "12:00" : timeString,
+          time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
           latitude: parseFloat(answers['latitude']),
           longitude: parseFloat(answers['longitude']),
           city: answers['city'],
@@ -196,13 +196,11 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
 
       // 1. Logic: Handle Unknown Time
       const isUnknownTime = answers['time_accuracy'] === 'unknown';
-      const timeVal = answers['time'];
-      const timeString = (typeof timeVal === 'object' && timeVal?.time) ? timeVal.time : timeVal;
 
       const payload = {
         date: answers['date'],
         // If unknown or empty, default to 12:00
-        time: (isUnknownTime || !timeString) ? "12:00" : timeString,
+        time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
         latitude: parseFloat(answers['latitude']),
         longitude: parseFloat(answers['longitude']),
         city: answers['city'],
@@ -284,14 +282,17 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         }
 
         // 3. Fetch the Results (The backend auto-adjusts based on data)
-        const [badgeRes, html1Res, html2Res] = await Promise.all([
+        const [svgRes, badgeRes, html1Res, html2Res] = await Promise.all([
+          fetch(`${apiBase}/reading/${returnedSubmissionId}/chart.svg`),
           fetch(`${apiBase}/reading/${returnedSubmissionId}/badge`),
           fetch(`${apiBase}/reading/${returnedSubmissionId}/html`),
           fetch(`${apiBase}/reading/${returnedSubmissionId}/html/2`)
         ]);
 
         // Check if all requests succeeded
-
+        if (!svgRes.ok) {
+          console.warn(`Chart SVG failed: ${svgRes.status} ${svgRes.statusText}`);
+        }
         if (!badgeRes.ok) {
           throw new Error(`Badge failed: ${badgeRes.status} ${badgeRes.statusText}`);
         }
@@ -303,14 +304,15 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         }
 
         // Read responses (use empty string for SVG if it failed)
-        const [badgeText, html1Text, html2Text] = await Promise.all([
+        const [svgText, badgeText, html1Text, html2Text] = await Promise.all([
+          svgRes.ok ? svgRes.text() : Promise.resolve(''),
           badgeRes.text(),
           html1Res.text(),
           html2Res.text()
         ]);
 
         setResults({
-          svg: '',
+          svg: svgText,
           badge: badgeText,
           html1: html1Text,
           html2: html2Text
@@ -399,7 +401,7 @@ const CurrentSection = ({ nextStep }) => {
 
 
   return (
-    <div>
+    <div className="animate-fade-in">
       {!isSwipeSection && !isIntroHero && (
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-2">
@@ -436,12 +438,6 @@ const CurrentSection = ({ nextStep }) => {
                     }
                   }}
                   onNext={nextStep} // Pass nextStep for Hero Button
-                  onLocationSelect={({ city, country, lat, lng }) => {
-                    setAnswer('city', city);
-                    if (country) setAnswer('country', country);
-                    if (lat) setAnswer('latitude', lat);
-                    if (lng) setAnswer('longitude', lng);
-                  }}
                 />
               </div>
             ))}
@@ -477,19 +473,20 @@ const SurveyContent = () => {
           setSubmitStatus('loading');
 
           const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
-          const [badgeRes, html1Res, html2Res] = await Promise.all([
+          const [svgRes, badgeRes, html1Res, html2Res] = await Promise.all([
+            fetch(`${apiBase}/reading/${submissionId}/chart.svg`),
             fetch(`${apiBase}/reading/${submissionId}/badge`),
             fetch(`${apiBase}/reading/${submissionId}/html`),
             fetch(`${apiBase}/reading/${submissionId}/html/2`)
           ]);
 
           // Check if all requests succeeded
-          if (!badgeRes.ok || !html1Res.ok || !html2Res.ok) {
+          if (!svgRes.ok || !badgeRes.ok || !html1Res.ok || !html2Res.ok) {
             throw new Error('Failed to load results');
           }
 
           setResults({
-            svg: '',
+            svg: await svgRes.text(),
             badge: await badgeRes.text(),
             html1: await html1Res.text(),
             html2: await html2Res.text()
@@ -522,17 +519,24 @@ const SurveyContent = () => {
     <div className="min-h-screen w-full bg-zinc-950 text-white flex flex-col items-center py-8 px-4 md:px-0 font-sans selection:bg-orange-500 selection:text-white">
       <div className="w-full max-w-2xl bg-transparent flex flex-col gap-8">
         {!isIntroHero && (
-          <header className="mb-12 text-center">
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-2 text-white">
-              FATEFLIX
-            </h1>
-            <p className="text-gray-400 uppercase tracking-widest text-sm">Cinematic Survey</p>
+          <header className="mb-16 flex flex-col items-center">
+            <div className="w-20 h-20 md:w-24 md:h-24 relative group mb-4">
+              <div className="absolute inset-0 bg-orange-500/10 blur-2xl rounded-full scale-75" />
+              <img
+                src="/assets/fateflix-planet.png"
+                alt="FateFlix Logo"
+                className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(249,115,22,0.2)]"
+              />
+            </div>
+            <h2 className="text-[8px] md:text-[10px] tracking-[0.6em] text-zinc-500 font-bold uppercase">
+              CINEMATIC TASTE SURVEY
+            </h2>
           </header>
         )}
 
         <ProgressBar />
 
-        <div key={currentStep} className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500 animate-fade-in`}>
+        <div className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500`}>
           <CurrentSection nextStep={nextStep} />
           <SurveyControls
             submitStatus={submitStatus}

@@ -17,15 +17,7 @@ function debounce(func, wait) {
 }
 
 export const SurveyProvider = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState(() => {
-    // Check for 'step' in URL if in browser
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const stepParam = params.get('step');
-      if (stepParam !== null) return parseInt(stepParam, 10);
-    }
-    return 0;
-  });
+  const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submissionId, setSubmissionId] = useState(null);
   const [chartId, setChartId] = useState(null);
@@ -52,20 +44,13 @@ export const SurveyProvider = ({ children }) => {
 
     try {
       const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
-
-      // Serialize the value if it's an object (for "Other" options and multi-entry arrays)
-      let serializedValue = value;
-      if (typeof value === 'object' && value !== null) {
-        serializedValue = JSON.stringify(value);
-      }
-
       const response = await fetch(`${apiBase}/api/survey/save-answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           submissionId,
           questionKey: questionId,
-          answerValue: serializedValue,
+          answerValue: value,
           userEmail: userEmail,
         }),
       });

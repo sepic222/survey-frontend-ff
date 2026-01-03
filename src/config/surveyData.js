@@ -7,11 +7,16 @@ export const surveySections = [
       {
         id: "start_hero",
         type: "hero_start",
-        image: "/assets/survey-logo.svg", // Logo file in public/assets/
-        title: "FATEFLIX",
-        subtitle: "PRESENTS",
-        text: "Before we decode your cinematic soul, we need to anchor you in space and time.",
-        buttonText: "Enter the Vortex"
+        image: "/assets/fateflix-planet.png",
+        subtitle: "CINEMATIC TASTE SURVEY",
+        missionText: "We're building a movie matcher that gets your vibe, not just your watch history.",
+        valueProps: [
+          "A personalised astro-cinematic reading",
+          "Beta tester access",
+          "Eternal bragging rights as an early FateFlix insider"
+        ],
+        assuranceText: "Your guilty pleasures are safe here, so are your wild opinions.",
+        buttonText: "Let's Begin"
       }
     ]
   },
@@ -19,12 +24,12 @@ export const surveySections = [
   // SECTION 2: The Data (Cosmic Origins)
   {
     id: "astro-data",
-    title: "Your Coordinates",
+    title: "Your Cosmic Identity",
     subtitle: "To cast your chart, we need your exact origins.",
     questions: [
       { id: "username", text: "What name should we call you in the credits?", type: "text", placeholder: "Name or Alias" },
       { id: "date", text: "Birth Date", type: "date" },
-      { id: "time", text: "Birth Time", helpText: "Crucial for your Rising Sign.", type: "time" },
+      { id: "time", text: "Birth Time", helpText: "Crucial for your Rising Sign.", type: "time", infoPopup: "Don't know your time? Call your mom, Check your birth certificate, Consult the galaxy you came from" },
       {
         id: "time_accuracy",
         text: "The Accuracy of your time of birth?",
@@ -40,7 +45,7 @@ export const surveySections = [
           { value: "unknown", label: "🤷 I have no idea (still works, but a bit more vague)" }
         ]
       },
-      { id: "city", text: "Birth City", type: "city", placeholder: "e.g. Düsseldorf" },
+      { id: "city", text: "Birth City", type: "text", placeholder: "e.g. Düsseldorf", disclaimer: "*P.S. We’ll use your birth data to align the stars. Your data is sacred (like a vintage VHS: not for rent, sale, or stream)." },
       // Keeping manual Lat/Long for now as requested for the Dev Endpoint
       { id: "latitude", text: "Latitude", type: "number", placeholder: "e.g. 51.22" },
       { id: "longitude", text: "Longitude", type: "number", placeholder: "e.g. 6.77" }
@@ -71,16 +76,17 @@ export const surveySections = [
         helpText: "Helps us match your movie kisses, crushes, and chaotic soul connections.",
         type: "radio",
         options: [
-          { value: "queer", label: "Queer and thriving" },
-          { value: "men", label: "Attracted to men" },
-          { value: "women", label: "Attracted to women" },
-          { value: "spectrum", label: "I love across the spectrum" },
-          { value: "bi_pan", label: "Bi/Pan/Switch energy" },
-          { value: "demi_sapio", label: "Demisexual / Sapiosexual" },
-          { value: "asexual", label: "Asexual / No thanks, I'm here for plot" },
-          { value: "figuring_out", label: "Still figuring it out" },
-          { value: "steamy_any", label: "I love anything steamy, no matter the form" },
-          { value: "no_label", label: "I don't label it" },
+          { value: "queer", label: "🌈 Queer and thriving" },
+          { value: "men", label: "💋 Attracted to men" },
+          { value: "women", label: "💅 Attracted to women" },
+          { value: "spectrum", label: "💞 I love across the spectrum" },
+          { value: "bi_pan", label: "🌪 Bi/Pan/Switch energy" },
+          { value: "demi_sapio", label: "👁️ Demisexual / Sapiosexual" },
+          { value: "asexual", label: "🧊 Asexual / No thanks, I'm here for plot" },
+          { value: "figuring_out", label: "🤷‍♀️ Still figuring it out" },
+          { value: "steamy_any", label: "🔥 I love anything steamy, no matter the form" },
+          { value: "no_label", label: "🌀 I don't label it" },
+          { value: "none", label: "🧬 None of the above — I’ll define it" },
           { value: "other", label: "Other" }
         ]
       },
@@ -90,13 +96,13 @@ export const surveySections = [
         type: "radio",
         options: [
           { value: "cinephile", label: "Cinephile Supreme (Raised at Blockbuster, evolved on MUBI)" },
-          { value: "lover", label: "Movie Lover (I've got favourites, I notice details)" },
+          { value: "lover", label: "Movie Lover (I've got favourites, I notice good dialogue and cool visuals)" },
           { value: "time_poor", label: "Time-Poor Watcher (I watch when I can, sometimes fall asleep)" },
           { value: "streaming_vortex", label: "Streaming Vortex (I consume it all, good, bad, trashy)" },
-          { value: "popcorn", label: "Popcorn-Only Viewer (Here for explosions and hot cast)" },
+          { value: "popcorn", label: "Popcorn-Only Viewer (I go to the cinema for explosions and hot cast)" },
           { value: "sleepy", label: "Sleepy Streamer (Background noise to fall asleep)" },
-          { value: "recovering", label: "Recovering Binger (I lie to keep watching)" },
-          { value: "scroller", label: "Lost in the Scroll (45 mins scrolling, watch nothing)" },
+          { value: "recovering", label: "Recovering Binger (I finish even the worst series. HELP!))" },
+          { value: "scroller", label: "Lost in the Scroll (45 mins scrolling, watch nothing, scroll socials)" },
           { value: "other", label: "Other" }
         ]
       },
@@ -109,49 +115,47 @@ export const surveySections = [
           { value: "rescuer", label: "The Rescuer (Help, save, protect, fix)" },
           { value: "disruptor", label: "The Chaotic Disruptor (I stir the plot)" },
           { value: "outsider", label: "The Dreamy Outsider (Out of step, deeply in tune)" },
-          { value: "overachiever", label: "The Overachiever / Golden Child" },
+          { value: "overachiever", label: "The Overachiever (I carry the expectations and I deliver)" },
           { value: "observer", label: "The Mysterious Observer" },
           { value: "ride_or_die", label: "The Ride-or-Die (Loyal, fierce)" },
-          { value: "comic", label: "The Comic Relief" },
+          { value: "comic", label: "The Comic Relief (I lighten the mood when it gets too heavy)" },
           { value: "wanderer", label: "The Wanderer (Never rooted)" },
-          { value: "mirror", label: "The Mirror (I become who people need)" },
+          { value: "mirror", label: "The Mirror (I become who people need me to be)" },
           { value: "audience", label: "Just here for the popcorn (Audience vibes)" },
           { value: "other", label: "Other" }
         ]
       },
       {
         id: "escapism_style",
-        text: "How do you use movies to deal (or not deal) with your emotions?",
-        helpText: "Select the strategy that best describes your cinematic survival mode.",
+        text: "Your Emotional Escapism Style?",
+        helpText: "How do you use movies to deal (or not deal) with your emotions?",
         type: "radio",
         options: [
-          { value: "heartbreak", label: "💔 Heartbreak Healer", description: "I need something when love crashes — breakup, loss, longing." },
-          { value: "hangover", label: "🤕 Hangover Hero", description: "When I’m fragile, fuzzy, or need gentle recovery." },
-          { value: "floodgate", label: "🌊 Emotional Floodgate", description: "I want to cry, release, and feel everything without explaining it." },
-          { value: "analyzer", label: "🧠 Chaos Analyzer", description: "I use movies to process life — mine, others’, or humanity’s patterns." },
-          { value: "cozy", label: "🧸 Cozy Comedown", description: "I want to feel safe, soothed, soft. (Sundays, sadness, sick days)" },
-          { value: "creative", label: "🔥 Creative Kickstart", description: "I need stories to spark my ideas, art, or ambition." },
-          { value: "romance", label: "💘 Romance Igniter", description: "When I want butterflies, chemistry, and connection." },
-          { value: "distraction", label: "🎭 Emotional Distraction", description: "I want to laugh, forget, or disassociate — just make it entertaining." },
-          { value: "romanticizer", label: "✨ Life Romanticizer", description: "Even pain feels cinematic when scored right." },
-          { value: "beauty", label: "🪐 Beauty Seeker", description: "I don’t need story — just vibes, visuals, aesthetics." },
-          { value: "control", label: "🎮 Control Watcher", description: "When everything feels chaotic, I want to choose what I feel." },
-          { value: "decoder", label: "👤 People Decoder", description: "I use characters to understand psychology + relationships." },
-          { value: "offline", label: "💨 Emotionally Offline", description: "I enjoy movies, but I don’t really feel them emotionally." },
-          { value: "ambience", label: "🎧 Ambience-Only Watcher", description: "Sometimes I just need background energy — no emotional engagement." },
-          { value: "other", label: "Other" }
+          { value: "heartbreak", label: "💔 Heartbreak Healer (for breakups, grief, or emotional longing survival)" },
+          { value: "hangover", label: "😵 Hangover Hero (gentle recovery when I’m fragile)" },
+          { value: "floodgate", label: "😭 Emotional Floodgate (I want to cry/release)" },
+          { value: "analyzer", label: "🧐 Chaos Analyzer (Process life through movies)" },
+          { value: "cozy", label: "🧸 Cozy Comedown (safety, warmth, emotional blankets)" },
+          { value: "creative", label: "🎨 Creative Kickstart (Spark ideas/ambition)" },
+          { value: "romance", label: "💘 Romance Igniter (Butterflies, chemistry, connection)" },
+          { value: "distraction", label: "🙈 Emotional Distraction (Laugh, forget, disassociate)" },
+          { value: "meaning", label: "🌌 Meaning Maker (Movies help me frame my life story)" },
+          { value: "romanticizer", label: "🍷 Life Romanticizer (Make pain cinematic)" },
+          { value: "beauty", label: "✨ Beauty Seeker (Vibes & aesthetics over story)" },
+          { value: "control", label: "🎮 Control Watcher (when life is chaos, at least I choose the movie)" },
+          { value: "decoder", label: "🔍 People Decoder (I study characters to understand psychology + relationships)" },
+          { value: "offline", label: "🔌 Emotionally Offline (Don't feel them emotionally)" },
+          { value: "ambience", label: "🛋️ Ambience-Only Watcher (Background energy not a full experience)" },
+          { value: "other", label: "✨ Other" }
         ]
       },
       {
         id: "first_crush",
         text: "Who was your first cinematic obsession or role model?",
-        helpText: "That one character, actor, or moment that rewired your brain.",
+        helpText: "That one character, actor, or moment that rewired your brain. This isn’t about attraction, it’s about imprinting. The scene that made you want to be someone else or finally feel more like yourself.",
         type: "textarea",
         placeholder: "e.g. Wednesday Addams, Heath Ledger in 10 Things...",
-        info: {
-          title: "Inspo Sparks",
-          content: "Was it a rebel? A romantic? A femme fatale? A scene that made you want to be someone else or be more you?\n\n(Could be a character, actor, director, or just one unforgettable moment. The kind you’d reenact in front of a mirror.)\n\n💡 **Example sparks:**\n\n• **Julia Roberts in Erin Brockovich** — the scene where she tears the lawyer apart in court\n\n• **Tarantino (any film)** — because he made you realize there are no rules — not for story, structure, or style\n\n• **Wednesday Addams or Matilda** — for the strange girls who felt too much\n\n• **Trinity in The Matrix** — leather, logic, and the coolest backbend in cinema\n\n• **Heath Ledger in 10 Things I Hate About You** singing on the bleachers\n\n• **Sharon Stone in Basic Instinct** — that one scene. Enough said."
-        }
+        inspoPopup: "Julia Roberts in Erin Brockovich (courtroom scene), Tarantino (any film), Wednesday Addams/ Matilda, Trinity in The Matrix, Heath Ledger in 10 Things I Hate About You singing on the benches, Aragorn (LOTR), Sharon Stone in Basic Instinct (that one scene. Enough said.)"
       }
     ]
   },
@@ -185,108 +189,69 @@ export const surveySections = [
         text: "What's your favourite movie era?",
         type: "checkbox",
         options: [
-          { value: "silent", label: "Silent Era (The Originals)" },
-          { value: "1930s", label: "1930s (Dawn of the Golden Age, Screwball wit & Escapist glamour)" },
-          { value: "1940s", label: "1940s (Shadows, Smoke & Suspense)" },
-          { value: "1950s", label: "1950s (Studio Magic & Technicolor)" },
-          { value: "1960s", label: "1960s (Revolution & Cool Chaos)" },
-          { value: "1970s", label: "1970s (Grit, Glam & Auteur Uprising)" },
-          { value: "1980s", label: "1980s (Neon, Synths & Shoulder Pads)" },
-          { value: "1990s", label: "1990s (Indie Boom & VHS Royalty)" },
-          { value: "2000s", label: "2000s (Tumblr-core & Teen Dreams)" },
-          { value: "post2010", label: "Post-2010 (A24 & Softcore Apocalypse)" },
-          { value: "fluid", label: "Era-fluid (Time is fake)" },
-          { value: "other", label: "Other" }
+          { value: "silent", label: "Silent Era - Visual storytelling before sound", examples: "(Metropolis, Nosferatu, Charlie Chaplin, Joan of Arc)" },
+          { value: "1930s", label: "1930s - Hollywood fantasy during hard times", examples: "(Dracula, Frankenstein, King Kong, Snow White)" },
+          { value: "1940s", label: "1940s - Shadows, Smoke & Suspense", examples: "(Casablanca, Double Indemnity, The Third Man)" },
+          { value: "1950s", label: "1950s - Studio Magic & Technicolor", examples: "(Rear Window, Roman Holiday, Rebel Without A Cause)" },
+          { value: "1960s", label: "1960s - Revolution, Nouvelle Vague & Cool Chaos", examples: "(The Graduate, La Dolce Vita, 8 1/2, Rosemary’s Baby)" },
+          { value: "1970s", label: "1970s - Grit, Glam & Auteur Uprising", examples: "(The Godfather, Taxi Driver, A Woman Under the Influence, Alien)" },
+          { value: "1980s", label: "1980s - Neon, Synths & Shoulder Pads", examples: "(The Breakfast Club, Labyrinth, Flashdance, Blade Runner)" },
+          { value: "1990s", label: "1990s - Indie Boom & VHS Royalty", examples: "(Clueless, Titanic, Pulp Fiction, Before Sunrise, The Matrix)" },
+          { value: "2000s", label: "2000s - Tumblr-core & Teen Dreams", examples: "(Eternal Sunshine, Donnie Darko, Marie Antoinette, Mean Girls)" },
+          { value: "post2010", label: "Post-2010 - A24 & Softcore Apocalypse", examples: "(Her, Parasite, Aftersun, The Worst Person in The World, EEAAO)" },
+          { value: "streaming", label: "Streaming Era - Prestige TV & Cultural Moments", examples: "(Stranger Things, Squid Game, Euphoria, Succession)" },
+          { value: "fluid", label: "Era-fluid: Time is fake." }
         ]
       },
       {
         id: "culture_background",
         text: "Where did you grow up (or feel culturally shaped by)?",
-        helpText: "Choose all that apply, based on your household culture, language, or media DNA.",
         type: "checkbox",
-        uiType: "accordion_group",
-        options_groups: [
-          {
-            group_name: "The Americas 🌎",
-            options: [
-              { value: "usa", label: "🇺🇸 United States" },
-              { value: "canada", label: "🇨🇦 Canada" },
-              { value: "caribbean", label: "🏝️ Caribbean / Afro-Caribbean" },
-              { value: "indigenous_na", label: "🪶 Indigenous North American" },
-              { value: "brazil", label: "🇧🇷 Brazil" },
-              { value: "latam_sp", label: "🇲🇽 Spanish-speaking Latin America" },
-              { value: "indigenous_latam", label: "🌿 Indigenous or Afro-Latin heritage" }
-            ]
-          },
-          {
-            group_name: "Europe & UK 🇪🇺",
-            options: [
-              { value: "uk_ireland", label: "🇬🇧 United Kingdom / Ireland" },
-              { value: "germany_dach", label: "🇩🇪 Germany / Austria / Switzerland" },
-              { value: "france", label: "🇫🇷 France" },
-              { value: "italy", label: "🇮🇹 Italy" },
-              { value: "spain", label: "🇪🇸 Spain" },
-              { value: "portugal", label: "🇵🇹 Portugal" },
-              { value: "greece", label: "🇬🇷 Greece" },
-              { value: "benelux", label: "🇧🇪 Benelux (Belgium, Netherlands, Lux)" },
-              { value: "eastern_europe", label: "🇵🇱 Eastern Europe (Poland, Ukraine etc.)" },
-              { value: "balkans", label: "🇷🇸 Balkans" }
-            ]
-          },
-          {
-            group_name: "Middle East & West Asia 🕌",
-            options: [
-              { value: "arabic_speaking", label: "🕌 Arabic-speaking" },
-              { value: "persian", label: "🏺 Persian / Iranian" },
-              { value: "turkish", label: "🧿 Turkish" },
-              { value: "israeli", label: "🇮🇱 Israeli / Hebrew-speaking" },
-              { value: "armenian_kurdisch", label: "🪔 Armenian / Kurdish / Minorities" },
-              { value: "central_asian", label: "🌐 Central Asian (Kazakhstan, Uzbekistan etc.)" }
-            ]
-          },
-          {
-            group_name: "Africa & Diaspora 🥁",
-            options: [
-              { value: "africa_west", label: "🥁 West African" },
-              { value: "africa_east_south", label: "🐘 East or Southern African" },
-              { value: "africa_north", label: "🧣 North African" },
-              { value: "africa_diaspora", label: "🌍 African diasporic (UK, US, Caribbean etc.)" }
-            ]
-          },
-          {
-            group_name: "Asia & Pacific 🥢",
-            options: [
-              { value: "japan", label: "🇯🇵 Japan" },
-              { value: "korea", label: "🇰🇷 South Korea" },
-              { value: "china", label: "🇨🇳 Mainland China" },
-              { value: "taiwan", label: "🇹🇼 Taiwan" },
-              { value: "hong_kong", label: "🇭🇰 Hong Kong" },
-              { value: "philippines", label: "🇵🇭 Philippines" },
-              { value: "thailand", label: "🇹🇭 Thailand" },
-              { value: "vietnam", label: "🇻🇳 Vietnam" },
-              { value: "indonesia", label: "🇮🇩 Indonesia" },
-              { value: "se_asia_other", label: "🧧 Other Southeast Asian" },
-              { value: "india", label: "🇮🇳 India" },
-              { value: "pakistan", label: "🇵🇰 Pakistan" },
-              { value: "bangladesh", label: "🇧🇩 Bangladesh" },
-              { value: "sri_lanka", label: "🇱🇰 Sri Lanka" },
-              { value: "nepal", label: "🇳🇵 Nepal" }
-            ]
-          },
-          {
-            group_name: "Interwoven Identity & Heritage ✨",
-            options: [
-              { value: "mixed_heritage", label: "🌀 Mixed heritage / Third culture kid" },
-              { value: "queer_culture", label: "🏳️‍🌈 Queer culture / chosen family" },
-              { value: "high_mobility", label: "✈️ I moved around a lot" },
-              { value: "nomad", label: "💻 Digital Nomad / Borderless soul" },
-              { value: "polyglot", label: "🗣️ Polyglot / Multi-lingual home" },
-              { value: "jewish_heritage", label: "✡️ Jewish / Ashkenazi / Sephardic" },
-              { value: "romani_traveller", label: "🎪 Romani / Traveller communities" }
-            ]
-          }
-        ],
-        allow_custom_input: true
+        options: [
+          // THE AMERICAS
+          { value: "header_na", label: "The Americas 🌎", isHeader: true },
+          { value: "usa", label: "United States" },
+          { value: "canada", label: "Canada" },
+          { value: "other_na", label: "Add country / region", isInlineOther: true },
+          { value: "latin_america_sp", label: "Spanish-speaking Latin America" },
+          { value: "brazil", label: "Brazil" },
+          { value: "caribbean", label: "Caribbean / Afro-Caribbean" },
+          { value: "other_latam", label: "Add country / region", isInlineOther: true },
+
+          // EUROPE & UK
+          { value: "header_eu", label: "Europe & UK 🇪🇺", isHeader: true },
+          { value: "uk_ireland", label: "United Kingdom / Ireland" },
+          { value: "germany_dach", label: "Germany / Austria / Switzerland" },
+          { value: "france", label: "France" },
+          { value: "italy", label: "Italy" },
+          { value: "spain", label: "Spain" },
+          { value: "eastern_europe", label: "Eastern Europe / Balkans" },
+          { value: "other_eu", label: "Add country / region", isInlineOther: true },
+
+          // MIDDLE EAST & WEST ASIA
+          { value: "header_me", label: "Middle East & West Asia 🕌", isHeader: true },
+          { value: "middle_east", label: "Middle East / Arabic / Persian" },
+          { value: "other_me", label: "Add country / region", isInlineOther: true },
+
+          // AFRICA & DIASPORA
+          { value: "header_africa", label: "Africa & Diaspora 🥁", isHeader: true },
+          { value: "africa_west", label: "West African" },
+          { value: "africa_east_south", label: "East or Southern African" },
+          { value: "other_africa", label: "Add country / region", isInlineOther: true },
+
+          // ASIA & PACIFIC
+          { value: "header_asia", label: "Asia & Pacific 🥢", isHeader: true },
+          { value: "asia_east", label: "Japan / Korea / China / Taiwan" },
+          { value: "asia_se", label: "SE Asia (Thailand, Vietnam, etc)" },
+          { value: "asia_south", label: "South Asia (India, Pakistan, etc)" },
+          { value: "other_asia", label: "Add country / region", isInlineOther: true },
+
+          // INTERWOVEN IDENTITY
+          { value: "header_id", label: "Interwoven Identity & Heritage ✨", isHeader: true },
+          { value: "mixed", label: "Mixed heritage / Third culture kid" },
+          { value: "queer", label: "Queer culture / chosen family" },
+          { value: "other", label: "Other" },
+        ]
       },
       {
         id: "environment_growing_up",
@@ -318,25 +283,29 @@ export const surveySections = [
         text: "What's the first movie that ever made you feel something?",
         helpText: "Cry, scream, gasp, any emotion counts. Do you remember why?",
         type: "textarea",
-        placeholder: "e.g. Bambi (shock + grief), E.T. (ugly cry)..."
+        placeholder: "e.g. Bambi (shock + grief), E.T. (ugly cry)...",
+        inspoPopup: "Bambi - that scene…, Matilda - discovering her powers, Cinema Paradiso - the kiss reel, E.T. - Elliot says goodbye (ouch, ugly cry), Romeo + Juliet (1996) - fish tank scene, Call Me By Your Name - final fireplace shot, Billy Elliot - dancing it out"
       },
       {
         id: "life_changing",
         text: "What movie changed your life or meant everything at some point?",
         helpText: "We're tracking your fate film. Turning point? Breakup comfort?",
         type: "textarea",
-        placeholder: "Tell us what hit you and why..."
+        placeholder: "Tell us what hit you and why...",
+        inspoPopup: "It could’ve been a turning point, a comfort during a breakup, or a story that mirrored your own. A plot twist that mirrored your own? We don’t care if it’s a cult classic, or Oscar-winner… tell us what hit you and why.\n\n• After watching The Men Who Stare at Goats, I felt powerful in the job I hated. It gave me a weirdly magical way to survive corporate life. I started using Jedi mind tricks at meetings.\n• The Darjeeling Limited: booking a solo trip, spiritual reset\n• When I saw The Other Woman, I actually gave my relationship another shot. It reminded me that real life is messy and sometimes the grass isn't greener.\n• Billy Elliot: realizing I didn't have to follow someone else’s path.\n• Everything Everywhere Al At Once, I finally forgave my mom. And myself."
       },
       {
         id: "comfort_watch",
         text: "Your Ultimate Comfort Watch?",
-        helpText: "When you need to feel safe, soothed, or seen.",
-        type: "text"
+        helpText: "(Movie or TV show)",
+        type: "text",
+        inspoPopup: "Think: Rainy Sundays, heartbreak nights, post-party comedown, or nostalgic resets.\n(Here are a few examples, but your vibe might be totally different: Gilmore Girls, Good Will Hunting, Shrek, Friends, The Office, The Holiday, Pretty Woman, Iron Man)"
       },
       {
         id: "power_watch",
         text: "What movie do you rewatch when you want to feel powerful?",
-        type: "text"
+        type: "text",
+        inspoPopup: "Here are a few examples, but your vibe might be totally different: Kill Bill, Black Swan, Erin Brockovich, Rocky, The Devil Wears Prada, Creed, Mad Max: Fury Road, Black Panther, The Favourite, The Matrix, Jennifer's Body, Everything Everywhere All at Once)"
       },
       {
         id: "date_impress",
@@ -365,9 +334,9 @@ export const surveySections = [
           { value: "surreal", label: "Trippy surrealism (Spirited Away, Inception)" },
           { value: "melancholia", label: "Cool melancholia (Lost in Translation)" },
           { value: "nature", label: "Nature & nostalgia (Totoro, Little Women)" },
-          { value: "glamour", label: "Theatre and glamour (Moulin Rouge)" },
+          { value: "glamour", label: "Theatre and glamour (Moulin Rouge, Cabaret)" },
           { value: "thrilling", label: "Dangerously thrilling (John Wick, Kill Bill)" },
-          { value: "old_world", label: "Old world elegance (Bridgerton)" },
+          { value: "old_world", label: "Old world elegance (The Age of Innocence, A Room with a View)" },
           { value: "gothic", label: "Gothic and strange (Pan's Labyrinth)" },
           { value: "other", label: "Other" }
         ]
@@ -377,71 +346,46 @@ export const surveySections = [
         text: "Which villain do you secretly relate to? And... why?",
         helpText: "Who's your inner anti-hero?",
         type: "textarea",
-        placeholder: "e.g. Amy Dunne, Patrick Bateman, Scar..."
+        placeholder: "e.g. Amy Dunne, Patrick Bateman, Scar...",
+        inspoPopup: "Misunderstood icons or just honest about their darkness?\n\n• Miranda Priestly (The Devil Wears Prada) - I've worked my ass oﬀ to get where I am.\n• Patrick Bateman (American Psycho) - Skincare, perfection, & clean aesthetics.\n• Tom Ripley (The Talented Mr. Ripley) - Outsider energy, wanting in.\n• Catherine Tramell (Basic Instinct) - Brilliant, unreadable, fully in control.\n• Scar (The Lion King) - Overlooked sibling plotting a comeback.\n• Hannibal Lecter (Silence of the Lambs) - Disturbing genius with impeccable manners."
       },
       {
         id: "forever_crush",
         text: "Who's your forever on-screen crush?",
         helpText: "From first movie crush to current obsession.",
-        type: "textarea"
+        type: "textarea",
+        inspoPopup: "Who's lived rent-free in your cinematic heart?\nCartoons count. Accidental awakenings count. One name or a chaotic timeline, both valid.\nGive us the timeline of your taste evolution.\n\n(Here are a few examples, but your vibe might be totally different: Salma Hayek in Desperado, Ewan McGregor in Moulin Rouge, River Phoenix in My Own Private Idaho, Michelle Pfeiffer in Batman Returns, Al Pacino in Dog Day Afternoon, Lola Bunny in Space Jam, Jude Law in The Talented Mr. Ripley, Tilda Swinton in Orlando, Sharon Stone in Basic Instinct, Angela Bassett in Strange Days, Monica Bellucci in anything)"
       },
       {
         id: "crave_most",
         text: "What do you crave most in a movie?",
         type: "checkbox",
         options: [
-          { value: "emotional", label: "Soft, sad & deeply felt (heartbreak)" },
-          { value: "tension", label: "High stakes & high tension (suspense)" },
-          { value: "chaos", label: "Emotional chaos & catharsis (rage, release)" },
-          { value: "clever", label: "Clever & conceptual (plot twists)" },
-          { value: "structure", label: "Satisfying structure (I care about plot)" },
-          { value: "poetic", label: "Philosophical & poetic (existential)" },
-          { value: "depth", label: "Characters with depth (inner worlds)" },
+          { value: "emotional", label: "Soft, sad & deeply felt" },
+          { value: "tension", label: "High stakes & tension (suspense, danger, edge-of-seat energy)" },
+          { value: "chaos", label: "Emotional chaos & catharsis (rage, release, revenge acts)" },
+          { value: "clever", label: "Clever & conceptual (symbolism, sharp dialogue, plot twists)" },
+          { value: "structure", label: "Satisfying structure (I care about the plot)" },
+          { value: "poetic", label: "Philosophical & poetic (existential & reflective)" },
+          { value: "depth", label: "Characters with depth (inner worlds & transformation)" },
           { value: "performance", label: "Haunting performances" },
-          { value: "chemistry", label: "Sexy & slow chemistry (glances)" },
+          { value: "chemistry", label: "Sexy, slow chemistry (glances > gestures > tension)" },
           { value: "stylish", label: "Cool & stylish (mood, music, fashion)" },
-          { value: "wholesome", label: "Wholesome escapism (happy endings)" },
-          { value: "worldbuilding", label: "The world it builds (immersive)" },
-          { value: "fun", label: "Fun, clever & spirally" },
-          { value: "weird", label: "Weird & trippy (surrealism is truth)" },
-          { value: "dark", label: "Dark & seductive (noir, vampires)" },
+          { value: "escapism", label: "Wholesome escapism (comfort, nostalgia & happy endings)" },
+          { value: "immersive", label: "Immersive Worlds (I want to live inside)" },
+          { value: "fun", label: "Fun, clever & quotable (rewatch energy)" },
+          { value: "trippy", label: "Weird & trippy (surrealism is truth)" },
+          { value: "dark", label: "Dark & seductive (noir, danger, desire)" },
           { value: "crime", label: "Crime, hustle & heist" },
-          { value: "adrenalin", label: "Adrenalin Explosions" },
-          { value: "other", label: "Other" }
-        ]
-      },
-      {
-        id: "life_tagline",
-        text: "If your life were a movie, what would the tagline be?",
-        type: "radio",
-        options: [
-          { value: "escape", label: "Escape was never just an option. It was the whole point." },
-          { value: "ruin", label: "Love me, ruin me, roll credits." },
-          { value: "hope", label: "In a world where trust is a trap... I still hope." },
-          { value: "spark", label: "Just one spark. That's all it takes to unravel me." },
-          { value: "style", label: "Style over safety. Every time." },
-          { value: "destiny", label: "They said it was just a movie. I said: destiny." },
-          { value: "glitch", label: "Reality glitched. I liked it better that way." },
-          { value: "therapy", label: "It started as a meet cute. It ended in therapy." },
-          { value: "villains", label: "Not all villains are wrong. Some are just iconic." },
-          { value: "power", label: "Love stories? I prefer power plays in disguise." },
-          { value: "hotter", label: "The world ended. I got hotter." },
-          { value: "soundtrack", label: "Nothing makes sense, but the soundtrack slaps." },
-          { value: "twist", label: "Just when I thought I had it figured out... plot twist." },
-          { value: "fate", label: "Flirting with fate since day one." },
-          { value: "coming_of_age", label: "A coming-of-age story... that never ends." },
-          { value: "delusions", label: "Running on dreams and delusions." },
-          { value: "script", label: "Flawed, fabulous, and still rewriting the script." },
-          { value: "rules", label: "In a world that made no sense, I made my own rules." },
-          { value: "loop", label: "Love, loss, reinvention. On loop." },
-          { value: "survived", label: "I laughed, I cried, I survived." },
+          { value: "adrenaline", label: "Pure adrenaline (chase scenes, explosions, velocity)" },
+          { value: "not_basic", label: "Whatever makes my life feel less basic for 90 minutes" },
           { value: "other", label: "Other" }
         ]
       }
     ]
   },
 
-  // SECTION VI
+  // SECTION VILe
   {
     id: "section-vi",
     title: "Screen Education: What Trained Your Taste",
@@ -452,18 +396,23 @@ export const surveySections = [
         text: "TV Taste Check: Pick the flavours that feed your soul.",
         type: "checkbox",
         options: [
-          { value: "prestige", label: "Slow-burn prestige (HBO-core)" },
-          { value: "reality", label: "Reality + chaos (Love Island, Housewives)" },
-          { value: "dark", label: "Dark drama (crime, revenge, cults)" },
-          { value: "comfort", label: "Comfort comedy (sitcoms)" },
-          { value: "animated", label: "Animated genius (BoJack, Anime)" },
-          { value: "limited", label: "Limited series / anthology (White Lotus)" },
-          { value: "retro", label: "Retro magic (Golden Girls, Twin Peaks)" },
-          { value: "scifi", label: "Sci-fi / fantasy world-building (GOT)" },
-          { value: "docu", label: "Documentary & real stories" },
-          { value: "no_tv", label: "I don't really watch TV (movie-only soul)" },
-          { value: "addict", label: "I try not to watch - I get addicted" },
-          { value: "avoid", label: "I avoid shows to protect my peace" },
+          { value: "prestige", label: "Slow-burn prestige (long arcs, power, HBO-core)" },
+          { value: "dark_drama", label: "Dark Drama (crime, revenge, moral mess)" },
+          { value: "reality", label: "Reality chaos (Love Island, Housewives, Kardashians)" },
+          { value: "comedy", label: "Comfort comedy (sitcoms, rewatch therapy)" },
+          { value: "talk_shows", label: "Talk shows & panel shows (late night, interviews, comedians)" },
+          { value: "animated", label: "Animated brilliance (BoJack, anime, adult animation)" },
+          { value: "limited", label: "Limited series / anthologies (intense contained stories)" },
+          { value: "retro", label: "Retro magic (Twin Peaks, Golden Girls, 90s teen shows)" },
+          { value: "scifi_fantasy", label: "Sci-fi & fantasy worlds (myth & alternate realties)" },
+          { value: "documentaries", label: "Documentaries & real stories (true crime, pop culture, sport)" },
+          { value: "factual", label: "Factual entertainment & curiosity TV (Discovery, Nat Geo, science, nature)" },
+          { value: "cooking", label: "Cooking & food shows" },
+          { value: "sports", label: "Sports Competitions (matches, leagues, tournaments)" },
+          { value: "talent", label: "Talent & performance shows (singing, dancing)" },
+          { value: "lifestyle", label: "Lifestyle & background TV" },
+          { value: "movie_only", label: "I’m movie-only. TV isn’t really my thing" },
+          { value: "avoid_series", label: "I avoid series, I get addicted 😅" },
           { value: "other", label: "Other" }
         ]
       },
@@ -488,157 +437,69 @@ export const surveySections = [
         id: "directors",
         text: "Do you care about directing styles?",
         type: "checkbox",
-        helpText: "Pick up to 5 — or write in your cinematic crush below",
-        uiType: "accordion_group",
-        allow_custom_input: true,
-        max_selections: 5,
-        options_groups: [
-          {
-            group_name: "Special",
-            options: [
-              {
-                value: "I don’t know any directors and I don’t care lol",
-                label: "I don’t know any directors and I don’t care lol",
-                is_exclusive: true
-              }
-            ]
-          },
-          {
-            group_name: "Modern Icons & Crowd Pleasers",
-            options: [
-              { value: "Greta Gerwig", description: "Lady Bird, Barbie, Little Women" },
-              { value: "Jordan Peele", description: "Get Out, Us, Nope" },
-              { value: "Quentin Tarantino", description: "Pulp Fiction, Kill Bill, Inglourious Basterds" },
-              { value: "Paul Thomas Anderson", description: "Boogie Nights, There Will Be Blood, Licorice Pizza" },
-              { value: "The Daniels", description: "Everything Everywhere All at Once, Swiss Army Man" },
-              { value: "Christopher Nolan", description: "Inception, Interstellar, Oppenheimer" },
-              { value: "Emerald Fennell", description: "Promising Young Woman, Saltburn" },
-              { value: "George Lucas", description: "Star Wars, THX 1138, American Graffiti" },
-              { value: "Peter Jackson", description: "The Lord of the Rings, Heavenly Creatures, King Kong" },
-              { value: "Ron Howard", description: "A Beautiful Mind, Apollo 13, Frost/Nixon" },
-              { value: "James Cameron", description: "Titanic, Terminator, Avatar" },
-              { value: "Todd Phillips", description: "The Hangover, Joker, War Dogs" },
-              { value: "Ridley Scott", description: "Alien, Gladiator, Thelma & Louise" },
-              { value: "Danny Boyle", description: "Trainspotting, Slumdog Millionaire, 28 Days Later" },
-              { value: "Hayao Miyazaki", description: "Spirited Away, My Neighbor Totoro, Princess Mononoke" },
-              { value: "Bong Joon-ho", description: "Parasite, Snowpiercer, Memories of Murder" }
-            ]
-          },
-          {
-            group_name: "Dark, Surreal & Mind-Bending",
-            options: [
-              { value: "David Lynch", description: "Mulholland Drive, Blue Velvet, Eraserhead" },
-              { value: "Stanley Kubrick", description: "2001: A Space Odyssey, The Shining, A Clockwork Orange" },
-              { value: "Spike Jonze", description: "Her, Being John Malkovich, Adaptation" },
-              { value: "Jonathan Glazer", description: "Under the Skin, Sexy Beast, The Zone of Interest" },
-              { value: "Ruben Östlund", description: "Force Majeure, The Square, Triangle of Sadness" },
-              { value: "Dario Argento", description: "Suspiria, Deep Red, Tenebrae" },
-              { value: "Yorgos Lanthimos", description: "The Favourite, The Lobster, Poor Things" },
-              { value: "Gaspar Noé", description: "Enter the Void, Climax, Irreversible" },
-              { value: "Lars von Trier", description: "Melancholia, Dancer in the Dark, Antichrist" },
-              { value: "Andrei Tarkovsky", description: "Stalker, Solaris, The Mirror" },
-              { value: "Michael Haneke", description: "Amour, Funny Games, Caché" },
-              { value: "Ulrich Seidl", description: "Paradise Love, Rimini, Safari" },
-              { value: "Park Chan-wook", description: "Oldboy, The Handmaiden, Decision to Leave" },
-              { value: "Nagisa Oshima", description: "In the Realm of the Senses, Merry Christmas Mr. Lawrence, Death by Hanging" },
-              { value: "Apichatpong Weerasethakul", description: "Uncle Boonmee Who Can Recall His Past Lives, Memoria, Tropical Malady" }
-            ]
-          },
-          {
-            group_name: "Stylized Vibes & Aesthetics",
-            options: [
-              { value: "Sofia Coppola", description: "Lost in Translation, Marie Antoinette, The Virgin Suicides" },
-              { value: "Wes Anderson", description: "The Royal Tenenbaums, Moonrise Kingdom, The Grand Budapest Hotel" },
-              { value: "Harmony Korine", description: "Gummo, Spring Breakers, Trash Humpers" },
-              { value: "Tim Burton", description: "Edward Scissorhands, Beetlejuice, Big Fish" },
-              { value: "Julian Schnabel", description: "The Diving Bell and the Butterfly, Basquiat, Before Night Falls" },
-              { value: "John Waters", description: "Pink Flamingos, Hairspray, Female Trouble" },
-              { value: "Rob Marshall", description: "Chicago, Memoirs of a Geisha, Into the Woods" },
-              { value: "Nicolas Roeg", description: "Don't Look Now, The Man Who Fell to Earth, Walkabout" },
-              { value: "Sally Potter", description: "Orlando, The Tango Lesson, Ginger & Rosa" },
-              { value: "Isaac Julien", description: "Looking for Langston, Young Soul Rebels, Lessons of the Hour" },
-              { value: "Ken Russell", description: "Women in Love, The Devils, Tommy" },
-              { value: "Pedro Almodóvar", description: "All About My Mother, Talk to Her, Pain and Glory" },
-              { value: "Luca Guadagnino", description: "Call Me by Your Name, I Am Love, Bones and All" },
-              { value: "Claire Denis", description: "Beau Travail, High Life, Trouble Every Day" },
-              { value: "Jean-Jacques Beineix", description: "Diva, Betty Blue, The Moon in the Gutter" },
-              { value: "Peter Greenaway", description: "The Cook, the Thief, His Wife & Her Lover, Prospero’s Books, A Zed & Two Noughts" },
-              { value: "Zhang Yimou", description: "Raise the Red Lantern, Hero, House of Flying Daggers" },
-              { value: "Wong Kar-wai", description: "In the Mood for Love, Chungking Express, Happy Together" }
-            ]
-          },
-          {
-            group_name: "Grit, Crime & Intensity",
-            options: [
-              { value: "Spike Lee", description: "Do the Right Thing, Malcolm X, BlacKkKlansman" },
-              { value: "Larry Clark", description: "Kids, Bully, Ken Park" },
-              { value: "Adrian Lyne", description: "Fatal Attraction, 9½ Weeks, Unfaithful" },
-              { value: "Martin Scorsese", description: "Goodfellas, Taxi Driver, The Wolf of Wall Street" },
-              { value: "Brian De Palma", description: "Carrie, Scarface, Blow Out" },
-              { value: "Safdie Brothers", description: "Uncut Gems, Good Time" },
-              { value: "Coen Brothers", description: "Fargo, No Country for Old Men, The Big Lebowski" },
-              { value: "Clint Eastwood", description: "Million Dollar Baby, Gran Torino, American Sniper" },
-              { value: "David Fincher", description: "Fight Club, The Social Network, Gone Girl" },
-              { value: "Michael Mann", description: "Heat, Collateral, The Insider" },
-              { value: "James Mangold", description: "Walk the Line, Logan, Ford v Ferrari" },
-              { value: "Steve McQueen", description: "Shame, 12 Years a Slave, Widows" },
-              { value: "Guy Ritchie", description: "Snatch, Lock, Stock and Two Smoking Barrels, The Gentlemen" },
-              { value: "Jacques Audiard", description: "A Prophet, Rust and Bone, Dheepan" }
-            ]
-          },
-          {
-            group_name: "Humanist, Indie & Emotional",
-            options: [
-              { value: "Barry Jenkins", description: "Moonlight, If Beale Street Could Talk" },
-              { value: "Gus Van Sant", description: "Good Will Hunting, My Own Private Idaho, Elephant" },
-              { value: "Woody Allen", description: "Annie Hall, Manhattan, Midnight in Paris" },
-              { value: "Noah Baumbach", description: "Marriage Story, Frances Ha, The Squid and the Whale" },
-              { value: "Chloé Zhao", description: "Nomadland, The Rider, Eternals" },
-              { value: "Richard Linklater", description: "Before Sunrise trilogy, Dazed and Confused, Boyhood" },
-              { value: "Sean Baker", description: "The Florida Project, Red Rocket, Tangerine" },
-              { value: "Ava DuVernay", description: "Selma, 13th, When They See Us" },
-              { value: "Nancy Meyers", description: "The Holiday, Something’s Gotta Give, It’s Complicated" },
-              { value: "Amy Heckerling", description: "Clueless, Fast Times at Ridgemont High, Look Who’s Talking" },
-              { value: "Stephen Daldry", description: "The Hours, Billy Elliot, The Reader" },
-              { value: "Andrea Arnold", description: "Fish Tank, American Honey, Wasp" },
-              { value: "Ken Loach", description: "I, Daniel Blake, The Wind That Shakes the Barley, Sorry We Missed You" },
-              { value: "Andrew Haigh", description: "Weekend, 45 Years, All of Us Strangers" },
-              { value: "Mike Leigh", description: "Secrets & Lies, Vera Drake, Another Year" },
-              { value: "Lynne Ramsay", description: "We Need to Talk About Kevin, You Were Never Really Here, Ratcatcher" },
-              { value: "Céline Sciamma", description: "Portrait of a Lady on Fire, Girlhood, Petite Maman" },
-              { value: "Agnès Varda", description: "Cléo from 5 to 7, Vagabond, The Gleaners and I" },
-              { value: "Wim Wenders", description: "Paris, Texas, Wings of Desire, Buena Vista Social Club" },
-              { value: "Maren Ade", description: "Toni Erdmann, Everyone Else, The Forest for the Trees" },
-              { value: "Abdellatif Kechiche", description: "Blue Is the Warmest Colour, The Secret of the Grain, Games of Love and Chance" },
-              { value: "Ferzan Özpetek", description: "Nuovo Olimpo, Naples In Veils, Diamonds" },
-              { value: "Éric Rohmer", description: "My Night at Maud’s, The Green Ray, Claire’s Knee" },
-              { value: "Hirokazu Kore-eda", description: "Shoplifters, Still Walking, Broker" },
-              { value: "Naomi Kawase", description: "Sweet Bean, The Mourning Forest, Still the Water" },
-              { value: "Ryusuke Hamaguchi", description: "Drive My Car, Asako I & II, Happy Hour" },
-              { value: "Hou Hsiao-hsien", description: "A City of Sadness, Flowers of Shanghai, The Assassin" }
-            ]
-          },
-          {
-            group_name: "The Legends & Classics",
-            options: [
-              { value: "Orson Welles", description: "Citizen Kane, Touch of Evil, The Magnificent Ambersons" },
-              { value: "John Ford", description: "The Searchers, Stagecoach, The Grapes of Wrath" },
-              { value: "Howard Hawks", description: "His Girl Friday, Rio Bravo, Bringing Up Baby" },
-              { value: "Sidney Lumet", description: "12 Angry Men, Dog Day Afternoon, Network" },
-              { value: "Carol Reed", description: "The Third Man, Oliver!, Odd Man Out" },
-              { value: "Jean-Luc Godard", description: "Breathless, Contempt, Pierrot le Fou" },
-              { value: "Michelangelo Antonioni", description: "L’Avventura, Blow-Up, The Passenger" },
-              { value: "Bernardo Bertolucci", description: "The Conformist, Last Tango in Paris, The Dreamers" },
-              { value: "David Lean", description: "Lawrence of Arabia, Doctor Zhivago, The Bridge on the River Kwai" },
-              { value: "Federico Fellini", description: "La Dolce Vita, 8½, Amarcord" },
-              { value: "Roberto Rossellini", description: "Rome, Open City, Journey to Italy" },
-              { value: "François Truffaut", description: "The 400 Blows, Jules and Jim, Day for Night" },
-              { value: "Louis Malle", description: "Au revoir les enfants, Elevator to the Gallows, Atlantic City" },
-              { value: "Pier Paolo Pasolini", description: "The Gospel According to St. Matthew, Salò, Teorema" },
-              { value: "Kenji Mizoguchi", description: "Ugetsu, Sansho the Bailiff, Street of Shame" },
-              { value: "Yasujiro Ozu", description: "Tokyo Story, Late Spring, An Autumn Afternoon" }
-            ]
-          }
+        helpText: "Pick up to 5.",
+        options: [
+          { value: "header_modern", label: "MODERN ICONS & CROWD PLEASERS", isHeader: true },
+          { value: "gerwig", label: "Greta Gerwig", examples: "Lady Bird, Barbie, Little Women" },
+          { value: "peele", label: "Jordan Peele", examples: "Get Out, Us, Nope" },
+          { value: "spielberg", label: "Steven Spielberg", examples: "E.T., Jurassic Park, Schindler’s List, Jaws" },
+          { value: "tarantino", label: "Quentin Tarantino", examples: "Pulp Fiction, Kill Bill, Inglorious Basterds" },
+          { value: "pta", label: "Paul Thomas Anderson", examples: "One Battle After Another, Boogie Nights, There Will Be Blood" },
+          { value: "daniels", label: "The Daniels (Daniel Kwan & Daniel Scheinert)", examples: "Everything Everywhere All At Once, Swiss Army Man" },
+          { value: "nolan", label: "Christopher Nolan", examples: "Inception, Interstellar, Oppenheimer, The Dark Knight" },
+          { value: "fennell", label: "Emerald Fennell", examples: "Wuthering Heights, Promising Young Woman, Saltburn" },
+          { value: "lucas", label: "George Lucas", examples: "Star Wars, THX 1138, American Graffiti" },
+          { value: "jackson", label: "Peter Jackson", examples: "The Lord of the Rings, Heavenly Creatures, King Kong" },
+          { value: "howard", label: "Ron Howard", examples: "A Beautiful Mind, Rush, Frost/Nixon, Apollo 13" },
+          { value: "cameron", label: "James Cameron", examples: "Titanic, Terminator, Avatar" },
+          { value: "phillips", label: "Todd Phillips", examples: "The Hangover, Joker, War Dogs" },
+          { value: "scott", label: "Ridley Scott", examples: "Alien, Gladiator, Thelma & Louise" },
+          { value: "boyle", label: "Danny Boyle", examples: "Trainspotting, Slumdog Millionaire, 28 Days Later" },
+          { value: "miyazaki", label: "Hayao Miyazaki", examples: "Spirited Away, My Neighbor Totoro, Princess Mononoke" },
+          { value: "bong_joon_ho", label: "Bong Joon-ho", examples: "Parasite, Snowpiercer, Memories of Murder" },
+          { value: "hughes", label: "John Hughes", examples: "The Breakfast Club, Ferris Bueller’s Day Off, Pretty in Pink" },
+
+          { value: "header_dark", label: "DARK, SURREAL & MIND-BENDING", isHeader: true },
+          { value: "lynch", label: "David Lynch", examples: "Mulholland Drive, Blue Velvet, Eraserhead" },
+          { value: "kubrick", label: "Stanley Kubrick", examples: "2001: A Space Odyssey, The Shining, A Clockwork Orange" },
+          { value: "jonze", label: "Spike Jonze", examples: "Her, Being John Malkovich, Adaptation" },
+          { value: "inarritu", label: "Alejandro González Iñárritu", examples: "Birdman, Babel, Amores Perros, The Revenant" },
+          { value: "glazer", label: "Jonathan Glazer", examples: "Under the Skin, Sexy Beast, The Zone of Interest" },
+          { value: "ostlund", label: "Ruben Östlund", examples: "Triangle of Sadness, Force Majeure, The Square" },
+          { value: "villeneuve", label: "Denis Villeneuve", examples: "Arrival, Blade Runner 2049, Dune, Prisoners" },
+          { value: "argento", label: "Dario Argento", examples: "Suspiria, Deep Red, Inferno" },
+          { value: "lanthimos", label: "Yorgos Lanthimos", examples: "Poor Things, Kinds Of Kindness, The Lobster" },
+          { value: "noe", label: "Gaspar Noé", examples: "Enter the Void, Climax, LOVE, Irreversible" },
+          { value: "von_trier", label: "Lars von Trier", examples: "Melancholia, Dancer in the Dark, Antichrist" },
+          { value: "tarkovsky", label: "Andrei Tarkovsky", examples: "Stalker, Solaris, The Mirror" },
+          { value: "haneke", label: "Michael Haneke", examples: "Amour, Funny Games, Caché" },
+          { value: "seidl", label: "Ulrich Seidl", examples: "Paradise: Love, Rimini, Safari" },
+          { value: "park_chan_wook", label: "Park Chan-wook", examples: "Oldboy, The Handmaiden, Decision to Leave" },
+          { value: "oshima", label: "Nagisa Oshima", examples: "In the Realm of the Senses, Merry Christmas Mr. Lawrence, Death by Hanging" },
+          { value: "weerasethakul", label: "Apichatpong Weerasethakul", examples: "Uncle Boonmee Who Can Recall His Past Lives, Memoria, Tropical Malady" },
+
+          { value: "header_stylized", label: "STYLIZED VIBES & AESTHETICS", isHeader: true },
+          { value: "sorrentino", label: "Paolo Sorrentino", examples: "The Great Beauty, Youth, The Hand of God" },
+          { value: "cuaron", label: "Alfonso Cuarón", examples: "Roma, Gravity, Y Tu Mamá También" },
+          { value: "song", label: "Céline Song", examples: "Materialists, Past Lives" },
+          { value: "wells", label: "Charlotte Wells", examples: "Aftersun, Tuesday, Laps" },
+          { value: "rohrwacher", label: "Alice Rohrwacher", examples: "La Chimera, Happy as Lazzaro, The Wonders" },
+
+          { value: "header_humanist", label: "HUMANIST, INDIE & EMOTIONAL", isHeader: true },
+          { value: "trier", label: "Joachim Trier", examples: "The Worst Person in the World, Sentimental Value, Oslo" },
+          { value: "nichols", label: "Mike Nichols", examples: "The Graduate, Who’s Afraid of Virginia Woolf?, Working Girl" },
+          { value: "cassavetes", label: "John Cassavetes", examples: "Woman Under the Influence, Faces, Opening Night" },
+          { value: "salles", label: "Walter Salles", examples: "I'm still here, Central Station, The Motorcycle Diaries, On the Road" },
+
+          { value: "header_legends", label: "THE LEGENDS & CLASSICS", isHeader: true },
+          { value: "bergman", label: "Ingmar Bergman", examples: "The Seventh Seal, Persona, Scenes from a Marriage" },
+          { value: "hitchcock", label: "Alfred Hitchcock", examples: "Psycho, Vertigo, Rear Window, North by Northwest" },
+          { value: "leone", label: "Sergio Leone", examples: "The Good, the Bad and the Ugly, Once Upon a Time in the West" },
+          { value: "coppola_ff", label: "Francis Ford Coppola", examples: "The Godfather trilogy, Apocalypse Now, The Conversation" },
+
+          { value: "header_special", label: "SPECIAL", isHeader: true },
+          { value: "none", label: "I don't know any directors and I don't care…lol" },
+          { value: "other", label: "Did we miss a favourite? Drop their names here." }
         ]
       },
       {
@@ -669,55 +530,75 @@ export const surveySections = [
     questions: [
       {
         id: "genres_love",
-        text: "Genres you never get sick of:",
+        text: "Genres you never get sick of 🍿:",
         type: "checkbox",
         options: [
-          { value: "romcom", label: "Rom-Com" },
-          { value: "horror", label: "Horror / Gore" },
-          { value: "drama", label: "Drama / Emotional Stories" },
-          { value: "action", label: "Action/Adventure" },
-          { value: "arthouse", label: "Arthouse / Indie" },
-          { value: "scifi", label: "Sci-fi/Futurism" },
-          { value: "mystery", label: "Mystery / Suspense" },
-          { value: "biopics", label: "Biopics" },
-          { value: "camp", label: "Camp/Cult/Iconic Chaos" },
-          { value: "true_crime", label: "True Crime" },
-          { value: "period", label: "Historical / Period" },
-          { value: "queer", label: "Queer Cinema" },
-          { value: "fantasy", label: "Fantasy" },
-          { value: "documentary", label: "Documentary" },
-          { value: "thriller", label: "Psychological / Twisted / Thrillers" },
+          { value: "romance", label: "Romance & Rom-Coms" },
+          { value: "drama", label: "Drama/Emotional Stories" },
+          { value: "comedy", label: "Comedy (light or dark)" },
+          { value: "action", label: "Action/ Adventure" },
+          { value: "thriller", label: "Thrillers & Suspense" },
+          { value: "horror", label: "Horror (from elevated to slasher)" },
+          { value: "scifi_fantasy", label: "Sci-Fi, Fantasy & Myth" },
+          { value: "indie", label: "Indie, Arthouse & Cult" },
+          { value: "musical", label: "Music, Dance & Performance" },
+          { value: "sports", label: "Sports & Underdog Stories" },
+          { value: "biopic", label: "Biopics & True Stories" },
+          { value: "documentary", label: "Documentary & Real Life Stories" },
+          { value: "queer", label: "Queer Cinema & LGBTQ+ Stories" },
+          { value: "historical", label: "Historical & Period" },
+          { value: "trash_reality", label: "Trash TV/ Reality Gold" },
+          { value: "classics", label: "Classics & Black&White" },
+          { value: "westerns", label: "Westerns & Frontier Epics" },
+          { value: "genre_fluid", label: "I’m genre-fluid" },
           { value: "other", label: "Other" }
         ]
       },
       {
         id: "turn_offs",
-        text: "What do you NOT vibe with on screen?",
+        text: "What do you NOT vibe with on screen? 🚩",
         type: "checkbox",
         options: [
-          { value: "sad", label: "No sad endings, please." },
-          { value: "romcom_cringe", label: "Rom-coms? I'm a realist." },
+          { value: "sad", label: "No sad endings, please. Life is hard enough." },
+          { value: "romcom_cringe", label: "Rom-com sceptic. I'm a realist." },
           { value: "scary", label: "I don't do scary." },
-          { value: "sexual", label: "Too steamy/sexual makes me uncomfortable." },
-          { value: "gore", label: "Too gory/violent? I'm out." },
-          { value: "torture", label: "No torture, please (Saw, etc)." },
-          { value: "snobbery", label: "No prestige snobbery (award bait)." },
-          { value: "no_romance", label: "If no romance, I lose interest." },
-          { value: "no_sex", label: "If no sex/skin, I get bored." },
-          { value: "scifi_hate", label: "I hate sci-fi / fantasy." },
-          { value: "clowns", label: "Can't do clowns. Ever." },
-          { value: "reality_rot", label: "Reality TV rots my brain." },
-          { value: "marvel", label: "I don't do Marvel." },
-          { value: "subtitles", label: "I don't like subtitles." },
+          { value: "sexual", label: "Too steamy. Here for plot not pelvis." },
+          { value: "gore", label: "Excessive gore or violence. I’m out." },
+          { value: "snobbery", label: "Prestige snobbery. Award-bait that takes life too seriously." },
+          { value: "no_romance", label: "No romance, at all. I need at least one make-out scene." },
+          { value: "scifi_fantasy", label: "Sci-fi / fantasy. Not my universe." },
+          { value: "weird_sex", label: "Erotic + weird. Not trying to relive a fever dream from a Berlin sex club." },
+          { value: "clowns", label: "Clowns, absolutely not. Not even in an arthouse film." },
+          { value: "reality_tv", label: "Love Island, Housewives, Kardashians, hard pass. I want film, not filler." },
+          { value: "subtitles", label: "Subtitles. If it’s not in my language, I’m unlikely to watch it." },
+          { value: "marvel", label: "I don't do Marvel. Not catching that cultural virus." },
+          { value: "creepy_dolls", label: "Creepy kids or haunted toys. Demons, dolls, no thanks." },
           { value: "other", label: "Other" }
         ]
       },
       {
         id: "hated_film",
-        text: "What's a film everyone else loved... but you hated?",
-        helpText: "The Oscar darling that bored you? The cult classic you found cringe?",
+        text: "What's a film everyone else loved... but you hated? Tell us why.",
         type: "textarea",
+        inspoPopup: "Think: the Oscar darling that bored you. The Netflix smash that felt soulless. The cult classic you found cringe.\nBelow are sample confessions to spark your vibe: feel free to riff, roast, or reveal:\n\n• Titanic — I rooted for the iceberg.\n• Everything Everywhere All at Once — “It felt like watching 15 TikToks at once during a panic attack. I respect the ambition but it lost me somewhere between hot dog fingers and multiverse taxes.”\n• Elvis (Baz Luhrmann) — “Felt like watching a Vegas slot machine explode for 2.5 hours. Austin Butler did great, but Baz directed like he had 12 Red Bulls and no editor.”\n• Avatar (all of them) — “It's just blue Pocahontas with fancier trees. Stunning visuals, sure, but 3D glasses couldn't save that plot from being aggressively ‘meh.'”\n• Emilia Pérez — I didn't know if I was watching an opera, a telenovela, or a Eurovision fever dream.\n• La La Land — BlaBla Land",
         placeholder: "e.g. Titanic, Everything Everywhere All at Once, Avatar..."
+      },
+      {
+        id: "hype_style",
+        text: "Hype Tracker or Timeless Watcher?",
+        helpText: "How do you dance with hype, buzz, and cult classics?",
+        type: "radio",
+        options: [
+          { value: "drops", label: "I watch everything the moment it drops." },
+          { value: "resist", label: "I resist it until it really blows up" },
+          { value: "crush", label: "Only if my crush is in it" },
+          { value: "pretend", label: "I pretend not to care, but I watch everything" },
+          { value: "wait", label: "I wait 5 years and watch it when no one cares" },
+          { value: "cult", label: "Cult Classics over hype, always" },
+          { value: "rare", label: "I like rare finds no one's heard of" },
+          { value: "right_time", label: "The right movie finds me when I need it, not when it's trending" },
+          { value: "both", label: "Honestly? Both. If it hits, it hits." }
+        ]
       }
     ]
   },
@@ -730,11 +611,12 @@ export const surveySections = [
     questions: [
       {
         id: "character_match",
-        text: "Who’s your cinematic twin flame, alter ego, or misunderstood legend?",
-        helpText: "Add up to 5 characters (e.g., Fleabag, Amélie, Tony Soprano...)",
+        text: "Who’s your movie mirror? The character that feels uncomfortably… you.",
+        helpText: "Your vibe twin. Alter ego. The one people say you remind them of, or the one who’d absolutely play you in a film.\n(No thinking too hard. First instinct counts.)\nAdd up to 3 characters, icons, alter egos.\nBeing one thing is overrated.",
         type: "text",
-        uiType: "multi_entry", // Changed from hero_card to multi_entry
-        maxEntries: 5
+        uiType: "multi_entry",
+        maxEntries: 3,
+        inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Dustin Hoffman - The Graduate (confused soft boy)\n• Mr.T (chaotic protector)\n• Jane Fonda (feminist fire)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it."
       }
     ]
   },
@@ -770,20 +652,50 @@ export const surveySections = [
     questions: [
       {
         id: "selection_method",
-        text: "How do you actually choose your next movie or show?",
+        text: "In a minefield of content... how do you actually choose your next movie or show?",
         type: "checkbox",
         options: [
-          { value: "notes", label: "I write chaotic lists in my Notes app" },
-          { value: "letterboxd", label: "I use Letterboxd / IMDb" },
-          { value: "scroll", label: "I scroll Netflix until something clicks" },
-          { value: "top10", label: "I trust the Top 10" },
+          { value: "scroll", label: "I scroll until something clicks (Netflix/Prime/MUBI/AppleTV)" },
+          { value: "notes", label: "Chaotic Notes app lists" },
+          { value: "people", label: "I follow people, not lists (actors, directors, crushes)" },
+          { value: "google", label: "Google it (search or ratings)" },
+          { value: "reviews", label: "Ratings & reviews (Letterboxd, IMDb, Rotten Tomatoes, Reddit, Metacritic)" },
+          { value: "top10", label: "I trust what’s trending (Top 10)" },
           { value: "friend", label: "I ask my film friend" },
-          { value: "chatgpt", label: "I ask ChatGPT" },
-          { value: "reviews", label: "I read reviews (IndieWire, NYT)" },
-          { value: "vibes", label: "Mood / aesthetic (vibes > plot)" },
-          { value: "fateflix", label: "I'm just waiting for FateFlix to drop" },
+          { value: "vibes", label: "I choose by mood or aesthetic" },
+          { value: "comfort", label: "Comfort rewatch (decision successfully avoided)" },
+          { value: "fatigue", label: "Decision fatigue is real. Just pick for me." },
+          { value: "ai", label: "I ask AI" },
+          { value: "unavailable", label: "It’s never on the platform I’m paying for." },
+          { value: "trailer_spiral", label: "Trailer Spiral. Movie night becomes trailer night... again." },
+          { value: "fateflix", label: "Just waiting for FateFlix to drop 😌" },
           { value: "other", label: "Other" }
         ]
+      },
+      {
+        id: "discovery_apps",
+        text: "Which of these apps do you actually use for movie discovery?",
+        type: "checkbox",
+        options: [
+          { value: "letterboxd", label: "Letterboxd" },
+          { value: "imdb", label: "IMDb" },
+          { value: "rotten_tomatoes", label: "Rotten Tomatoes" },
+          { value: "taste_io", label: "Taste.io" },
+          { value: "social", label: "Social media (TikTok, Instagram, YouTube)" },
+          { value: "upflix", label: "Upflix" },
+          { value: "moviepal", label: "Moviepal" },
+          { value: "justwatch", label: "JustWatch" },
+          { value: "tv_time", label: "TV Time" },
+          { value: "reelgood", label: "Reelgood" },
+          { value: "metacritic", label: "Metacritic" },
+          { value: "other", label: "Other" }
+        ]
+      },
+      {
+        id: "share_qr",
+        type: "qr_share",
+        text: "Would you share this quiz with your friends?",
+        subtitle: "Screenshot the QR code for your camera roll. Perfect for date nights, dinner parties, or flexing your movie taste on the group chat."
       },
       {
         id: "discovery",
