@@ -25,7 +25,7 @@ const QRShare = ({ question, onNext }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
           </svg>
         </div>
-        <h3 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-orange-200 to-orange-400 pb-2 leading-tight">
+        <h3 className="text-3xl md:text-5xl font-black text-white pb-2 leading-tight whitespace-pre-line">
           {question.text}
         </h3>
         {question.subtitle && (
@@ -430,7 +430,7 @@ const HeroCard = ({ question, value, onChange }) => (
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-orange-200 to-orange-400 pb-2">
+      <h3 className="text-4xl md:text-5xl font-black text-white pb-2 whitespace-pre-line">
         {question.text}
       </h3>
       {question.helpText && (
@@ -564,7 +564,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-orange-200 to-orange-400 pb-2">
+          <h3 className="text-4xl md:text-5xl font-black text-white pb-2 whitespace-pre-line">
             {question.text}
           </h3>
           {(question.infoPopup || question.inspoPopup) && (
@@ -707,7 +707,7 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
     <div className="space-y-3 animate-slide-up">
       <div className="mb-4 relative">
         <div className="flex items-center gap-2 mb-1">
-          <label className="block text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">
+          <label className="block text-xl font-bold text-white tracking-tight whitespace-pre-line">
             {question.text}
           </label>
           {/* Logic to handle either infoPopup or inspoPopup */}
