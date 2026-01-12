@@ -122,7 +122,7 @@ const ResultsDashboard = ({ results }) => {
 };
 
 const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorModal }) => {
-  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail } = useSurvey();
+  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail, resetSurvey } = useSurvey();
 
   // Hide controls on Intro Hero
   if (currentSection.id === 'intro-hero') return null;
@@ -159,6 +159,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
           username: answers['username'],
           userEmail: answers['email'] || null,
           timeAccuracy: answers['time_accuracy'],
+          submissionId, // Pass existing submission ID to prevent overwriting
         };
 
         const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
@@ -297,7 +298,12 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
 
         // 3. Redirect to the Dashboard immediately
         if (data.htmlUrl) {
-          window.location.href = data.htmlUrl;
+          console.log("🚀 Redirecting to:", data.htmlUrl);
+          resetSurvey(); // CLEAN SLATE
+          // Add small delay to ensure local storage cleared and React state settles before nav
+          setTimeout(() => {
+            window.location.href = data.htmlUrl;
+          }, 100);
           return;
         }
 

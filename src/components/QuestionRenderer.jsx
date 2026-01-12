@@ -687,6 +687,7 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
     return (
       <div className="space-y-2 animate-slide-up">
         <CitySearch
+          defaultValue={value}
           onLocationSelect={({ city, country, lat, lng }) => {
             if (setGlobalAnswer) {
               setGlobalAnswer('city', city);
