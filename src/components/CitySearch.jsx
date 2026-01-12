@@ -1,7 +1,7 @@
 import React from 'react';
 import Autocomplete from 'react-google-autocomplete';
 
-const CitySearch = ({ onLocationSelect }) => {
+const CitySearch = ({ onLocationSelect, defaultValue }) => {
   return (
     <div className="w-full max-w-xl animate-slide-up space-y-8">
       <div className="text-center md:text-left">
@@ -11,6 +11,7 @@ const CitySearch = ({ onLocationSelect }) => {
 
       <div className="relative group">
         <Autocomplete
+          defaultValue={defaultValue || ""}
           apiKey={import.meta.env.PUBLIC_GOOGLE_MAPS_KEY || "YOUR_KEY_HERE_IF_NO_ENV"}
           onPlaceSelected={(place) => {
             if (!place.geometry) return;

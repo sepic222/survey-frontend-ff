@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
 import { surveySections } from '../config/surveyData';
 
 const SurveyContext = createContext(undefined);
@@ -17,15 +17,103 @@ function debounce(func, wait) {
 }
 
 export const SurveyProvider = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState({});
+  // Lazy init to prevent race condition & fix Intro Skip
+  const [currentStep, setCurrentStep] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('fateflix_step');
+      return saved ? parseInt(saved, 10) : 0;
+    }
+    return 0;
+  });
+
+  // Lazy init for answers to prevent flash of empty content
+  const [answers, setAnswers] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('fateflix_answers');
+      try {
+        return saved ? JSON.parse(saved) : {};
+      } catch (e) {
+        console.warn('Failed to parse local answers', e);
+        return {};
+      }
+    }
+    return {};
+  });
+
   const [submissionId, setSubmissionId] = useState(null);
   const [chartId, setChartId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
+  const [isRestoring, setIsRestoring] = useState(true);
 
   const saveTimeoutRef = useRef({});
 
   const totalSteps = surveySections.length;
+
+  // Sync submissionId to localStorage
+  useEffect(() => {
+    if (submissionId) {
+      localStorage.setItem('fateflix_submission_id', submissionId);
+    }
+  }, [submissionId]);
+
+  // Sync currentStep to localStorage (for Intro Skip)
+  useEffect(() => {
+    localStorage.setItem('fateflix_step', currentStep.toString());
+  }, [currentStep]);
+
+  // Sync answers to localStorage (for pre-submission persistence)
+  useEffect(() => {
+    if (Object.keys(answers).length > 0) {
+      localStorage.setItem('fateflix_answers', JSON.stringify(answers));
+    }
+  }, [answers]);
+
+  // Restore session (Server Sync)
+  useEffect(() => {
+    const restoreSession = async () => {
+      // Note: Local answers and step are already loaded via lazy state init.
+      // We only need to fetch server state if we have a submission ID.
+
+      const storedSubmissionId = localStorage.getItem('fateflix_submission_id');
+      if (!storedSubmissionId) {
+        setIsRestoring(false);
+        return;
+      }
+
+      console.log('🔄 Attempting to restore server session:', storedSubmissionId);
+
+      try {
+        const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+        const response = await fetch(`${apiBase}/api/survey/state/${storedSubmissionId}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.ok && data.submissionId) {
+            setSubmissionId(data.submissionId);
+            // Merge server answers with local (Server wins conflicts)
+            setAnswers(prev => ({ ...prev, ...(data.answers || {}) }));
+
+            if (data.answers?.email) setUserEmail(data.answers.email);
+            if (data.chartId) setChartId(data.chartId);
+            console.log('✅ Server session restored successfully');
+          } else {
+            console.warn('⚠️ Session invalid, clearing localStorage ID');
+            localStorage.removeItem('fateflix_submission_id');
+          }
+        } else {
+          if (response.status === 404) {
+            localStorage.removeItem('fateflix_submission_id');
+          }
+        }
+      } catch (e) {
+        console.error('❌ Error restoring session:', e);
+      } finally {
+        setIsRestoring(false);
+      }
+    };
+
+    restoreSession();
+  }, []);
 
   // Real-time save function (debounced)
   const saveAnswerToServer = useCallback(async (questionId, value, submissionId, userEmail) => {
@@ -101,6 +189,23 @@ export const SurveyProvider = ({ children }) => {
     }
   };
 
+  const resetSurvey = useCallback(() => {
+    // Clear State
+    setCurrentStep(0);
+    setAnswers({});
+    setSubmissionId(null);
+    setChartId(null);
+    setUserEmail(null);
+
+    // Clear Local Storage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('fateflix_answers');
+      localStorage.removeItem('fateflix_step');
+      localStorage.removeItem('fateflix_submission_id');
+    }
+    console.log('🧹 Survey reset to clean slate.');
+  }, []);
+
   const value = {
     currentStep,
     totalSteps,
@@ -115,6 +220,8 @@ export const SurveyProvider = ({ children }) => {
     setChartId,
     userEmail,
     setUserEmail,
+    resetSurvey,
+    isRestoring, // Added to context
   };
 
   return (
