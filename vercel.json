@@ -1,10 +1,10 @@
 {
     "functions": {
         "src/pages/**/*": {
-            "runtime": "nodejs20.x"
+            "runtime": "nodejs22.x"
         },
         "api/**/*": {
-            "runtime": "nodejs20.x"
+            "runtime": "nodejs22.x"
         }
     }
 }
