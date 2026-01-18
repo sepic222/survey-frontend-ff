@@ -150,6 +150,13 @@ export const surveySections = [
         ]
       },
       {
+        id: "top_3_movies",
+        text: "🍿 Drop your all-time TOP 3 movies",
+        helpText: "(One is totally fine)",
+        type: "textarea",
+        placeholder: "Type title here..."
+      },
+      {
         id: "first_crush",
         text: "Who was your first cinematic obsession or role model?",
         helpText: "That one character, actor, or moment that rewired your brain. This isn’t about attraction, it’s about imprinting. The scene that made you want to be someone else or finally feel more like yourself.",
@@ -210,6 +217,7 @@ export const surveySections = [
         helpText: "This can be one place or many... think home, heritage, language, or the culture that raised you. Type the country or countries below.",
         placeholder: "USA (Blockbuster nights, Cartoon Network, MTV, VH1), India (Bollywood), Nordics (Scandi-Noir & dry humor), Telenovelas, Dizi...\n\nOr for our mixed heritage clan:\nBorn in Berlin, raised on Turkish cinema.\nPassport says Canada, but my screen soul is Korean."
       },
+
       {
         id: "environment_growing_up",
         text: "What kind of environment did you grow up in?",
@@ -249,7 +257,8 @@ export const surveySections = [
         helpText: "We're tracking your fate film. Turning point? Breakup comfort?",
         type: "textarea",
         placeholder: "Tell us what hit you and why...",
-        inspoPopup: "It could’ve been a turning point, a comfort during a breakup, or a story that mirrored your own. A plot twist that mirrored your own? We don’t care if it’s a cult classic, or Oscar-winner… tell us what hit you and why.\n\n• After watching The Men Who Stare at Goats, I felt powerful in the job I hated. It gave me a weirdly magical way to survive corporate life. I started using Jedi mind tricks at meetings.\n• The Darjeeling Limited: booking a solo trip, spiritual reset\n• When I saw The Other Woman, I actually gave my relationship another shot. It reminded me that real life is messy and sometimes the grass isn't greener.\n• Billy Elliot: realizing I didn't have to follow someone else’s path.\n• Everything Everywhere Al At Once, I finally forgave my mom. And myself."
+        inspoPopup: "It could’ve been a turning point, a comfort during a breakup, or a story that mirrored your own. A plot twist that mirrored your own? We don’t care if it’s a cult classic, or Oscar-winner… tell us what hit you and why.\n\n• After watching The Men Who Stare at Goats, I felt powerful in the job I hated. It gave me a weirdly magical way to survive corporate life. I started using Jedi mind tricks at meetings.\n• The Darjeeling Limited: booking a solo trip, spiritual reset\n• When I saw The Other Woman, I actually gave my relationship another shot. It reminded me that real life is messy and sometimes the grass isn't greener.\n• Billy Elliot: realizing I didn't have to follow someone else’s path.\n• Everything Everywhere Al At Once, I finally forgave my mom. And myself.",
+        skipButtonText: "Don’t have one? That’s okay too. ➡️"
       },
       {
         id: "comfort_watch",
@@ -262,7 +271,8 @@ export const surveySections = [
         id: "power_watch",
         text: "What movie do you rewatch when you want to feel powerful?",
         type: "text",
-        inspoPopup: "Here are a few examples, but your vibe might be totally different: Kill Bill, Black Swan, Erin Brockovich, Rocky, The Devil Wears Prada, Creed, Mad Max: Fury Road, Black Panther, The Favourite, The Matrix, Jennifer's Body, Everything Everywhere All at Once)"
+        inspoPopup: "Here are a few examples, but your vibe might be totally different: Kill Bill, Black Swan, Erin Brockovich, Rocky, The Devil Wears Prada, Creed, Mad Max: Fury Road, Black Panther, The Favourite, The Matrix, Jennifer's Body, Everything Everywhere All at Once)",
+        skipButtonText: "Don’t have one? That’s okay too. ➡️"
       },
       {
         id: "date_impress",
@@ -375,10 +385,13 @@ export const surveySections = [
         ]
       },
       {
-        id: "fav_tv",
-        text: "What's your all-time favourite TV show?",
-        type: "text"
+        id: "top_3_series_detailed",
+        text: "What are your top 3 Series of all time?",
+        helpText: "(TV, Streaming... all count - bonus points if you tell us why)",
+        type: "textarea",
+        placeholder: "Type your answer here..."
       },
+
       {
         id: "cinematography",
         text: "How important is cinematography?",
@@ -613,7 +626,8 @@ export const surveySections = [
         text: "What's a film everyone else loved... but you hated? Tell us why.",
         type: "textarea",
         inspoPopup: "Think: the Oscar darling that bored you. The Netflix smash that felt soulless. The cult classic you found cringe.\nBelow are sample confessions to spark your vibe: feel free to riff, roast, or reveal:\n\n• Titanic — I rooted for the iceberg.\n• Everything Everywhere All at Once — “It felt like watching 15 TikToks at once during a panic attack. I respect the ambition but it lost me somewhere between hot dog fingers and multiverse taxes.”\n• Elvis (Baz Luhrmann) — “Felt like watching a Vegas slot machine explode for 2.5 hours. Austin Butler did great, but Baz directed like he had 12 Red Bulls and no editor.”\n• Avatar (all of them) — “It's just blue Pocahontas with fancier trees. Stunning visuals, sure, but 3D glasses couldn't save that plot from being aggressively ‘meh.'”\n• Emilia Pérez — I didn't know if I was watching an opera, a telenovela, or a Eurovision fever dream.\n• La La Land — BlaBla Land",
-        placeholder: "e.g. Titanic, Everything Everywhere All at Once, Avatar..."
+        placeholder: "e.g. Titanic, Everything Everywhere All at Once, Avatar...",
+        skipButtonText: "Don’t have one? That’s okay too. ➡️"
       },
       {
         id: "hype_style",
@@ -648,7 +662,8 @@ export const surveySections = [
         type: "text",
         uiType: "multi_entry",
         maxEntries: 3,
-        inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Dustin Hoffman - The Graduate (confused soft boy)\n• Mr.T (chaotic protector)\n• Jane Fonda (feminist fire)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it."
+        inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Dustin Hoffman - The Graduate (confused soft boy)\n• Mr.T (chaotic protector)\n• Jane Fonda (feminist fire)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
+        skipButtonText: "Don’t have one? That’s okay too. ➡️"
       }
     ]
   },
@@ -746,7 +761,7 @@ export const surveySections = [
       },
       {
         id: "email",
-        text: "We need your email to send your astro-cinematic gift. (Required)",
+        text: "We need your email to send your astro-cinematic gift. 💫(Required)",
         helpText: "No spam, just stardust.",
         type: "email",
         placeholder: "user@example.com"
@@ -766,24 +781,6 @@ export const surveySections = [
         helpText: "Got feedback on the survey, ideas for FateFlix, or something you wish existed in a movie app?\nThis is your moment. We read every response.",
         type: "textarea",
         placeholder: "Thoughts, feedback, feature ideas, wild wishes…"
-      },
-      {
-        id: "top3_films",
-        text: "TOP 3 FILMS",
-        type: "textarea",
-        placeholder: "1.\n2.\n3."
-      },
-      {
-        id: "top3_series",
-        text: "TOP 3 SERIES",
-        type: "textarea",
-        placeholder: "1.\n2.\n3."
-      },
-      {
-        id: "top3_docs",
-        text: "TOP 3 DOCS",
-        type: "textarea",
-        placeholder: "1.\n2.\n3."
       }
     ]
   }
