@@ -93,7 +93,7 @@ export const surveySections = [
       {
         id: "cine_level",
         text: "Where would you place yourself on the Movie Love-o-Meter?",
-        type: "radio",
+        type: "checkbox",
         options: [
           { value: "cinephile", label: "Cinephile Supreme (Raised at Blockbuster, evolved on MUBI)" },
           { value: "lover", label: "Movie Lover (I've got favourites, I notice good dialogue and cool visuals)" },
