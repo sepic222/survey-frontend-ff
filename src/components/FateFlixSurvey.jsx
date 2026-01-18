@@ -383,7 +383,7 @@ const CurrentSection = ({ nextStep }) => {
       if (nextElement) {
         // 3. Smooth Scroll to it after a tiny delay
         setTimeout(() => {
-          nextElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          nextElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 300);
       }
     } else {
@@ -436,6 +436,7 @@ const CurrentSection = ({ nextStep }) => {
                     }
                   }}
                   onNext={nextStep} // Pass nextStep for Hero Button
+                  onAutoAdvance={() => handleAutoAdvance(question.id)}
                 />
               </div>
             ))}

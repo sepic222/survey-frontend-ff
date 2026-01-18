@@ -571,14 +571,12 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
             <button
               type="button"
               onClick={() => setShowInfo(true)}
-              className="text-orange-500 hover:text-orange-400 transition-colors p-1"
+              className="group flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-all p-1"
               aria-label="More info"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-              </svg>
+              <div className="border-b border-orange-500/30 group-hover:border-orange-500 pb-0.5 transition-all">
+                <span className="text-xs font-bold uppercase tracking-widest">Inspo & Examples</span>
+              </div>
             </button>
           )}
         </div>
@@ -660,7 +658,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
   );
 };
 
-export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalAnswer }) => {
+export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalAnswer, onAutoAdvance }) => {
   const [showInfo, setShowInfo] = useState(false);
   // Hide manual inputs that are handled by CitySearch
   if (question.id === 'latitude' || question.id === 'longitude' || question.id === 'country') return null;
@@ -717,15 +715,12 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
               <button
                 type="button"
                 onClick={() => setShowInfo(true)}
-                className="text-orange-500 hover:text-orange-400 transition-colors p-1"
+                className="group flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-all p-1 mt-2" // Added mt-2
                 aria-label="More info"
               >
-                {/* Use a generic Info icon for both, or could swap if inspo-only */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
+                <div className="border-b border-orange-500/30 group-hover:border-orange-500 pb-0.5 transition-all">
+                  <span className="text-xs font-bold uppercase tracking-widest">Inspo & Examples</span>
+                </div>
               </button>
 
               {/* Popup Overlay - Mobile Friendly */}
@@ -763,7 +758,7 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
           )}
         </div>
         {question.helpText && (
-          <p className="text-base text-zinc-500 font-light tracking-wide">{question.helpText}</p>
+          <p className="text-base text-zinc-500 font-light tracking-wide whitespace-pre-line">{question.helpText}</p>
         )}
       </div>
 
@@ -828,6 +823,16 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
           value={value}
           onChange={onChange}
         />
+      )}
+      {question.skipButtonText && (
+        <button
+          type="button"
+          onClick={onAutoAdvance}
+          className="px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-600 text-zinc-400 hover:text-white transition-all duration-300 text-sm mt-6 backdrop-blur-sm flex items-center gap-2 group shadow-lg"
+        >
+          <span>{question.skipButtonText.replace(' ➡️', '')}</span>
+          <span className="group-hover:translate-x-1 transition-transform duration-300">➡️</span>
+        </button>
       )}
     </div>
   );
