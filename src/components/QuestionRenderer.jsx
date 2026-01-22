@@ -154,7 +154,7 @@ const RadioInput = ({ options, value, onChange }) => {
   );
 };
 
-const CheckboxInput = ({ options, value = [], onChange }) => {
+const CheckboxInput = ({ options, value = [], onChange, onAutoAdvance }) => {
   // Handle both array of strings and object with selected array + otherText
   const selectedValues = Array.isArray(value) ? value : (value?.selected || []);
   const otherText = typeof value === 'object' && !Array.isArray(value) ? value.otherText : '';
@@ -180,6 +180,9 @@ const CheckboxInput = ({ options, value = [], onChange }) => {
 
   // State for open sections
   const [openSections, setOpenSections] = useState({});
+  // State for showing categories (default false if we have a toggle)
+  const hasCategoryToggle = options.some(opt => opt.isCategoryToggle);
+  const [showCategories, setShowCategories] = useState(!hasCategoryToggle);
 
   const toggleSection = (headerValue) => {
     setOpenSections(prev => ({
@@ -189,15 +192,42 @@ const CheckboxInput = ({ options, value = [], onChange }) => {
   };
 
   const handleChange = (optionValue) => {
-    const newSelected = selectedValues.includes(optionValue)
-      ? selectedValues.filter((v) => v !== optionValue)
-      : [...selectedValues, optionValue];
+    const option = options.find(o => o.value === optionValue);
+
+    // 1. Is it an exclusive option? (e.g. "I don't know")
+    if (option?.exclusive) {
+      const newSelected = [optionValue];
+      onChange(newSelected); // Clear others
+      if (option.autoAdvance && onAutoAdvance) {
+        onAutoAdvance();
+      }
+      return;
+    }
+
+    // 1b. Is it the category toggle?
+    if (option?.isCategoryToggle) {
+      setShowCategories(!showCategories);
+      return;
+    }
+
+    // 2. Normal selection
+    // If an exclusive option was previously selected, clear it
+    const exclusiveOption = options.find(opt => opt.exclusive && selectedValues.includes(opt.value));
+    const isExclusiveSelected = !!exclusiveOption;
+
+    let newSelected;
+    if (isExclusiveSelected) {
+      newSelected = [optionValue];
+    } else {
+      newSelected = selectedValues.includes(optionValue)
+        ? selectedValues.filter((v) => v !== optionValue)
+        : [...selectedValues, optionValue];
+    }
 
     // If "other" is in the new selection, return object format
     if (newSelected.includes('other')) {
       onChange({ selected: newSelected, otherText: otherText || '' });
     } else {
-      // Otherwise return simple array
       onChange(newSelected);
     }
   };
@@ -209,6 +239,9 @@ const CheckboxInput = ({ options, value = [], onChange }) => {
   return (
     <div className="space-y-3">
       {sections.map((section, idx) => {
+        // HIDE SECTIONS IF CATEGORIES ARE TOGGLED OFF (except loose items which contain the toggle button itself)
+        if (section.header && !showCategories && hasCategoryToggle) return null;
+
         // If it's a section with a header
         if (section.header) {
           const isOpen = openSections[section.header.value];
@@ -316,34 +349,88 @@ const CheckboxInput = ({ options, value = [], onChange }) => {
             <div key={`loose-${idx}`} className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               {section.items.map(option => {
                 const isSelected = selectedValues.includes(option.value);
+                const isCategoryToggle = option.isCategoryToggle;
+
+                // SPECIAL RENDER FOR CATEGORY TOGGLE
+                if (isCategoryToggle) {
+                  const isToggleActive = showCategories;
+                  return (
+                    <div key={option.value} className="col-span-full sm:col-span-1">
+                      <button
+                        onClick={() => handleChange(option.value)}
+                        className={`
+                                  w-full px-5 py-4 rounded-xl text-left text-sm font-medium transition-all duration-300
+                                  border backdrop-blur-md relative overflow-hidden flex justify-between items-center
+                                  ${isToggleActive
+                            ? 'bg-cyan-500/10 border-cyan-400/50 text-white shadow-[0_4px_20px_rgba(34,211,238,0.15)] ring-1 ring-cyan-500/20'
+                            : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:bg-zinc-800/60 hover:border-white/10 hover:text-white'}
+                                `}
+                      >
+                        <div className="flex flex-col items-start text-left gap-0.5 w-full">
+                          <span className="leading-snug">{option.label}</span>
+                        </div>
+                        {isToggleActive && (
+                          <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full ml-3 shrink-0">
+                            Active
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  );
+                }
+
                 return (
-                  <button
-                    key={option.value}
-                    onClick={() => handleChange(option.value)}
-                    className={`
-                        px-5 py-4 rounded-xl text-left text-sm font-medium transition-all duration-300
-                        border backdrop-blur-md relative overflow-hidden
-                        ${isSelected
-                        ? 'bg-cyan-500/10 border-cyan-400/50 text-white shadow-[0_4px_20px_rgba(34,211,238,0.15)] ring-1 ring-cyan-500/20'
-                        : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:bg-zinc-800/60 hover:border-white/10 hover:text-white'}
-                      `}
-                  >
-                    <div className="flex justify-between items-center w-full">
-                      <div className="flex flex-col items-start text-left gap-0.5">
-                        <span className="leading-snug">{option.label}</span>
-                        {option.examples && (
-                          <span className="text-xs text-zinc-500 italic font-light tracking-wide opacity-90 leading-tight">
-                            {option.examples}
+                  <div key={option.value} className={`relative ${option.isInlineOther && isSelected ? 'col-span-full' : ''}`}>
+                    <button
+                      onClick={() => handleChange(option.value)}
+                      className={`
+                            px-5 py-4 rounded-xl text-left text-sm font-medium transition-all duration-300
+                            border backdrop-blur-md relative overflow-hidden w-full
+                            ${isSelected
+                          ? 'bg-cyan-500/10 border-cyan-400/50 text-white shadow-[0_4px_20px_rgba(34,211,238,0.15)] ring-1 ring-cyan-500/20'
+                          : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:bg-zinc-800/60 hover:border-white/10 hover:text-white'}
+                          `}
+                    >
+                      <div className="flex justify-between items-center w-full">
+                        <div className="flex flex-col items-start text-left gap-0.5">
+                          <span className="leading-snug">{option.label}</span>
+                          {option.examples && (
+                            <span className="text-xs text-zinc-500 italic font-light tracking-wide opacity-90 leading-tight">
+                              {option.examples}
+                            </span>
+                          )}
+                        </div>
+                        {isSelected && (
+                          <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full ml-3 shrink-0">
+                            Selected
                           </span>
                         )}
                       </div>
-                      {isSelected && (
-                        <span className="text-cyan-400 text-xs bg-cyan-900/50 px-2 py-0.5 rounded-full ml-3 shrink-0">
-                          Selected
-                        </span>
-                      )}
-                    </div>
-                  </button>
+                    </button>
+
+                    {/* Inline Text Input for Loose Items (e.g. Name Drop) */}
+                    {option.isInlineOther && isSelected && (
+                      <div className="mt-3 animate-fade-in px-1">
+                        <input
+                          type="text"
+                          placeholder={option.placeholder || "Please specify..."}
+                          value={otherText.split(`${option.label}: `)[1]?.split(';')[0] || ''}
+                          onChange={(e) => {
+                            const newVal = e.target.value;
+                            const prefix = `${option.label}: `;
+                            let currentText = otherText;
+                            const regex = new RegExp(`${prefix}[^;]+(; )?`, 'g');
+                            currentText = currentText.replace(regex, '');
+                            if (currentText.endsWith('; ')) currentText = currentText.slice(0, -2);
+                            const updatedText = currentText ? `${currentText}; ${prefix}${newVal}` : `${prefix}${newVal}`;
+                            handleOtherTextChange(updatedText);
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-full bg-zinc-950/50 border border-white/5 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-cyan-500/30 focus:ring-1 focus:ring-cyan-500/20 outline-none transition-all duration-500 backdrop-blur-md"
+                        />
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -775,6 +862,7 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
           options={question.options}
           value={value}
           onChange={onChange}
+          onAutoAdvance={onAutoAdvance}
         />
       )}
 
