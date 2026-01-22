@@ -410,6 +410,10 @@ export const surveySections = [
         type: "checkbox",
         helpText: "Pick up to 5.",
         options: [
+          { value: "custom_directors", label: "Name-drop your director icons here", isInlineOther: true, placeholder: "Type director names..." },
+          { value: "none", label: "I don't know any directors and I don't care…lol", autoAdvance: true, exclusive: true },
+          { value: "toggle_categories", label: "Select by category", isCategoryToggle: true },
+
           { value: "header_modern", label: "MODERN ICONS & CROWD PLEASERS", isHeader: true },
           { value: "gerwig", label: "Greta Gerwig", examples: "Lady Bird, Barbie, Little Women" },
           { value: "peele", label: "Jordan Peele", examples: "Get Out, Us, Nope" },
@@ -543,7 +547,6 @@ export const surveySections = [
           { value: "pollack", label: "Sydney Pollack", examples: "Out of Africa, Tootsie, The Way We Were" },
 
           { value: "header_special", label: "SPECIAL", isHeader: true },
-          { value: "none", label: "I don't know any directors and I don't care…lol" },
           { value: "other", label: "Did we miss a favourite? Drop their names here." }
         ]
       },
