@@ -353,7 +353,7 @@ export const surveySections = [
     ]
   },
 
-  // SECTION VILe
+  // SECTION VI
   {
     id: "section-vi",
     title: "Screen Education: What Trained Your Taste 📺",
@@ -391,7 +391,119 @@ export const surveySections = [
         type: "textarea",
         placeholder: "Type your answer here..."
       },
+      {
+        id: "guilty_pleasure",
+        text: "What are your ultimate guilty pleasures?",
+        type: "textarea",
+        placeholder: "Type your answer here...",
+        inspoPopup: "(Even if it's weird. Especially if it's weird.) We believe you should never feel guilty for your pleasures) Reality TV? Childhood cartoons? Horror marathons? That one trashy sequel you'd defend in court? We're here to match you with ultimate pleasure."
+      },
+    ]
+  },
 
+  // SECTION VII
+  {
+    id: "section-vii",
+    title: "Genres & Turn-offs",
+    subtitle: "Genres you love. Red flags you avoid.",
+    questions: [
+      {
+        id: "genres_love",
+        text: "Genres you never get sick of 🍿:",
+        type: "checkbox",
+        options: [
+          { value: "romance", label: "💘 Romance & Rom-Coms" },
+          { value: "drama", label: "🎭 Drama/Emotional Stories" },
+          { value: "comedy", label: "😂 Comedy (light or dark)" },
+          { value: "action", label: "💥 Action/ Adventure" },
+          { value: "thriller", label: "🔪 Thrillers & Suspense" },
+          { value: "horror", label: "🩸 Horror (from elevated to slasher)" },
+          { value: "scifi_fantasy", label: "👽 Sci-Fi, Fantasy & Myth" },
+          { value: "anime", label: "🗾 Anime & hyper-stylized" },
+          { value: "indie", label: "🚬 Indie, Arthouse & Cult" },
+          { value: "musical", label: "💃 Music, Dance & Performance" },
+          { value: "sports", label: "🥊 Sports & Underdog Stories" },
+          { value: "biopic", label: "📜 Biopics & True Stories" },
+          { value: "documentary", label: "📹 Documentary & Real Life Stories" },
+          { value: "queer", label: "🏳️‍🌈 Queer Cinema & LGBTQ+ Stories" },
+          { value: "historical", label: "🏰 Historical & Period" },
+          { value: "trash_reality", label: "🗑️ Trash TV/ Reality Gold" },
+          { value: "classics", label: "🎞️ Classics & Black&White" },
+          { value: "westerns", label: "🤠 Westerns & Frontier Epics" },
+          { value: "genre_fluid", label: "🌊 I’m genre-fluid" },
+          { value: "other", label: "✨ Other" }
+        ]
+      },
+      {
+        id: "turn_offs",
+        text: "What do you NOT vibe with on screen?🚩 ",
+        type: "checkbox",
+        options: [
+          { value: "sad", label: "No sad endings, please. Life is hard enough." },
+          { value: "romcom_cringe", label: "Rom-com sceptic. I'm a realist." },
+          { value: "scary", label: "I don't do scary." },
+          { value: "sexual", label: "Too steamy. Here for plot not pelvis." },
+          { value: "gore", label: "Excessive gore or violence. I’m out." },
+          { value: "snobbery", label: "Prestige snobbery. Award-bait that takes life too seriously." },
+          { value: "no_romance", label: "No romance, at all. I need at least one make-out scene." },
+          { value: "scifi_fantasy", label: "Sci-fi / fantasy. Not my universe." },
+          { value: "weird_sex", label: "Erotic + weird. Not trying to relive a fever dream from a Berlin sex club." },
+          { value: "clowns", label: "Clowns, absolutely not. Not even in an arthouse film." },
+          { value: "reality_tv", label: "Love Island, Housewives, Kardashians, hard pass. I want film, not filler." },
+          { value: "subtitles", label: "Subtitles. If it’s not in my language, I’m unlikely to watch it." },
+          { value: "marvel", label: "I don't do Marvel. Not catching that cultural virus." },
+          { value: "creepy_dolls", label: "Creepy kids or haunted toys. Demons, dolls, no thanks." },
+          { value: "other", label: "Other" }
+        ]
+      },
+      {
+        id: "hated_film",
+        text: "What's a film everyone else loved... but you hated? Tell us why.",
+        type: "textarea",
+        inspoPopup: "Think: the Oscar darling that bored you. The Netflix smash that felt soulless. The cult classic you found cringe.\nBelow are sample confessions to spark your vibe: feel free to riff, roast, or reveal:\n\n• Titanic — I rooted for the iceberg.\n• Everything Everywhere All at Once — “It felt like watching 15 TikToks at once during a panic attack. I respect the ambition but it lost me somewhere between hot dog fingers and multiverse taxes.”\n• Elvis (Baz Luhrmann) — “Felt like watching a Vegas slot machine explode for 2.5 hours. Austin Butler did great, but Baz directed like he had 12 Red Bulls and no editor.”\n• Avatar (all of them) — “It's just blue Pocahontas with fancier trees. Stunning visuals, sure, but 3D glasses couldn't save that plot from being aggressively ‘meh.'”\n• Emilia Pérez — I didn't know if I was watching an opera, a telenovela, or a Eurovision fever dream.\n• La La Land — BlaBla Land",
+        placeholder: "e.g. Titanic, Everything Everywhere All at Once, Avatar...",
+        skipButtonText: "Don’t have one? That’s okay too. ➡️"
+      },
+      {
+        id: "hype_style",
+        text: "Hype Tracker or Timeless Watcher?",
+        helpText: "How do you dance with hype, buzz, and cult classics?",
+        type: "radio",
+        options: [
+          { value: "drops", label: "I watch everything the moment it drops." },
+          { value: "resist", label: "I resist it until it really blows up" },
+          { value: "crush", label: "Only if my crush is in it" },
+          { value: "pretend", label: "I pretend not to care, but I watch everything" },
+          { value: "wait", label: "I wait 5 years and watch it when no one cares" },
+          { value: "cult", label: "Cult Classics over hype, always" },
+          { value: "rare", label: "I like rare finds no one's heard of" },
+          { value: "right_time", label: "The right movie finds me when I need it, not when it's trending" },
+          { value: "both", label: "Honestly? Both. If it hits, it hits." }
+        ]
+      }
+    ]
+  },
+
+  // SECTION VIII
+  {
+    id: "section-viii-deep-dive",
+    title: "Optional Deep Dive",
+    subtitle: "For those who want to go deeper into the craft.",
+    questions: [
+      {
+        id: "foreign_films",
+        text: "How do you feel about foreign films & shows?",
+        type: "radio",
+        options: [
+          { value: "love", label: "Yes, I live for subtitles" },
+          { value: "sometimes", label: "Sometimes" },
+          { value: "not_really", label: "Not really" },
+          { value: "lush", label: "They're visually lush/beautiful" },
+          { value: "demanding", label: "Subtitles demand full attention (can't multitask)" },
+          { value: "dubbed", label: "As long as it's dubbed, I'm fine" },
+          { value: "other", label: "Other" }
+        ]
+      },
       {
         id: "cinematography",
         text: "How important is cinematography?",
@@ -551,6 +663,13 @@ export const surveySections = [
         ]
       },
       {
+        id: "top_3_documentaries",
+        text: "What are your top 3 documentaries?🍿",
+        helpText: "(Tell us what moved you or blew your mind)",
+        type: "textarea",
+        placeholder: "Type title here..."
+      },
+      {
         id: "access_growing_up",
         text: "How did you mostly access movies growing up?",
         type: "checkbox",
@@ -570,89 +689,6 @@ export const surveySections = [
     ]
   },
 
-  // SECTION VII
-  {
-    id: "section-vii",
-    title: "Genres & Turn-offs",
-    subtitle: "Genres you love. Red flags you avoid.",
-    questions: [
-      {
-        id: "genres_love",
-        text: "Genres you never get sick of 🍿:",
-        type: "checkbox",
-        options: [
-          { value: "romance", label: "💘 Romance & Rom-Coms" },
-          { value: "drama", label: "🎭 Drama/Emotional Stories" },
-          { value: "comedy", label: "😂 Comedy (light or dark)" },
-          { value: "action", label: "💥 Action/ Adventure" },
-          { value: "thriller", label: "🔪 Thrillers & Suspense" },
-          { value: "horror", label: "🩸 Horror (from elevated to slasher)" },
-          { value: "scifi_fantasy", label: "👽 Sci-Fi, Fantasy & Myth" },
-          { value: "anime", label: "🗾 Anime & hyper-stylized" },
-          { value: "indie", label: "🚬 Indie, Arthouse & Cult" },
-          { value: "musical", label: "💃 Music, Dance & Performance" },
-          { value: "sports", label: "🥊 Sports & Underdog Stories" },
-          { value: "biopic", label: "📜 Biopics & True Stories" },
-          { value: "documentary", label: "📹 Documentary & Real Life Stories" },
-          { value: "queer", label: "🏳️‍🌈 Queer Cinema & LGBTQ+ Stories" },
-          { value: "historical", label: "🏰 Historical & Period" },
-          { value: "trash_reality", label: "🗑️ Trash TV/ Reality Gold" },
-          { value: "classics", label: "🎞️ Classics & Black&White" },
-          { value: "westerns", label: "🤠 Westerns & Frontier Epics" },
-          { value: "genre_fluid", label: "🌊 I’m genre-fluid" },
-          { value: "other", label: "✨ Other" }
-        ]
-      },
-      {
-        id: "turn_offs",
-        text: "What do you NOT vibe with on screen?🚩 ",
-        type: "checkbox",
-        options: [
-          { value: "sad", label: "No sad endings, please. Life is hard enough." },
-          { value: "romcom_cringe", label: "Rom-com sceptic. I'm a realist." },
-          { value: "scary", label: "I don't do scary." },
-          { value: "sexual", label: "Too steamy. Here for plot not pelvis." },
-          { value: "gore", label: "Excessive gore or violence. I’m out." },
-          { value: "snobbery", label: "Prestige snobbery. Award-bait that takes life too seriously." },
-          { value: "no_romance", label: "No romance, at all. I need at least one make-out scene." },
-          { value: "scifi_fantasy", label: "Sci-fi / fantasy. Not my universe." },
-          { value: "weird_sex", label: "Erotic + weird. Not trying to relive a fever dream from a Berlin sex club." },
-          { value: "clowns", label: "Clowns, absolutely not. Not even in an arthouse film." },
-          { value: "reality_tv", label: "Love Island, Housewives, Kardashians, hard pass. I want film, not filler." },
-          { value: "subtitles", label: "Subtitles. If it’s not in my language, I’m unlikely to watch it." },
-          { value: "marvel", label: "I don't do Marvel. Not catching that cultural virus." },
-          { value: "creepy_dolls", label: "Creepy kids or haunted toys. Demons, dolls, no thanks." },
-          { value: "other", label: "Other" }
-        ]
-      },
-      {
-        id: "hated_film",
-        text: "What's a film everyone else loved... but you hated? Tell us why.",
-        type: "textarea",
-        inspoPopup: "Think: the Oscar darling that bored you. The Netflix smash that felt soulless. The cult classic you found cringe.\nBelow are sample confessions to spark your vibe: feel free to riff, roast, or reveal:\n\n• Titanic — I rooted for the iceberg.\n• Everything Everywhere All at Once — “It felt like watching 15 TikToks at once during a panic attack. I respect the ambition but it lost me somewhere between hot dog fingers and multiverse taxes.”\n• Elvis (Baz Luhrmann) — “Felt like watching a Vegas slot machine explode for 2.5 hours. Austin Butler did great, but Baz directed like he had 12 Red Bulls and no editor.”\n• Avatar (all of them) — “It's just blue Pocahontas with fancier trees. Stunning visuals, sure, but 3D glasses couldn't save that plot from being aggressively ‘meh.'”\n• Emilia Pérez — I didn't know if I was watching an opera, a telenovela, or a Eurovision fever dream.\n• La La Land — BlaBla Land",
-        placeholder: "e.g. Titanic, Everything Everywhere All at Once, Avatar...",
-        skipButtonText: "Don’t have one? That’s okay too. ➡️"
-      },
-      {
-        id: "hype_style",
-        text: "Hype Tracker or Timeless Watcher?",
-        helpText: "How do you dance with hype, buzz, and cult classics?",
-        type: "radio",
-        options: [
-          { value: "drops", label: "I watch everything the moment it drops." },
-          { value: "resist", label: "I resist it until it really blows up" },
-          { value: "crush", label: "Only if my crush is in it" },
-          { value: "pretend", label: "I pretend not to care, but I watch everything" },
-          { value: "wait", label: "I wait 5 years and watch it when no one cares" },
-          { value: "cult", label: "Cult Classics over hype, always" },
-          { value: "rare", label: "I like rare finds no one's heard of" },
-          { value: "right_time", label: "The right movie finds me when I need it, not when it's trending" },
-          { value: "both", label: "Honestly? Both. If it hits, it hits." }
-        ]
-      }
-    ]
-  },
-
   // SWIPE SECTION
   {
     id: "section-swipe",
@@ -667,29 +703,6 @@ export const surveySections = [
         maxEntries: 3,
         inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• The Dude (Zen Chaos)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Shuri - Black Panther (playful genius)\n• Mr.T (chaotic protector)\n• Evelyn Wang EEAO (multidimensional self)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
         skipButtonText: "Don’t have one? That’s okay too. ➡️"
-      }
-    ]
-  },
-
-  // SECTION VIII
-  {
-    id: "section-viii",
-    title: "Global Culture",
-    subtitle: "Subtitles? Prestige?",
-    questions: [
-      {
-        id: "foreign_films",
-        text: "How do you feel about foreign films & shows?",
-        type: "radio",
-        options: [
-          { value: "love", label: "Yes, I live for subtitles" },
-          { value: "sometimes", label: "Sometimes" },
-          { value: "not_really", label: "Not really" },
-          { value: "lush", label: "They're visually lush/beautiful" },
-          { value: "demanding", label: "Subtitles demand full attention (can't multitask)" },
-          { value: "dubbed", label: "As long as it's dubbed, I'm fine" },
-          { value: "other", label: "Other" }
-        ]
       }
     ]
   },
@@ -742,6 +755,7 @@ export const surveySections = [
           { value: "other", label: "Other" }
         ]
       },
+
       {
         id: "share_qr",
         type: "qr_share",
