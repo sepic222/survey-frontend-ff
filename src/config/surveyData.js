@@ -157,12 +157,12 @@ export const surveySections = [
         placeholder: "Type title here..."
       },
       {
-        id: "first_crush",
-        text: "Who was your first cinematic obsession or role model?",
-        helpText: "That one character, actor, or moment that rewired your brain. This isn’t about attraction, it’s about imprinting. The scene that made you want to be someone else or finally feel more like yourself.",
+        id: "first_fascination✨",
+        text: "Who or what were you first fascinated by on screen? ✨",
+        helpText: "This isn’t about attraction, it’s about imprinting. The scene, character, or creator that hooked you instantly and stayed unforgettable.",
         type: "textarea",
-        placeholder: "e.g. Wednesday Addams, Heath Ledger in 10 Things...",
-        inspoPopup: "Julia Roberts in Erin Brockovich (courtroom scene), Tarantino (any film), Wednesday Addams/ Matilda, Trinity in The Matrix, Heath Ledger in 10 Things I Hate About You singing on the benches, Aragorn (LOTR), Sharon Stone in Basic Instinct (that one scene. Enough said.)"
+        placeholder: "e.g. Wednesday Addams, E.T.👉🏾👈🏾 ",
+        inspoPopup: "Julia Roberts in Erin Brockovich (courtroom scene), Cinema Paradiso — that final scene, Leelo (5th Element), The Wizard of Oz — stepping into colour, Blade🖤, Neo waking up (The Matrix), Peter Pan flying, Harry Potter — discovering magic, Call Me by Your Name — that summer feeling"
       }
     ]
   },
@@ -223,15 +223,15 @@ export const surveySections = [
         text: "What kind of environment did you grow up in?",
         type: "checkbox",
         options: [
-          { value: "eclectic", label: "Globally curious / culturally eclectic" },
-          { value: "traditional", label: "Traditional / locally rooted" },
-          { value: "internet", label: "Internet-raised (Tumblr, YouTube)" },
-          { value: "religious", label: "Religious or values-based" },
-          { value: "artistic", label: "Artistic / progressive / liberal" },
-          { value: "disruptor", label: "I was the cultural disruptor" },
-          { value: "quiet", label: "Quiet, minimal, or emotionally closed" },
-          { value: "moving", label: "Always moving / never settled" },
-          { value: "other", label: "Other" }
+          { value: "eclectic", label: "🌍 Globally curious / culturally eclectic" },
+          { value: "traditional", label: "🏡 Traditional / locally rooted" },
+          { value: "internet", label: "💻 Internet-raised (Tumblr, YouTube)" },
+          { value: "religious", label: "🙏 Religious or values-based" },
+          { value: "artistic", label: "🎨 Artistic / progressive / liberal" },
+          { value: "disruptor", label: "⚡ I was the cultural disruptor" },
+          { value: "quiet", label: "🤫 Quiet, minimal, or emotionally closed" },
+          { value: "moving", label: "🧳 Always moving / never settled" },
+          { value: "other", label: "✨ Other" }
         ]
       }
     ]
@@ -318,7 +318,7 @@ export const surveySections = [
       },
       {
         id: "forever_crush",
-        text: "Who's your forever on-screen crush?",
+        text: "Who's your forever on-screen crush?💘",
         helpText: "From first movie crush to current obsession.",
         type: "textarea",
         inspoPopup: "Who's lived rent-free in your cinematic heart?\nCartoons count. Accidental awakenings count. One name or a chaotic timeline, both valid.\nGive us the timeline of your taste evolution.\n\n(Here are a few examples, but your vibe might be totally different: Salma Hayek in Desperado, Ewan McGregor in Moulin Rouge, River Phoenix in My Own Private Idaho, Michelle Pfeiffer in Batman Returns, Al Pacino in Dog Day Afternoon, Lola Bunny in Space Jam, Jude Law in The Talented Mr. Ripley, Tilda Swinton in Orlando, Sharon Stone in Basic Instinct, Angela Bassett in Strange Days, Monica Bellucci in anything)"
@@ -356,7 +356,7 @@ export const surveySections = [
   // SECTION VILe
   {
     id: "section-vi",
-    title: "Screen Education: What Trained Your Taste",
+    title: "Screen Education: What Trained Your Taste 📺",
     subtitle: "You're nearly at the final reel.",
     questions: [
       {
@@ -386,7 +386,7 @@ export const surveySections = [
       },
       {
         id: "top_3_series_detailed",
-        text: "What are your top 3 Series of all time?",
+        text: "What are your top 3 Series of all time?🍿",
         helpText: "(TV, Streaming... all count - bonus points if you tell us why)",
         type: "textarea",
         placeholder: "Type your answer here..."
@@ -406,7 +406,7 @@ export const surveySections = [
       },
       {
         id: "directors",
-        text: "Do you care about directing styles?",
+        text: "🎬 Do you care about directing styles?",
         type: "checkbox",
         helpText: "Pick up to 5.",
         options: [
@@ -581,30 +581,31 @@ export const surveySections = [
         text: "Genres you never get sick of 🍿:",
         type: "checkbox",
         options: [
-          { value: "romance", label: "Romance & Rom-Coms" },
-          { value: "drama", label: "Drama/Emotional Stories" },
-          { value: "comedy", label: "Comedy (light or dark)" },
-          { value: "action", label: "Action/ Adventure" },
-          { value: "thriller", label: "Thrillers & Suspense" },
-          { value: "horror", label: "Horror (from elevated to slasher)" },
-          { value: "scifi_fantasy", label: "Sci-Fi, Fantasy & Myth" },
-          { value: "indie", label: "Indie, Arthouse & Cult" },
-          { value: "musical", label: "Music, Dance & Performance" },
-          { value: "sports", label: "Sports & Underdog Stories" },
-          { value: "biopic", label: "Biopics & True Stories" },
-          { value: "documentary", label: "Documentary & Real Life Stories" },
-          { value: "queer", label: "Queer Cinema & LGBTQ+ Stories" },
-          { value: "historical", label: "Historical & Period" },
-          { value: "trash_reality", label: "Trash TV/ Reality Gold" },
-          { value: "classics", label: "Classics & Black&White" },
-          { value: "westerns", label: "Westerns & Frontier Epics" },
-          { value: "genre_fluid", label: "I’m genre-fluid" },
-          { value: "other", label: "Other" }
+          { value: "romance", label: "💘 Romance & Rom-Coms" },
+          { value: "drama", label: "🎭 Drama/Emotional Stories" },
+          { value: "comedy", label: "😂 Comedy (light or dark)" },
+          { value: "action", label: "💥 Action/ Adventure" },
+          { value: "thriller", label: "🔪 Thrillers & Suspense" },
+          { value: "horror", label: "🩸 Horror (from elevated to slasher)" },
+          { value: "scifi_fantasy", label: "👽 Sci-Fi, Fantasy & Myth" },
+          { value: "anime", label: "🗾 Anime & hyper-stylized" },
+          { value: "indie", label: "🚬 Indie, Arthouse & Cult" },
+          { value: "musical", label: "💃 Music, Dance & Performance" },
+          { value: "sports", label: "🥊 Sports & Underdog Stories" },
+          { value: "biopic", label: "📜 Biopics & True Stories" },
+          { value: "documentary", label: "📹 Documentary & Real Life Stories" },
+          { value: "queer", label: "🏳️‍🌈 Queer Cinema & LGBTQ+ Stories" },
+          { value: "historical", label: "🏰 Historical & Period" },
+          { value: "trash_reality", label: "🗑️ Trash TV/ Reality Gold" },
+          { value: "classics", label: "🎞️ Classics & Black&White" },
+          { value: "westerns", label: "🤠 Westerns & Frontier Epics" },
+          { value: "genre_fluid", label: "🌊 I’m genre-fluid" },
+          { value: "other", label: "✨ Other" }
         ]
       },
       {
         id: "turn_offs",
-        text: "What do you NOT vibe with on screen? 🚩",
+        text: "What do you NOT vibe with on screen?🚩 ",
         type: "checkbox",
         options: [
           { value: "sad", label: "No sad endings, please. Life is hard enough." },
@@ -655,17 +656,16 @@ export const surveySections = [
   // SWIPE SECTION
   {
     id: "section-swipe",
-    title: "Swipe Right on Your Movie Mirror",
-    subtitle: "Who's the character you see yourself in?",
+    title: "",
     questions: [
       {
-        id: "character_match",
-        text: "Who’s your movie mirror? The character that feels uncomfortably… you.",
-        helpText: "Your vibe twin. Alter ego. The one people say you remind them of, or the one who’d absolutely play you in a film.\n(No thinking too hard. First instinct counts.)\nAdd up to 3 characters, icons, alter egos.\nBeing one thing is overrated.",
+        id: "alter-ego",
+        text: "Who’s your on-screen alter ego?⭐",
+        helpText: "Someone you channel. The one people say you remind them of.",
         type: "text",
         uiType: "multi_entry",
         maxEntries: 3,
-        inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Dustin Hoffman - The Graduate (confused soft boy)\n• Mr.T (chaotic protector)\n• Jane Fonda (feminist fire)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
+        inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• The Dude (Zen Chaos)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Shuri - Black Panther (playful genius)\n• Mr.T (chaotic protector)\n• Evelyn Wang EEAO (multidimensional self)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
         skipButtonText: "Don’t have one? That’s okay too. ➡️"
       }
     ]
@@ -780,7 +780,7 @@ export const surveySections = [
       },
       {
         id: "open_feedback",
-        text: "Anything we should know?",
+        text: "Anything we should know? 📝",
         helpText: "Got feedback on the survey, ideas for FateFlix, or something you wish existed in a movie app?\nThis is your moment. We read every response.",
         type: "textarea",
         placeholder: "Thoughts, feedback, feature ideas, wild wishes…"
