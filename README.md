@@ -58,6 +58,27 @@ This project is designed to be deployed on Vercel.
 
 - **Framework**: Astro with React integration
 - **Styling**: Tailwind CSS
+
+## Configuration
+
+### QR Code Share URL
+The QR code shown at the end of the survey can be configured to point to a specific URL.
+
+1.  Open `src/config/surveyData.js`
+2.  Find the item with `id: "share_qr"`
+3.  Update the `shareUrl` property:
+
+```javascript
+{
+  id: "share_qr",
+  type: "qr_share",
+  text: "Would you share this quiz with your friends?",
+  subtitle: "...",
+  shareUrl: "https://your-custom-url.com" // Update this
+}
+```
+
+If `shareUrl` is omitted, it defaults to the current site origin with `?source=qr_share`.
 - **Backend**: Separate API server on Railway
 - **API Communication**: Uses `PUBLIC_API_BASE` environment variable to connect to backend
 
