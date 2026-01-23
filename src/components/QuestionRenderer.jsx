@@ -10,9 +10,11 @@ const QRShare = ({ question, onNext }) => {
     // Generate URL with tracking parameter
     if (typeof window !== 'undefined') {
       const baseUrl = window.location.origin;
-      setShareUrl(`${baseUrl}?source=qr_share`);
+      // Allow overriding shareUrl from the question config
+      const finalUrl = question.shareUrl || `${baseUrl}?source=qr_share`;
+      setShareUrl(finalUrl);
     }
-  }, []);
+  }, [question.shareUrl]);
 
   return (
     <div className="flex flex-col items-center justify-center py-12 space-y-8 animate-fade-in relative z-10">
