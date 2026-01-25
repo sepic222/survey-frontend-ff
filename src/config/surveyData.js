@@ -475,7 +475,7 @@ export const surveySections = [
         id: "hype_style",
         text: "Hype Tracker or Timeless Watcher?",
         helpText: "How do you dance with hype, buzz, and cult classics?",
-        type: "radio",
+        type: "checkbox",
         options: [
           { value: "drops", label: "I watch everything the moment it drops." },
           { value: "resist", label: "I resist it until it really blows up" },
@@ -494,14 +494,14 @@ export const surveySections = [
   // SECTION VIII
   {
     id: "section-viii-deep-dive",
-    title: "🎬🌍Cine Deep Dive (optional)",
-    subtitle: "For those who want to go deeper into the craft.",
+    title: "🎬🌍 Optional Deep Dive: Screen Taste & Craft Deep Dive",
+    subtitle: "For viewers who care about the how, not just the what.",
     questions: [
       {
         id: "skip_deep_dive",
-        text: "Jump to next",
+        text: "Skip this section",
         type: "section_skip",
-        helpText: "Skip this section and go straight to the next part."
+        helpText: "Skip this section freely if you’re here for vibes, not film theory "
       },
       {
         id: "foreign_films",
@@ -509,11 +509,10 @@ export const surveySections = [
         type: "radio",
         options: [
           { value: "love", label: "Yes, I live for subtitles" },
-          { value: "sometimes", label: "Sometimes" },
-          { value: "not_really", label: "Not really" },
-          { value: "lush", label: "They're visually lush/beautiful" },
-          { value: "demanding", label: "Subtitles demand full attention (can't multitask)" },
           { value: "dubbed", label: "As long as it's dubbed, I'm fine" },
+          { value: "sometimes", label: "Sometimes, really depends on the movie" },
+          { value: "not_really", label: "Not really" },
+          { value: "demanding", label: "Subtitles demand full attention (can't multitask)" },
           { value: "other", label: "Other" }
         ]
       },

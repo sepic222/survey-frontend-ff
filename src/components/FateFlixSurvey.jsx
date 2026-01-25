@@ -36,12 +36,12 @@ const ResultIframe = ({ content, title }) => {
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-transparent">
+    <div className="w-full overflow-hidden rounded-3xl bg-zinc-900/10 backdrop-blur-md border border-white/5 transition-all duration-500 hover:border-white/10 group">
       <iframe
         ref={iframeRef}
         title={title}
         srcDoc={content}
-        className="w-full border-0"
+        className="w-full border-0 transition-opacity duration-1000"
         style={{ minHeight: '600px' }}
         onLoad={adjustHeight}
         sandbox="allow-scripts allow-same-origin"
@@ -50,91 +50,162 @@ const ResultIframe = ({ content, title }) => {
   );
 };
 
+const CosmicBackground = () => (
+  <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020202]">
+    <style dangerouslySetInnerHTML={{
+      __html: `
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0); }
+        50% { transform: translateY(-30px) rotate(3deg); }
+      }
+      @keyframes float-slow {
+        0%, 100% { transform: translateY(0) rotate(0); }
+        50% { transform: translateY(-15px) rotate(-2deg); }
+      }
+      .animate-float {
+        animation: float 15s ease-in-out infinite;
+      }
+      .animate-float-slow {
+        animation: float-slow 22s ease-in-out infinite;
+      }
+    `}} />
+    {/* Animated Orbs - Brand Colors Only */}
+    <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-orange-600/10 blur-[150px] rounded-full animate-pulse" />
+    <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-purple-900/10 blur-[150px] rounded-full animate-pulse [animation-delay:2s]" />
+
+    {/* Stardust Texture */}
+    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-[0.05]" />
+
+    {/* Decorative Planet & Star Assets */}
+    <div className="absolute top-[15%] right-[10%] w-32 h-32 opacity-40 animate-float hidden lg:block">
+      <img src="/assets/planet_purple.png" alt="" className="w-full h-full object-contain" />
+    </div>
+    <div className="absolute bottom-[20%] left-[5%] w-24 h-24 opacity-30 animate-float-slow hidden lg:block" style={{ animationDelay: '1s' }}>
+      <img src="/assets/planet_ring_pinkish.png" alt="" className="w-full h-full object-contain" />
+    </div>
+    <div className="absolute top-[40%] left-[15%] w-8 h-8 opacity-40 animate-pulse">
+      <img src="/assets/star_pink.png" alt="" className="w-full h-full object-contain" />
+    </div>
+    <div className="absolute bottom-[40%] right-[20%] w-12 h-12 opacity-30 animate-pulse [animation-delay:1.5s]">
+      <img src="/assets/starglow_large.png" alt="" className="w-full h-full object-contain" />
+    </div>
+    <div className="absolute top-[10%] left-[50%] w-4 h-4 opacity-20 animate-pulse [animation-delay:0.5s]">
+      <img src="/assets/star-glow mini.png" alt="" className="w-full h-full object-contain" />
+    </div>
+  </div>
+);
+
 const ResultsDashboard = ({ results }) => {
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
   }, [results]);
 
   return (
-    <div
-      className="min-h-screen bg-black text-white font-sans selection:bg-orange-500 selection:text-white p-6"
-      style={{ backgroundColor: '#000000', minHeight: '100vh' }}
-    >
-      <div className="max-w-6xl mx-auto space-y-12 animate-fade-in">
-        {/* Sticky top nav - Jony Ive Style */}
-        <div className="sticky top-6 z-50 flex justify-center pb-8 pointer-events-none">
-          <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
-            <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-              Badge
+    <div className="relative min-h-screen text-white font-sans selection:bg-orange-500 selection:text-white pb-24">
+      <CosmicBackground />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Sticky top nav - Refined Glassmorphism */}
+        <div className="sticky top-6 z-50 flex justify-center py-6 pointer-events-none">
+          <div className="pointer-events-auto flex items-center gap-1 p-1 rounded-full bg-zinc-900/40 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.8)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02] hover:bg-zinc-900/60">
+            <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
+              Identity
             </a>
-            {/* Chart nav hidden for now */}
-            <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
+            <div className="w-px h-4 bg-white/10 mx-1" />
+            <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
               Part I
             </a>
-            <a href="#reading2" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
+            <a href="#reading2" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
               Part II
+            </a>
+            <div className="w-px h-4 bg-white/10 mx-1" />
+            <a href="#share" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
+              Share
             </a>
           </div>
         </div>
 
+        {/* Multi-column Grid for Desktop */}
+        <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start pt-8">
 
-        {/* Badge Section */}
-        <div id="badge" className="flex justify-center mb-12">
-          <div
-            className="transform hover:scale-105 transition-transform duration-500"
-            dangerouslySetInnerHTML={{ __html: results.badge }}
-          />
-        </div>
+          {/* Left Column: Fixed Identity & Share on Desktop */}
+          <div className="lg:col-span-4 space-y-12 lg:sticky lg:top-32 mb-12 lg:mb-0">
+            {/* Badge Section */}
+            <div id="badge" className="flex justify-center lg:justify-start w-full group">
+              <div
+                className="transform transition-all duration-700 group-hover:scale-[1.03] group-hover:-translate-y-1 drop-shadow-[0_0_30px_rgba(249,115,22,0.15)]"
+                dangerouslySetInnerHTML={{ __html: results.badge }}
+              />
+            </div>
 
-        {/* Chart Section hidden for now */}
-
-        {/* Reading Content via Iframes */}
-        <div className="space-y-12">
-          {/* HTML 1 */}
-          <div id="reading1" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-orange-900/5">
-            <ResultIframe content={results.html1} title="Cosmic Chart" />
+            {/* QR Share Section - Desktop integration */}
+            <div id="share" className="hidden lg:block bg-zinc-900/20 backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-2xl relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <QRShare
+                question={{
+                  text: "Share your Cosmic DNA",
+                  subtitle: "Tap to save or share with your film circle.",
+                  shareUrl: "https://www.fateflix.app/taste-test"
+                }}
+                onNext={() => {
+                  document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+            </div>
           </div>
 
-          {/* HTML 2 */}
-          <div id="reading2" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-cyan-900/5">
-            <ResultIframe content={results.html2} title="Chart Details" />
+          {/* Right Column: Scrolling Reading Content */}
+          <div className="lg:col-span-8 space-y-16 lg:space-y-24">
+            {/* HTML 1 Card */}
+            <div id="reading1" className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-purple-500/0 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-1000" />
+              <div className="relative bg-zinc-900/40 backdrop-blur-xl p-1 md:p-6 rounded-[2rem] border border-white/10 shadow-3xl shadow-black">
+                <ResultIframe content={results.html1} title="Cosmic Chart" />
+              </div>
+            </div>
+
+            {/* HTML 2 Card */}
+            <div id="reading2" className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-orange-500/0 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-1000" />
+              <div className="relative bg-zinc-900/40 backdrop-blur-xl p-1 md:p-6 rounded-[2rem] border border-white/10 shadow-3xl shadow-black">
+                <ResultIframe content={results.html2} title="Chart Details" />
+              </div>
+            </div>
+
+            {/* Mobile-only QR Share */}
+            <div className="lg:hidden flex justify-center py-12">
+              <QRShare
+                question={{
+                  text: "Share your Cosmic DNA",
+                  subtitle: "Screenshot the QR code for your camera roll.",
+                  shareUrl: "https://www.fateflix.app/taste-test"
+                }}
+                onNext={() => {
+                  document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+            </div>
+
+            {/* Replay Button */}
+            <div className="text-center pt-12 pb-12">
+              <button
+                id="replay-survey-btn"
+                onClick={() => {
+                  window.history.pushState({}, '', '/');
+                  window.location.reload();
+                }}
+                className="group relative px-10 py-4 bg-zinc-900 border border-white/10 hover:border-white/20 text-white rounded-full font-bold tracking-widest transition-all duration-500 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <span className="relative z-10">REPLAY SURVEY</span>
+              </button>
+            </div>
           </div>
 
-          {/* QR Share Section */}
-          <div id="share" className="flex justify-center py-12">
-            <QRShare
-              question={{
-                text: "Would you share this quiz with your friends?",
-                subtitle: "Screenshot the QR code for your camera roll. Perfect for date nights, dinner parties, or flexing your movie taste on the group chat.",
-                shareUrl: "https://www.fateflix.app/taste-test"
-              }}
-              onNext={() => {
-                // Focus the replay button as a logical "next" action
-                document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            />
-          </div>
         </div>
-
-        {/* Replay Button */}
-        <div className="text-center pt-12 pb-24">
-          <button
-            id="replay-survey-btn"
-            onClick={() => {
-              // Clear URL and reload
-              window.history.pushState({}, '', '/');
-              window.location.reload();
-            }}
-            className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full font-bold tracking-wider transition-all"
-          >
-            Replay Survey
-          </button>
-        </div>
-
       </div>
     </div>
   );
-
 };
 
 const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorModal }) => {
