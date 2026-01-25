@@ -119,10 +119,6 @@ const ResultsDashboard = ({ results }) => {
             <a href="#reading2" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
               Part II
             </a>
-            <div className="w-px h-4 bg-white/10 mx-1" />
-            <a href="#share" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
-              Share
-            </a>
           </div>
         </div>
 
@@ -138,8 +134,7 @@ const ResultsDashboard = ({ results }) => {
                 {[
                   { id: 'badge', label: 'Identity Badge' },
                   { id: 'reading1', label: 'Part I: Cosmic Map' },
-                  { id: 'reading2', label: 'Part II: Deep Archetypes' },
-                  { id: 'share', label: 'Share Your Results' }
+                  { id: 'reading2', label: 'Part II: Deep Archetypes' }
                 ].map(item => (
                   <li key={item.id}>
                     <a href={`#${item.id}`} className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300 py-1">
@@ -159,23 +154,7 @@ const ResultsDashboard = ({ results }) => {
               />
             </div>
 
-            {/* QR Share Section - Desktop integration */}
-            <div id="share" className="hidden lg:block bg-zinc-900/20 backdrop-blur-xl rounded-2xl p-6 border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="relative z-10">
-                <QRShare
-                  variant="dashboard"
-                  question={{
-                    text: "Share your Cosmic DNA",
-                    subtitle: "Tap to save or share with your film circle.",
-                    shareUrl: "https://www.fateflix.app/taste-test"
-                  }}
-                  onNext={() => {
-                    document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                />
-              </div>
-            </div>
+            {/* QR Share Section - Removed for sidebar clarity */}
           </div>
 
           {/* Right Column: Scrolling Reading Content */}
@@ -196,20 +175,7 @@ const ResultsDashboard = ({ results }) => {
               </div>
             </div>
 
-            {/* Mobile-only QR Share */}
-            <div className="lg:hidden flex justify-center py-12">
-              <QRShare
-                variant="dashboard"
-                question={{
-                  text: "Share your Cosmic DNA",
-                  subtitle: "Screenshot the QR code for your camera roll.",
-                  shareUrl: "https://www.fateflix.app/taste-test"
-                }}
-                onNext={() => {
-                  document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
-            </div>
+            {/* Mobile-only QR Share removed - now in survey flow */}
 
             {/* Replay Button */}
             <div className="text-center pt-12 pb-12">
@@ -649,6 +615,23 @@ const SurveyContent = ({ initialSubmissionId }) => {
 
         <div className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500`}>
           <CurrentSection nextStep={nextStep} />
+
+          {/* QR Share - Placed at the end of the survey flow */}
+          {currentSection?.id === 'section-ix' && currentStep === totalSteps - 1 && (
+            <div className="mt-4 border-t border-white/[0.03] pt-12">
+              <QRShare
+                question={{
+                  text: "Share your Cosmic DNA",
+                  subtitle: "Perfect for date nights, dinner parties, or flexing your movie taste on the group chat.",
+                  shareUrl: "https://www.fateflix.app/taste-test"
+                }}
+                onNext={() => {
+                  document.getElementById('survey-controls')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+            </div>
+          )}
+
           <SurveyControls
             submitStatus={submitStatus}
             setSubmitStatus={setSubmitStatus}
