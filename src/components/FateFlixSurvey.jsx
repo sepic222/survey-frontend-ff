@@ -139,9 +139,10 @@ const ResultsDashboard = ({ results }) => {
             </div>
 
             {/* QR Share Section - Desktop integration */}
-            <div id="share" className="hidden lg:block bg-zinc-900/20 backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-2xl relative overflow-hidden group">
+            <div id="share" className="hidden lg:block bg-zinc-900/20 backdrop-blur-xl rounded-2xl p-6 border border-white/5 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <QRShare
+                variant="dashboard"
                 question={{
                   text: "Share your Cosmic DNA",
                   subtitle: "Tap to save or share with your film circle.",
@@ -175,6 +176,7 @@ const ResultsDashboard = ({ results }) => {
             {/* Mobile-only QR Share */}
             <div className="lg:hidden flex justify-center py-12">
               <QRShare
+                variant="dashboard"
                 question={{
                   text: "Share your Cosmic DNA",
                   subtitle: "Screenshot the QR code for your camera roll.",

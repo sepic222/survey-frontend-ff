@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom';
 import CitySearch from './CitySearch';
 import { QRCodeCanvas } from 'qrcode.react';
 
-export const QRShare = ({ question, onNext }) => {
+export const QRShare = ({ question, onNext, variant = 'standalone' }) => {
+  const isDashboard = variant === 'dashboard';
   const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
@@ -17,36 +18,38 @@ export const QRShare = ({ question, onNext }) => {
   }, [question.shareUrl]);
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 space-y-8 animate-fade-in relative z-10">
+    <div className={`flex flex-col items-center justify-center ${isDashboard ? 'p-0 space-y-6' : 'py-12 space-y-8'} animate-fade-in relative z-10`}>
       {/* Glow effect background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-orange-500/20 blur-[100px] rounded-full -z-10 pointer-events-none" />
 
       <div className="text-center space-y-4 max-w-xl px-4">
-        <div className="inline-block p-3 rounded-full bg-orange-500/10 mb-4 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
-          <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-          </svg>
-        </div>
-        <h3 className="text-3xl md:text-5xl font-black text-white pb-2 leading-tight whitespace-pre-line">
+        {!isDashboard && (
+          <div className="inline-block p-3 rounded-full bg-orange-500/10 mb-4 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+            <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+          </div>
+        )}
+        <h3 className={`${isDashboard ? 'text-xl' : 'text-3xl md:text-5xl'} font-black text-white pb-1 leading-tight whitespace-pre-line`}>
           {question.text}
         </h3>
         {question.subtitle && (
-          <p className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-lg mx-auto">
+          <p className={`${isDashboard ? 'text-xs' : 'text-lg md:text-xl'} text-zinc-400 font-light leading-relaxed max-w-lg mx-auto`}>
             {question.subtitle}
           </p>
         )}
       </div>
 
       {/* QR Code Card - Designed for Screenshots */}
-      <div className="p-8 bg-zinc-900/80 backdrop-blur-xl border border-orange-500/30 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col items-center gap-6 transform transition-all hover:scale-105 hover:border-orange-500/50 duration-500 group">
-        <div className="bg-white p-4 rounded-2xl shadow-lg relative overflow-hidden">
+      <div className={`${isDashboard ? 'p-6' : 'p-8'} bg-zinc-900/80 backdrop-blur-xl border border-orange-500/30 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col items-center gap-6 transform transition-all hover:scale-105 hover:border-orange-500/50 duration-500 group`}>
+        <div className="bg-white p-3 rounded-2xl shadow-lg relative overflow-hidden">
           {/* Subtle scanline effect overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent h-full w-full animate-pulse pointer-events-none" />
 
           {shareUrl && (
             <QRCodeCanvas
               value={shareUrl}
-              size={200}
+              size={isDashboard ? 160 : 200}
               level={"H"}
               includeMargin={false}
               fgColor="#000000"
@@ -68,12 +71,14 @@ export const QRShare = ({ question, onNext }) => {
         </div>
       </div>
 
-      <button
-        onClick={onNext}
-        className="mt-8 text-zinc-500 hover:text-white transition-colors text-sm uppercase tracking-widest font-medium border-b border-transparent hover:border-white pb-1"
-      >
-        Skip for now
-      </button>
+      {!isDashboard && (
+        <button
+          onClick={onNext}
+          className="mt-8 text-zinc-500 hover:text-white transition-colors text-sm uppercase tracking-widest font-medium border-b border-transparent hover:border-white pb-1"
+        >
+          Skip for now
+        </button>
+      )}
     </div>
   );
 };
