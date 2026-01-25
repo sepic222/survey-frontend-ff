@@ -792,8 +792,7 @@ export const surveySections = [
     questions: [
       {
         id: "alter-ego",
-        text: " The character you identify with or secretly aspire to.⭐",
->>>>>>> fix/survey-persistence
+        text: "The character you identify with or secretly aspire to.⭐",
         helpText: "Someone you channel. The one people say you remind them of.",
         type: "text",
         uiType: "multi_entry",
