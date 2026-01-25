@@ -108,6 +108,7 @@ const ResultsDashboard = ({ results }) => {
         {/* Sticky top nav - Refined Glassmorphism */}
         <div className="sticky top-6 z-50 flex justify-center py-6 pointer-events-none">
           <div className="pointer-events-auto flex items-center gap-1 p-1 rounded-full bg-zinc-900/40 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.8)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02] hover:bg-zinc-900/60">
+            <div className="px-3 py-1 bg-orange-500 text-[8px] font-black rounded-full text-white mr-2 uppercase tracking-tighter">V2</div>
             <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/5 transition-all duration-300">
               Identity
             </a>
@@ -129,9 +130,29 @@ const ResultsDashboard = ({ results }) => {
         <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start pt-8">
 
           {/* Left Column: Fixed Identity & Share on Desktop */}
-          <div className="lg:col-span-4 space-y-12 lg:sticky lg:top-32 mb-12 lg:mb-0">
+          <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-32 mb-12 lg:mb-0">
+            {/* Sidebar Identity Navigation */}
+            <nav className="hidden lg:block space-y-4 mb-8">
+              <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">Reading Navigation</h4>
+              <ul className="space-y-2">
+                {[
+                  { id: 'badge', label: 'Identity Badge' },
+                  { id: 'reading1', label: 'Part I: Cosmic Map' },
+                  { id: 'reading2', label: 'Part II: Deep Archetypes' },
+                  { id: 'share', label: 'Share Your Results' }
+                ].map(item => (
+                  <li key={item.id}>
+                    <a href={`#${item.id}`} className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors duration-300 py-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800 group-hover:bg-orange-500 transition-colors" />
+                      <span className="text-sm font-medium tracking-wide">{item.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
             {/* Badge Section */}
-            <div id="badge" className="flex justify-center lg:justify-start w-full group">
+            <div id="badge" className="flex justify-center lg:justify-start w-full group pt-4">
               <div
                 className="transform transition-all duration-700 group-hover:scale-[1.03] group-hover:-translate-y-1 drop-shadow-[0_0_30px_rgba(249,115,22,0.15)]"
                 dangerouslySetInnerHTML={{ __html: results.badge }}
@@ -141,17 +162,19 @@ const ResultsDashboard = ({ results }) => {
             {/* QR Share Section - Desktop integration */}
             <div id="share" className="hidden lg:block bg-zinc-900/20 backdrop-blur-xl rounded-2xl p-6 border border-white/5 shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <QRShare
-                variant="dashboard"
-                question={{
-                  text: "Share your Cosmic DNA",
-                  subtitle: "Tap to save or share with your film circle.",
-                  shareUrl: "https://www.fateflix.app/taste-test"
-                }}
-                onNext={() => {
-                  document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
+              <div className="relative z-10">
+                <QRShare
+                  variant="dashboard"
+                  question={{
+                    text: "Share your Cosmic DNA",
+                    subtitle: "Tap to save or share with your film circle.",
+                    shareUrl: "https://www.fateflix.app/taste-test"
+                  }}
+                  onNext={() => {
+                    document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+              </div>
             </div>
           </div>
 
