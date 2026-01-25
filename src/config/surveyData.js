@@ -28,6 +28,13 @@ export const surveySections = [
     subtitle: "To cast your chart, we need your exact origins.",
     questions: [
       { id: "username", text: "What name should we call you in the credits?", type: "text", placeholder: "Name or Alias" },
+      {
+        id: "email",
+        text: "We need your email to send your astro-cinematic gift. 💫(Required)",
+        helpText: "No spam, just stardust.",
+        type: "email",
+        placeholder: "user@example.com"
+      },
       { id: "date", text: "Birth Date", type: "date" },
       { id: "time", text: "Birth Time", helpText: "Crucial for your Rising Sign.", type: "time", infoPopup: "Don't know your time? Call your mom, Check your birth certificate, Consult the galaxy you came from" },
       {
@@ -212,7 +219,7 @@ export const surveySections = [
       },
       {
         id: "culture_background",
-        text: "🌍 Where did you grow up (or feel culturally shaped by)?\nCulture > Passport\nWhere did your movie, media, and serious worldview come from?",
+        text: "🌍 Where did you grow up (or feel culturally shaped by)?\nCulture > Passport\nWhere did your movie, media, and series worldview come from?",
         type: "textarea",
         helpText: "This can be one place or many... think home, heritage, language, or the culture that raised you. Type the country or countries below.",
         placeholder: "USA (Blockbuster nights, Cartoon Network, MTV, VH1), India (Bollywood), Nordics (Scandi-Noir & dry humor), Telenovelas, Dizi...\n\nOr for our mixed heritage clan:\nBorn in Berlin, raised on Turkish cinema.\nPassport says Canada, but my screen soul is Korean."
@@ -269,7 +276,7 @@ export const surveySections = [
       },
       {
         id: "power_watch",
-        text: "What movie do you rewatch when you want to feel powerful?",
+        text: "What movie do you (re-)watch when you want to feel powerful?",
         type: "text",
         inspoPopup: "Here are a few examples, but your vibe might be totally different: Kill Bill, Black Swan, Erin Brockovich, Rocky, The Devil Wears Prada, Creed, Mad Max: Fury Road, Black Panther, The Favourite, The Matrix, Jennifer's Body, Everything Everywhere All at Once)",
         skipButtonText: "Don’t have one? That’s okay too. ➡️"
@@ -364,6 +371,8 @@ export const surveySections = [
         text: "TV Taste Check: Pick the flavours that feed your soul.",
         type: "checkbox",
         options: [
+          { value: "movie_only", label: "I’m movie-only. TV isn’t really my thing" },
+          { value: "avoid_series", label: "I avoid series, I get addicted 😅" },
           { value: "prestige", label: "Slow-burn prestige (long arcs, power, HBO-core)" },
           { value: "dark_drama", label: "Dark Drama (crime, revenge, moral mess)" },
           { value: "reality", label: "Reality chaos (Love Island, Housewives, Kardashians)" },
@@ -379,14 +388,12 @@ export const surveySections = [
           { value: "sports", label: "Sports Competitions (matches, leagues, tournaments)" },
           { value: "talent", label: "Talent & performance shows (singing, dancing)" },
           { value: "lifestyle", label: "Lifestyle & background TV" },
-          { value: "movie_only", label: "I’m movie-only. TV isn’t really my thing" },
-          { value: "avoid_series", label: "I avoid series, I get addicted 😅" },
           { value: "other", label: "Other" }
         ]
       },
       {
         id: "top_3_series_detailed",
-        text: "What are your top 3 Series of all time?🍿",
+        text: "What are your three favorite 3 series or tv shows of all time?🍿",
         helpText: "(TV, Streaming... all count - bonus points if you tell us why)",
         type: "textarea",
         placeholder: "Type your answer here..."
@@ -487,9 +494,15 @@ export const surveySections = [
   // SECTION VIII
   {
     id: "section-viii-deep-dive",
-    title: "Optional Deep Dive",
+    title: "🎬🌍Cine Deep Dive (optional)",
     subtitle: "For those who want to go deeper into the craft.",
     questions: [
+      {
+        id: "skip_deep_dive",
+        text: "Jump to next",
+        type: "section_skip",
+        helpText: "Skip this section and go straight to the next part."
+      },
       {
         id: "foreign_films",
         text: "How do you feel about foreign films & shows?",
@@ -692,11 +705,11 @@ export const surveySections = [
   // SWIPE SECTION
   {
     id: "section-swipe",
-    title: "",
+    title: "Who’s your on-screen alter ego?",
     questions: [
       {
         id: "alter-ego",
-        text: "Who’s your on-screen alter ego?⭐",
+        text: " The character you identify with or secretly aspire to.⭐",
         helpText: "Someone you channel. The one people say you remind them of.",
         type: "text",
         uiType: "multi_entry",
@@ -757,13 +770,6 @@ export const surveySections = [
       },
 
       {
-        id: "share_qr",
-        type: "qr_share",
-        text: "Would you share this quiz with your friends?",
-        subtitle: "Screenshot the QR code for your camera roll. Perfect for date nights, dinner parties, or flexing your movie taste on the group chat.",
-        shareUrl: "https://www.fateflix.app/taste-test" // Update this URL as needed
-      },
-      {
         id: "discovery",
         text: "How did you find out about this survey?",
         type: "radio",
@@ -775,22 +781,6 @@ export const surveySections = [
           { value: "event", label: "Public event or street moment" },
           { value: "cosmic", label: "Cosmic Calling" },
           { value: "other", label: "Other" }
-        ]
-      },
-      {
-        id: "email",
-        text: "We need your email to send your astro-cinematic gift. 💫(Required)",
-        helpText: "No spam, just stardust.",
-        type: "email",
-        placeholder: "user@example.com"
-      },
-      {
-        id: "beta_test",
-        text: "Would you like to beta test the Fateflix app once it's live?",
-        type: "radio",
-        options: [
-          { value: "yes", label: "Yes, I need this" },
-          { value: "no", label: "No, I gatekeep" }
         ]
       },
       {

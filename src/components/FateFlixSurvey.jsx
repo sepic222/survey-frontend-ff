@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { SurveyProvider, useSurvey } from '../context/SurveyContext';
-import { QuestionRenderer } from './QuestionRenderer';
+import { QuestionRenderer, QRShare } from './QuestionRenderer';
 import { ErrorModal } from './ErrorModal';
 
 const ProgressBar = () => {
@@ -99,11 +99,27 @@ const ResultsDashboard = ({ results }) => {
           <div id="reading2" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-cyan-900/5">
             <ResultIframe content={results.html2} title="Chart Details" />
           </div>
+
+          {/* QR Share Section */}
+          <div id="share" className="flex justify-center py-12">
+            <QRShare
+              question={{
+                text: "Would you share this quiz with your friends?",
+                subtitle: "Screenshot the QR code for your camera roll. Perfect for date nights, dinner parties, or flexing your movie taste on the group chat.",
+                shareUrl: "https://www.fateflix.app/taste-test"
+              }}
+              onNext={() => {
+                // Focus the replay button as a logical "next" action
+                document.getElementById('replay-survey-btn')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+          </div>
         </div>
 
         {/* Replay Button */}
         <div className="text-center pt-12 pb-24">
           <button
+            id="replay-survey-btn"
             onClick={() => {
               // Clear URL and reload
               window.history.pushState({}, '', '/');
