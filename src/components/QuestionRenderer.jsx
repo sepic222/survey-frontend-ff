@@ -644,7 +644,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
   const displayEntries = entries.length > 0 ? entries : [''];
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 space-y-6 animate-fade-in relative">
+    <div className="flex flex-col items-center justify-center py-4 space-y-6 animate-fade-in relative">
       <div className="text-center space-y-4 max-w-xl">
         <div className="inline-block p-3 rounded-full bg-orange-500/10 mb-4">
           <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -653,7 +653,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <h3 className="text-4xl md:text-5xl font-black text-white pb-2 whitespace-pre-line">
+          <h3 className="text-xl md:text-2xl font-bold text-white pb-2 whitespace-pre-line">
             {question.text}
           </h3>
           {(question.infoPopup || question.inspoPopup) && (

@@ -111,7 +111,7 @@ const ResultsDashboard = ({ results }) => {
               window.history.pushState({}, '', '/');
               window.location.reload();
             }}
-            className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full font-bold tracking-wider transition-all"
+            className="px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full font-bold tracking-wider transition-all text-sm"
           >
             Replay Survey
           </button>
@@ -348,7 +348,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       <button
         onClick={prevStep}
         disabled={currentStep === 0 || isSubmitting}
-        className={`px-6 py-2 rounded-md font-medium transition-colors
+        className={`px-4 py-1.5 rounded-md font-medium transition-colors text-sm
           ${currentStep === 0
             ? 'text-gray-600 cursor-not-allowed'
             : 'text-white hover:text-cyan-400 border border-gray-700 hover:border-cyan-400'}`}
@@ -359,7 +359,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       <button
         onClick={handleNext}
         disabled={isSubmitting}
-        className={`px-6 py-2 rounded-md font-medium bg-white text-black hover:bg-cyan-400 transition-colors ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
+        className={`px-4 py-1.5 rounded-md font-medium bg-white text-black hover:bg-cyan-400 transition-colors text-sm ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
       >
         {isSubmitting ? 'Sending...' : (isLastStep ? 'Submit' : 'Next')}
       </button>
@@ -402,13 +402,15 @@ const CurrentSection = ({ nextStep }) => {
 
   return (
     <div className="animate-fade-in">
-      {!isSwipeSection && !isIntroHero && (
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-2">
+      {!isIntroHero && (
+        <div className={`${isSwipeSection ? 'mb-4' : 'mb-12'} text-center flex flex-col items-center`}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 whitespace-pre-line leading-tight">
             {currentSection.title}
           </h2>
           {currentSection.subtitle && (
-            <p className="text-zinc-400 text-lg">{currentSection.subtitle}</p>
+            <p className="text-zinc-400 text-lg md:text-xl font-light max-w-lg leading-relaxed">
+              {currentSection.subtitle}
+            </p>
           )}
         </div>
       )}

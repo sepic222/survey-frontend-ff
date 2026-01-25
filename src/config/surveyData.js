@@ -494,7 +494,7 @@ export const surveySections = [
   // SECTION VIII
   {
     id: "section-viii-deep-dive",
-    title: "🎬🌍 Optional Deep Dive: Screen Taste & Craft Deep Dive",
+    title: "🎬 🌍 Optional Deep Dive:\nScreen Taste & Craft Deep Dive",
     subtitle: "For viewers who care about the how, not just the what.",
     questions: [
       {
