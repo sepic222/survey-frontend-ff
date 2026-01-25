@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import CitySearch from './CitySearch';
 import { QRCodeCanvas } from 'qrcode.react';
 
-const QRShare = ({ question, onNext }) => {
+export const QRShare = ({ question, onNext }) => {
   const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
@@ -747,6 +747,34 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
   );
 };
 
+const SectionSkip = ({ question, onNext }) => (
+  <div className="flex flex-col items-center justify-center py-6 space-y-4 animate-fade-in">
+    <button
+      onClick={onNext}
+      className="
+        group relative px-12 py-5
+        overflow-hidden rounded-2xl
+        bg-orange-600/20 border-2 border-orange-500/50
+        transition-all duration-500 hover:border-orange-500
+        hover:bg-orange-600/30 hover:shadow-[0_0_40px_rgba(249,115,22,0.3)]
+        active:scale-95 w-full max-w-md
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+      <div className="flex flex-col items-center gap-1">
+        <span className="relative z-10 text-lg md:text-xl font-black tracking-[0.1em] uppercase text-white group-hover:text-orange-300 transition-colors">
+          {question.text}
+        </span>
+        {question.helpText && (
+          <span className="text-xs text-orange-400/80 font-medium tracking-wide">
+            {question.helpText}
+          </span>
+        )}
+      </div>
+    </button>
+  </div>
+);
+
 export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalAnswer, onAutoAdvance }) => {
   const [showInfo, setShowInfo] = useState(false);
   // Hide manual inputs that are handled by CitySearch
@@ -762,6 +790,10 @@ export const QuestionRenderer = ({ question, value, onChange, onNext, setGlobalA
 
   if (question.type === 'qr_share') {
     return <QRShare question={question} onNext={onNext} />;
+  }
+
+  if (question.type === 'section_skip') {
+    return <SectionSkip question={question} onNext={onNext} />;
   }
 
   // Handle multi-entry input (for character_match)
