@@ -538,9 +538,9 @@ const HeroCard = ({ question, value, onChange }) => (
 );
 
 const HeroStart = ({ question, onNext }) => (
-  <div className="flex flex-col items-center justify-center min-h-[90vh] text-center space-y-16 py-12 animate-fade-in max-w-4xl mx-auto overflow-hidden">
-    <div className="flex flex-col items-center space-y-6">
-      <div className="w-40 h-40 md:w-56 md:h-56 relative group">
+  <div className="flex flex-col items-center justify-center min-h-[85vh] text-center space-y-8 py-6 animate-fade-in max-w-4xl mx-auto overflow-hidden">
+    <div className="flex flex-col items-center space-y-4">
+      <div className="w-32 h-32 md:w-36 md:h-36 relative group">
         <div className="absolute inset-0 bg-orange-500/20 blur-3xl rounded-full scale-75 group-hover:scale-110 transition-transform duration-1000" />
         <img
           src={question.image}
@@ -554,18 +554,38 @@ const HeroStart = ({ question, onNext }) => (
       </h2>
     </div>
 
-    <div className="space-y-12 max-w-2xl px-6 w-full">
-      <p className="text-xl md:text-2xl text-zinc-200 font-extralight leading-relaxed tracking-tight selection:bg-orange-500/30">
+    <div className="space-y-8 max-w-2xl px-6 w-full">
+      <p className="text-lg md:text-xl text-zinc-200 font-extralight leading-relaxed tracking-tight selection:bg-orange-500/30">
         {question.missionText}
       </p>
 
-      <div className="py-10 border-y border-white/[0.03] space-y-6">
+      {/* Repositioned Button */}
+      <div className="flex justify-center pt-2 pb-4">
+        <button
+          onClick={onNext}
+          className="
+            group relative px-10 py-3
+            overflow-hidden rounded-full
+            bg-zinc-900 border border-white/10
+            transition-all duration-500 hover:border-orange-500/50
+            hover:shadow-[0_0_30px_rgba(249,115,22,0.15)]
+            active:scale-95
+          "
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/5 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+          <span className="relative z-10 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white group-hover:text-orange-400 transition-colors">
+            {question.buttonText}
+          </span>
+        </button>
+      </div>
+
+      <div className="py-6 border-y border-white/[0.03] space-y-4">
         <p className="text-[10px] uppercase tracking-[0.3em] text-orange-500/60 font-black">
-          SHARE YOUR TASTE TO UNLOCK:
+          JOIN 250+ TASTEMAKERS TO UNLOCK:
         </p>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {question.valueProps.map((prop, idx) => (
-            <p key={idx} className="text-zinc-100 font-light text-base md:text-lg tracking-wide opacity-90 hover:opacity-100 transition-opacity">
+            <p key={idx} className="text-zinc-100 font-light text-sm md:text-base tracking-wide opacity-90 hover:opacity-100 transition-opacity">
               {prop}
             </p>
           ))}
@@ -579,7 +599,7 @@ const HeroStart = ({ question, onNext }) => (
 
         <div className="flex whitespace-nowrap animate-marquee">
           {[...Array(4)].map((_, i) => (
-            <span key={i} className="text-zinc-500 text-sm italic font-light tracking-wide mx-8">
+            <span key={i} className="text-zinc-500 text-[10px] md:text-xs italic font-light tracking-wide mx-8">
               {question.assuranceText}
             </span>
           ))}
@@ -599,23 +619,6 @@ const HeroStart = ({ question, onNext }) => (
         }} />
       </div>
     </div>
-
-    <button
-      onClick={onNext}
-      className="
-        group relative mt-4 px-12 py-3.5 
-        overflow-hidden rounded-full
-        bg-zinc-900 border border-white/10
-        transition-all duration-500 hover:border-orange-500/50
-        hover:shadow-[0_0_30px_rgba(249,115,22,0.15)]
-        active:scale-95
-      "
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/5 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-      <span className="relative z-10 text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white group-hover:text-orange-400 transition-colors">
-        {question.buttonText}
-      </span>
-    </button>
   </div>
 );
 

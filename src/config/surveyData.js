@@ -795,7 +795,7 @@ export const surveySections = [
         type: "qr_share",
         text: "Would you share this\nquiz with your friends?",
         subtitle: "Screenshot the QR code for your camera roll. Perfect for date nights, dinner parties, or flexing your movie taste on the group chat.",
-        shareUrl: "https://www.fateflix.app/taste-test"
+        shareUrl: "https://linktr.ee/fateflixapp"
       }
     ]
   }
