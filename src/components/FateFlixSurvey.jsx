@@ -170,7 +170,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         const response = await fetch(`${apiBase}/api/dev/chart-to-svg`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(chartPayload)
+          body: JSON.stringify({ ...chartPayload, triggerEmail: false })
         });
 
         if (!response.ok) {
@@ -271,7 +271,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         const response = await fetch(`${apiBase}/api/dev/chart-to-svg`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ ...payload, triggerEmail: true })
         });
 
         if (!response.ok) {
