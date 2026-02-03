@@ -214,6 +214,10 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       // 1. Logic: Handle Unknown Time
       const isUnknownTime = answers['time_accuracy'] === 'unknown';
 
+      // If we already have a submissionId, ensure all answers are saved (especially top3)
+      // Then use that submissionId instead of creating a new one
+      let finalSubmissionId = submissionId;
+
       const payload = {
         date: answers['date'],
         // If unknown or empty, default to 12:00
@@ -225,12 +229,9 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         username: answers['username'],
         userEmail: answers['email'], // From Section IX
         timeAccuracy: answers['time_accuracy'], // Send the flag to backend
-        fullResponses: answers
+        fullResponses: answers,
+        submissionId: finalSubmissionId
       };
-
-      // If we already have a submissionId, ensure all answers are saved (especially top3)
-      // Then use that submissionId instead of creating a new one
-      let finalSubmissionId = submissionId;
 
       if (finalSubmissionId) {
         // Save top3 fields (combined into hall_of_fame)
