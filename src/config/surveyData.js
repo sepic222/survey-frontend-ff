@@ -17,7 +17,7 @@ export const surveySections = [
         ],
         assuranceText: "Your guilty pleasures are safe here, so are your wild opinions.",
         buttonText: "Let's Begin",
-        sohoButtonText: "SOHO"
+        sohoButtonText: "SOHO HOUSE X LOVE"
       }
     ]
   },
