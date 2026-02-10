@@ -16,7 +16,8 @@ export const surveySections = [
           "Eternal bragging rights as an early FateFlix insider"
         ],
         assuranceText: "Your guilty pleasures are safe here, so are your wild opinions.",
-        buttonText: "Let's Begin"
+        buttonText: "Let's Begin",
+        sohoButtonText: "SOHO"
       }
     ]
   },

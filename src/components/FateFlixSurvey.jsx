@@ -124,13 +124,150 @@ const ResultsDashboard = ({ results }) => {
 };
 
 const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorModal }) => {
-  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail, resetSurvey } = useSurvey();
+  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail, resetSurvey, isSohoMode } = useSurvey();
 
   // Hide controls on Intro Hero
   if (currentSection.id === 'intro-hero') return null;
 
   const isLastStep = currentStep === totalSteps - 1;
   const isSubmitting = submitStatus === 'loading';
+
+  const performSubmit = async () => {
+    // 0. Email Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailValue = answers['email'];
+
+    if (!emailValue || !emailRegex.test(emailValue)) {
+      setErrorModal({
+        isOpen: true,
+        title: 'Valid Email Required',
+        message: 'Please provide a valid email address to receive your astro-cinematic gift.',
+        details: null
+      });
+      return false;
+    }
+
+    setSubmitStatus('loading');
+
+    // 1. Logic: Handle Unknown Time
+    const isUnknownTime = answers['time_accuracy'] === 'unknown';
+
+    // If we already have a submissionId, ensure all answers are saved (especially top3)
+    // Then use that submissionId instead of creating a new one
+    let finalSubmissionId = submissionId;
+
+    const payload = {
+      date: answers['date'],
+      // If unknown or empty, default to 12:00
+      time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
+      latitude: parseFloat(answers['latitude']),
+      longitude: parseFloat(answers['longitude']),
+      city: answers['city'],
+      country: answers['country'] || 'Unknown', // Default if missing
+      username: answers['username'],
+      userEmail: answers['email'], // From Section IX
+      timeAccuracy: answers['time_accuracy'], // Send the flag to backend
+      fullResponses: answers,
+      submissionId: finalSubmissionId
+    };
+
+    if (finalSubmissionId) {
+      // Save top3 fields (combined into hall_of_fame)
+      try {
+        const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+        const hallOfFameParts = [];
+        if (answers.top3_films) hallOfFameParts.push(`TOP 3 FILMS:\n${answers.top3_films}`);
+        if (answers.top3_series) hallOfFameParts.push(`TOP 3 SERIES:\n${answers.top3_series}`);
+        if (answers.top3_docs) hallOfFameParts.push(`TOP 3 DOCS:\n${answers.top3_docs}`);
+
+        if (hallOfFameParts.length > 0) {
+          await fetch(`${apiBase}/api/survey/save-answer`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              submissionId: finalSubmissionId,
+              questionKey: 'hall_of_fame', // Backend maps this to fit.hall_of_fame
+              answerValue: hallOfFameParts.join('\n\n'),
+              userEmail: answers['email'] || null,
+            }),
+          }).catch(error => {
+            console.warn('⚠️ Failed to save hall_of_fame:', error);
+          });
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to save top3 fields:', error);
+      }
+    }
+
+    console.log("Submitting Payload:", payload);
+    console.log("Using submissionId:", finalSubmissionId || "will create new");
+
+    try {
+      const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+
+      // 2. Call the Backend (will create new submission if we don't have one)
+      // Backend will save all answers from fullResponses
+      const response = await fetch(`${apiBase}/api/dev/chart-to-svg`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, triggerEmail: true })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => 'Unknown error');
+        throw new Error(`Chart generation failed: ${response.status} - ${errorText}`);
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error('Invalid JSON response from server');
+      }
+
+      const returnedSubmissionId = data.submissionId || finalSubmissionId;
+
+      if (!returnedSubmissionId) {
+        throw new Error('No submissionId returned from server. Response: ' + JSON.stringify(data));
+      }
+
+      // Update context if we got a new submissionId
+      if (data.submissionId && !finalSubmissionId) {
+        setSubmissionId(data.submissionId);
+        if (data.chartId) setChartId(data.chartId);
+      }
+
+      // 3. Redirect to the Dashboard immediately
+      if (data.htmlUrl) {
+        console.log("🚀 Redirecting to:", data.htmlUrl);
+        resetSurvey(); // CLEAN SLATE
+        // Add small delay to ensure local storage cleared and React state settles before nav
+        setTimeout(() => {
+          window.location.href = data.htmlUrl;
+        }, 100);
+        return true;
+      }
+
+      setSubmitStatus('success');
+      return true;
+
+    } catch (err) {
+      console.error('Submission error details:', {
+        message: err.message,
+        stack: err.stack,
+        name: err.name
+      });
+      const errorMessage = err.message || 'Unknown error occurred';
+      setErrorModal({
+        isOpen: true,
+        title: 'Cosmic Interference!',
+        message: errorMessage,
+        details: err.stack || JSON.stringify(err, null, 2)
+      });
+      setSubmitStatus('error');
+      return false;
+    }
+  };
 
   const handleNext = async () => {
     // Validation for Section I (Astro Data)
@@ -186,159 +323,29 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
               setUserEmail(answers['email']);
             }
             console.log('✅ Chart computed, submission created:', data.submissionId);
+
+            // SOHO MODE JUMP
+            if (isSohoMode) {
+              console.log('🚀 SOHO Mode detected, skipping to submission...');
+              await performSubmit();
+              return;
+            }
           }
         }
       } catch (error) {
         console.warn('⚠️ Error computing chart (non-fatal, will retry on submit):', error.message);
         // Continue anyway - will retry on final submit
+
+        // Even if error, if SOHO mode, try to submit anyway (it will retry chart compute)
+        if (isSohoMode) {
+          await performSubmit();
+          return;
+        }
       }
     }
 
     if (isLastStep) {
-      // 0. Email Validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const emailValue = answers['email'];
-
-      if (!emailValue || !emailRegex.test(emailValue)) {
-        setErrorModal({
-          isOpen: true,
-          title: 'Valid Email Required',
-          message: 'Please provide a valid email address to receive your astro-cinematic gift.',
-          details: null
-        });
-        return;
-      }
-
-      setSubmitStatus('loading');
-
-      // 1. Logic: Handle Unknown Time
-      const isUnknownTime = answers['time_accuracy'] === 'unknown';
-
-      // If we already have a submissionId, ensure all answers are saved (especially top3)
-      // Then use that submissionId instead of creating a new one
-      let finalSubmissionId = submissionId;
-
-      const payload = {
-        date: answers['date'],
-        // If unknown or empty, default to 12:00
-        time: (isUnknownTime || !answers['time']) ? "12:00" : answers['time'],
-        latitude: parseFloat(answers['latitude']),
-        longitude: parseFloat(answers['longitude']),
-        city: answers['city'],
-        country: answers['country'] || 'Unknown', // Default if missing
-        username: answers['username'],
-        userEmail: answers['email'], // From Section IX
-        timeAccuracy: answers['time_accuracy'], // Send the flag to backend
-        fullResponses: answers,
-        submissionId: finalSubmissionId
-      };
-
-      if (finalSubmissionId) {
-        // Save top3 fields (combined into hall_of_fame)
-        try {
-          const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
-          const hallOfFameParts = [];
-          if (answers.top3_films) hallOfFameParts.push(`TOP 3 FILMS:\n${answers.top3_films}`);
-          if (answers.top3_series) hallOfFameParts.push(`TOP 3 SERIES:\n${answers.top3_series}`);
-          if (answers.top3_docs) hallOfFameParts.push(`TOP 3 DOCS:\n${answers.top3_docs}`);
-
-          if (hallOfFameParts.length > 0) {
-            await fetch(`${apiBase}/api/survey/save-answer`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                submissionId: finalSubmissionId,
-                questionKey: 'hall_of_fame', // Backend maps this to fit.hall_of_fame
-                answerValue: hallOfFameParts.join('\n\n'),
-                userEmail: answers['email'] || null,
-              }),
-            }).catch(error => {
-              console.warn('⚠️ Failed to save hall_of_fame:', error);
-            });
-          }
-        } catch (error) {
-          console.warn('⚠️ Failed to save top3 fields:', error);
-        }
-      }
-
-      console.log("Submitting Payload:", payload);
-      console.log("Using submissionId:", finalSubmissionId || "will create new");
-
-      try {
-        const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
-
-        // 2. Call the Backend (will create new submission if we don't have one)
-        // Backend will save all answers from fullResponses
-        const response = await fetch(`${apiBase}/api/dev/chart-to-svg`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...payload, triggerEmail: true })
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text().catch(() => 'Unknown error');
-          throw new Error(`Chart generation failed: ${response.status} - ${errorText}`);
-        }
-
-        let data;
-        try {
-          data = await response.json();
-        } catch (parseError) {
-          throw new Error('Invalid JSON response from server');
-        }
-
-        const returnedSubmissionId = data.submissionId || finalSubmissionId;
-
-        if (!returnedSubmissionId) {
-          throw new Error('No submissionId returned from server. Response: ' + JSON.stringify(data));
-        }
-
-        // Update context if we got a new submissionId
-        if (data.submissionId && !finalSubmissionId) {
-          setSubmissionId(data.submissionId);
-          if (data.chartId) setChartId(data.chartId);
-        }
-
-        // 3. Redirect to the Dashboard immediately
-        if (data.htmlUrl) {
-          console.log("🚀 Redirecting to:", data.htmlUrl);
-          resetSurvey(); // CLEAN SLATE
-          // Add small delay to ensure local storage cleared and React state settles before nav
-          setTimeout(() => {
-            window.location.href = data.htmlUrl;
-          }, 100);
-          return;
-        }
-
-        /* Legacy client-side rendering logic removed in favor of direct redirect
-        // 3. Fetch the Results (The backend auto-adjusts based on data)
-        const [svgRes, badgeRes, html1Res, html2Res] = await Promise.all([
-          fetch(`${apiBase}/reading/${returnedSubmissionId}/chart.svg`),
-          fetch(`${apiBase}/reading/${returnedSubmissionId}/badge`),
-          fetch(`${apiBase}/reading/${returnedSubmissionId}/html`),
-          fetch(`${apiBase}/reading/${returnedSubmissionId}/html/2`)
-        ]);
-
-        // ... (rest of old logic)
-        */
-
-        setSubmitStatus('success');
-
-      } catch (err) {
-        console.error('Submission error details:', {
-          message: err.message,
-          stack: err.stack,
-          name: err.name
-        });
-        const errorMessage = err.message || 'Unknown error occurred';
-        setErrorModal({
-          isOpen: true,
-          title: 'Cosmic Interference!',
-          message: errorMessage,
-          details: err.stack || JSON.stringify(err, null, 2)
-        });
-        setSubmitStatus('error');
-      }
+      await performSubmit();
     } else {
       nextStep();
     }

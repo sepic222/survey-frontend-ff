@@ -44,6 +44,7 @@ export const SurveyProvider = ({ children }) => {
   const [chartId, setChartId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [isRestoring, setIsRestoring] = useState(true);
+  const [isSohoMode, setIsSohoMode] = useState(false);
 
   const saveTimeoutRef = useRef({});
 
@@ -177,7 +178,10 @@ export const SurveyProvider = ({ children }) => {
     });
   }, [submissionId, userEmail, debouncedSave]);
 
-  const nextStep = () => {
+  const nextStep = (mode) => {
+    if (mode === 'soho') {
+      setIsSohoMode(true);
+    }
     if (currentStep < totalSteps - 1) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -196,6 +200,7 @@ export const SurveyProvider = ({ children }) => {
     setSubmissionId(null);
     setChartId(null);
     setUserEmail(null);
+    setIsSohoMode(false);
 
     // Clear Local Storage
     if (typeof window !== 'undefined') {
@@ -222,6 +227,8 @@ export const SurveyProvider = ({ children }) => {
     setUserEmail,
     resetSurvey,
     isRestoring, // Added to context
+    isSohoMode,
+    setIsSohoMode,
   };
 
   return (
