@@ -369,7 +369,11 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
         disabled={isSubmitting}
         className={`px-4 py-1.5 rounded-md font-medium bg-white text-black hover:bg-cyan-400 transition-colors text-sm ${isSubmitting ? 'opacity-50 cursor-wait' : ''}`}
       >
-        {isSubmitting ? 'Sending...' : (isLastStep ? 'Submit' : 'Next')}
+        {isSubmitting
+          ? 'Sending...'
+          : (currentSection.id === 'astro-data' && isSohoMode)
+            ? 'Get my reading'
+            : (isLastStep ? 'Submit' : 'Next')}
       </button>
     </div>
   );
