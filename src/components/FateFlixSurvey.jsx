@@ -51,6 +51,8 @@ const ResultIframe = ({ content, title }) => {
 };
 
 const ResultsDashboard = ({ results }) => {
+  const { isSohoMode } = useSurvey();
+
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
   }, [results]);
@@ -64,9 +66,11 @@ const ResultsDashboard = ({ results }) => {
         {/* Sticky top nav - Jony Ive Style */}
         <div className="sticky top-6 z-50 flex justify-center pb-8 pointer-events-none">
           <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
-            <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-              Badge
-            </a>
+            {!isSohoMode && (
+              <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
+                Badge
+              </a>
+            )}
             {/* Chart nav hidden for now */}
             <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Part I
@@ -79,12 +83,14 @@ const ResultsDashboard = ({ results }) => {
 
 
         {/* Badge Section */}
-        <div id="badge" className="flex justify-center mb-12">
-          <div
-            className="transform hover:scale-105 transition-transform duration-500"
-            dangerouslySetInnerHTML={{ __html: results.badge }}
-          />
-        </div>
+        {!isSohoMode && (
+          <div id="badge" className="flex justify-center mb-12">
+            <div
+              className="transform hover:scale-105 transition-transform duration-500"
+              dangerouslySetInnerHTML={{ __html: results.badge }}
+            />
+          </div>
+        )}
 
         {/* Chart Section hidden for now */}
 
@@ -168,7 +174,8 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       userEmail: answers['email'], // From Section IX
       timeAccuracy: answers['time_accuracy'], // Send the flag to backend
       fullResponses: answers,
-      submissionId: finalSubmissionId
+      submissionId: finalSubmissionId,
+      isSohoMode: isSohoMode
     };
 
     if (finalSubmissionId) {
