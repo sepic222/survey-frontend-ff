@@ -113,6 +113,8 @@ const ResultsDashboard = ({ results }) => {
           <button
             id="replay-survey-btn"
             onClick={() => {
+              // Explicitly reset the survey state and clear localStorage
+              resetSurvey();
               // Clear URL and reload
               window.history.pushState({}, '', '/');
               window.location.reload();
@@ -247,8 +249,8 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       // 3. Redirect to the Dashboard immediately
       if (data.htmlUrl) {
         console.log("🚀 Redirecting to:", data.htmlUrl);
-        resetSurvey(); // CLEAN SLATE
-        // Add small delay to ensure local storage cleared and React state settles before nav
+        // Removed resetSurvey() here to preserve isSohoMode for the ResultsDashboard
+        // Local storage should not be cleared until the user choice (Replay)
         setTimeout(() => {
           window.location.href = data.htmlUrl;
         }, 100);

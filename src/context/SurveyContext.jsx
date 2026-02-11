@@ -105,6 +105,7 @@ export const SurveyProvider = ({ children }) => {
             setAnswers(prev => ({ ...prev, ...(data.answers || {}) }));
 
             if (data.answers?.email) setUserEmail(data.answers.email);
+            if (data.answers?.isSohoMode === true) setIsSohoMode(true);
             if (data.chartId) setChartId(data.chartId);
             console.log('✅ Server session restored successfully');
           } else {
