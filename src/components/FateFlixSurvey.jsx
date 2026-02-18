@@ -51,7 +51,7 @@ const ResultIframe = ({ content, title }) => {
 };
 
 const ResultsDashboard = ({ results }) => {
-  const { isSohoMode } = useSurvey();
+  const { currentStep } = useSurvey(); // Just need useSurvey for other things if any, but actually ResultsDashboard might not need it now if we removed its condition
 
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
@@ -66,11 +66,9 @@ const ResultsDashboard = ({ results }) => {
         {/* Sticky top nav - Jony Ive Style */}
         <div className="sticky top-6 z-50 flex justify-center pb-8 pointer-events-none">
           <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
-            {!isSohoMode && (
-              <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-                Badge
-              </a>
-            )}
+            <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
+              Badge
+            </a>
             {/* Chart nav hidden for now */}
             <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Part I
@@ -83,14 +81,12 @@ const ResultsDashboard = ({ results }) => {
 
 
         {/* Badge Section */}
-        {!isSohoMode && (
-          <div id="badge" className="flex justify-center mb-12">
-            <div
-              className="transform hover:scale-105 transition-transform duration-500"
-              dangerouslySetInnerHTML={{ __html: results.badge }}
-            />
-          </div>
-        )}
+        <div id="badge" className="flex justify-center mb-12">
+          <div
+            className="transform hover:scale-105 transition-transform duration-500"
+            dangerouslySetInnerHTML={{ __html: results.badge }}
+          />
+        </div>
 
         {/* Chart Section hidden for now */}
 
@@ -132,7 +128,7 @@ const ResultsDashboard = ({ results }) => {
 };
 
 const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorModal }) => {
-  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail, resetSurvey, isSohoMode } = useSurvey();
+  const { currentStep, totalSteps, nextStep, prevStep, answers, currentSection, submissionId, setSubmissionId, setChartId, setUserEmail, resetSurvey } = useSurvey();
 
   // Hide controls on Intro Hero
   if (currentSection.id === 'intro-hero') return null;
@@ -176,8 +172,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       userEmail: answers['email'], // From Section IX
       timeAccuracy: answers['time_accuracy'], // Send the flag to backend
       fullResponses: answers,
-      submissionId: finalSubmissionId,
-      isSohoMode: isSohoMode
+      submissionId: finalSubmissionId
     };
 
     if (finalSubmissionId) {
@@ -249,8 +244,8 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       // 3. Redirect to the Dashboard immediately
       if (data.htmlUrl) {
         console.log("🚀 Redirecting to:", data.htmlUrl);
-        // Removed resetSurvey() here to preserve isSohoMode for the ResultsDashboard
-        // Local storage should not be cleared until the user choice (Replay)
+        // Removed resetSurvey() here to facilitate direct navigation to the Dashboard
+        // Local storage is cleared upon replay or manual reset
         setTimeout(() => {
           window.location.href = data.htmlUrl;
         }, 100);
@@ -332,24 +327,11 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
               setUserEmail(answers['email']);
             }
             console.log('✅ Chart computed, submission created:', data.submissionId);
-
-            // SOHO MODE JUMP
-            if (isSohoMode) {
-              console.log('🚀 SOHO Mode detected, skipping to submission...');
-              await performSubmit();
-              return;
-            }
           }
         }
       } catch (error) {
         console.warn('⚠️ Error computing chart (non-fatal, will retry on submit):', error.message);
         // Continue anyway - will retry on final submit
-
-        // Even if error, if SOHO mode, try to submit anyway (it will retry chart compute)
-        if (isSohoMode) {
-          await performSubmit();
-          return;
-        }
       }
     }
 
@@ -380,9 +362,7 @@ const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorMod
       >
         {isSubmitting
           ? 'Sending...'
-          : (currentSection.id === 'astro-data' && isSohoMode)
-            ? 'Get my reading'
-            : (isLastStep ? 'Submit' : 'Next')}
+          : (isLastStep ? 'Submit' : 'Next')}
       </button>
     </div>
   );

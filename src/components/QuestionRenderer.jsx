@@ -578,24 +578,6 @@ const HeroStart = ({ question, onNext }) => (
           </span>
         </button>
 
-        {question.sohoButtonText && (
-          <button
-            onClick={() => onNext('soho')}
-            className="
-              group relative px-10 py-3
-              overflow-hidden rounded-full
-              bg-zinc-900 border border-white/10
-              transition-all duration-500 hover:border-cyan-500/50
-              hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]
-              active:scale-95 flex-1 max-w-[240px]
-            "
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-            <span className="relative z-10 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white group-hover:text-cyan-400 transition-colors">
-              {question.sohoButtonText}
-            </span>
-          </button>
-        )}
       </div>
 
       <div className="py-6 border-y border-white/[0.03] space-y-4">

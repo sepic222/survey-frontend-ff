@@ -44,12 +44,6 @@ export const SurveyProvider = ({ children }) => {
   const [chartId, setChartId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [isRestoring, setIsRestoring] = useState(true);
-  const [isSohoMode, setIsSohoMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('fateflix_soho_mode') === 'true';
-    }
-    return false;
-  });
 
   const saveTimeoutRef = useRef({});
 
@@ -74,10 +68,7 @@ export const SurveyProvider = ({ children }) => {
     }
   }, [answers]);
 
-  // Sync isSohoMode to localStorage
-  useEffect(() => {
-    localStorage.setItem('fateflix_soho_mode', isSohoMode.toString());
-  }, [isSohoMode]);
+
 
   // Restore session (Server Sync)
   useEffect(() => {
@@ -105,7 +96,6 @@ export const SurveyProvider = ({ children }) => {
             setAnswers(prev => ({ ...prev, ...(data.answers || {}) }));
 
             if (data.answers?.email) setUserEmail(data.answers.email);
-            if (data.answers?.isSohoMode === true) setIsSohoMode(true);
             if (data.chartId) setChartId(data.chartId);
             console.log('✅ Server session restored successfully');
           } else {
@@ -189,10 +179,7 @@ export const SurveyProvider = ({ children }) => {
     });
   }, [submissionId, userEmail, debouncedSave]);
 
-  const nextStep = (mode) => {
-    if (mode === 'soho') {
-      setIsSohoMode(true);
-    }
+  const nextStep = () => {
     if (currentStep < totalSteps - 1) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -211,14 +198,12 @@ export const SurveyProvider = ({ children }) => {
     setSubmissionId(null);
     setChartId(null);
     setUserEmail(null);
-    setIsSohoMode(false);
 
     // Clear Local Storage
     if (typeof window !== 'undefined') {
       localStorage.removeItem('fateflix_answers');
       localStorage.removeItem('fateflix_step');
       localStorage.removeItem('fateflix_submission_id');
-      localStorage.removeItem('fateflix_soho_mode');
     }
     console.log('🧹 Survey reset to clean slate.');
   }, []);
@@ -239,8 +224,6 @@ export const SurveyProvider = ({ children }) => {
     setUserEmail,
     resetSurvey,
     isRestoring, // Added to context
-    isSohoMode,
-    setIsSohoMode,
   };
 
   return (
