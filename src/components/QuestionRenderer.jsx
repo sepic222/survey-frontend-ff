@@ -686,7 +686,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
               type="text"
               value={entry}
               onChange={(e) => handleEntryChange(index, e.target.value)}
-              placeholder={`Character ${index + 1}...`}
+              placeholder={index === 1 && question.secondEntryPlaceholder ? question.secondEntryPlaceholder : `Character ${index + 1}...`}
               className="flex-1 bg-black border-2 border-orange-500/50 rounded-lg p-4 text-lg text-white placeholder:text-zinc-600 outline-none focus:border-orange-500 focus:shadow-[0_0_15px_rgba(249,115,22,0.2)] transition-all duration-300"
             />
             {entries.length > 1 && (

@@ -423,7 +423,7 @@ const CurrentSection = ({ nextStep }) => {
           </div>
         ) : (
           <div className="space-y-10">
-            {currentSection.questions.map((question) => (
+            {currentSection.questions.filter(q => !q.hidden).map((question) => (
               <div
                 key={question.id}
                 id={`question-${question.id}`}

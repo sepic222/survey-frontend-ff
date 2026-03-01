@@ -260,7 +260,7 @@ export const surveySections = [
       },
       {
         id: "life_changing",
-        text: "What movie changed your life or meant everything at some point?",
+        text: "What film has left a lasting impact on you — or shaped who you are at a pivotal moment",
         helpText: "We're tracking your fate film. Turning point? Breakup comfort?",
         type: "textarea",
         placeholder: "Tell us what hit you and why...",
@@ -276,10 +276,11 @@ export const surveySections = [
       },
       {
         id: "power_watch",
-        text: "What movie do you (re-)watch when you want to feel powerful?",
-        type: "text",
+        text: "Is there a film that genuinely shifted something in you? Could be a turning point, a breakup companion, a film you return to when you need to feel like yourself again.",
+        helpText: "One answer is more than enough. Skip if nothing comes to mind.",
+        type: "textarea",
         inspoPopup: "Here are a few examples, but your vibe might be totally different: Kill Bill, Black Swan, Erin Brockovich, Rocky, The Devil Wears Prada, Creed, Mad Max: Fury Road, Black Panther, The Favourite, The Matrix, Jennifer's Body, Everything Everywhere All at Once)",
-        skipButtonText: "Don’t have one? That’s okay too. ➡️"
+        skipButtonText: "Nothing comes to mind ➡️"
       },
       {
         id: "date_impress",
@@ -317,11 +318,12 @@ export const surveySections = [
       },
       {
         id: "villain_relate",
-        text: "Which villain do you secretly relate to? And... why?",
-        helpText: "Who's your inner anti-hero?",
+        hidden: true,
+        text: "Who's your on-screen alter ego or the villain you secretly relate to? And... why?⭐",
+        helpText: "Someone you channel, someone you aspire to be, or your inner anti-hero.",
         type: "textarea",
-        placeholder: "e.g. Amy Dunne, Patrick Bateman, Scar...",
-        inspoPopup: "Misunderstood icons or just honest about their darkness?\n\n• Miranda Priestly (The Devil Wears Prada) - I've worked my ass oﬀ to get where I am.\n• Patrick Bateman (American Psycho) - Skincare, perfection, & clean aesthetics.\n• Tom Ripley (The Talented Mr. Ripley) - Outsider energy, wanting in.\n• Catherine Tramell (Basic Instinct) - Brilliant, unreadable, fully in control.\n• Scar (The Lion King) - Overlooked sibling plotting a comeback.\n• Hannibal Lecter (Silence of the Lambs) - Disturbing genius with impeccable manners."
+        placeholder: "e.g. Fleabag, Patrick Bateman, Amy Dunne, Amelie...",
+        inspoPopup: "Misunderstood icons or just honest about their darkness? Chaotic dreamers?\n\n• Fleabag (messy icon energy)\n• The Dude (Zen Chaos)\n• Amelie (whimsical dreamer)\n• Miranda Priestly (The Devil Wears Prada) - I've worked my ass oﬀ to get where I am.\n• Patrick Bateman (American Psycho) - Skincare, perfection, & clean aesthetics.\n• Tom Ripley (The Talented Mr. Ripley) - Outsider energy, wanting in.\n• Catherine Tramell (Basic Instinct) - Brilliant, unreadable, fully in control.\n• Scar (The Lion King) - Overlooked sibling plotting a comeback."
       },
       {
         id: "forever_crush",
@@ -400,7 +402,8 @@ export const surveySections = [
       },
       {
         id: "guilty_pleasure",
-        text: "What are your ultimate guilty pleasures?",
+        text: "What are your ultimate Film or TV guilty pleasures?",
+        helpText: "The one you stand by... but you’d never mention it on a first date ;)",
         type: "textarea",
         placeholder: "Type your answer here...",
         inspoPopup: "(Even if it's weird. Especially if it's weird.) We believe you should never feel guilty for your pleasures) Reality TV? Childhood cartoons? Horror marathons? That one trashy sequel you'd defend in court? We're here to match you with ultimate pleasure."
@@ -676,6 +679,7 @@ export const surveySections = [
       },
       {
         id: "top_3_documentaries",
+        hidden: true,
         text: "What are your top 3 documentaries?🍿",
         helpText: "(Tell us what moved you or blew your mind)",
         type: "textarea",
@@ -683,6 +687,7 @@ export const surveySections = [
       },
       {
         id: "access_growing_up",
+        hidden: true,
         text: "How did you mostly access movies growing up?",
         type: "checkbox",
         options: [
@@ -709,11 +714,12 @@ export const surveySections = [
     questions: [
       {
         id: "alter-ego",
-        text: "The character you identify with or secretly aspire to.⭐",
-        helpText: "Someone you channel. The one people say you remind them of.",
+        text: "Who's your on-screen alter ego?",
+        helpText: "The character you identify with, aspire to, or that people say you remind them of.",
         type: "text",
         uiType: "multi_entry",
         maxEntries: 3,
+        secondEntryPlaceholder: "And your shadow side — a villain or anti-hero you secretly get? (optional)",
         inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• The Dude (Zen Chaos)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Shuri - Black Panther (playful genius)\n• Mr.T (chaotic protector)\n• Evelyn Wang EEAO (multidimensional self)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
         skipButtonText: "Don’t have one? That’s okay too. ➡️"
       }
