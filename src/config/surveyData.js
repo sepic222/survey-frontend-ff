@@ -159,7 +159,7 @@ export const surveySections = [
       {
         id: "top_3_movies",
         text: "🍿 Drop your all-time TOP 3 Movies, Series or Docs",
-        helpText: "(Any combination works — and just one is totally fine too!)",
+        helpText: "(Cine,TV, Streaming... all count - bonus points if you tell us why)",
         type: "textarea",
         placeholder: "Type titles here..."
       },
