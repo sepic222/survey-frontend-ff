@@ -158,10 +158,10 @@ export const surveySections = [
       },
       {
         id: "top_3_movies",
-        text: "🍿 Drop your all-time TOP 3 movies",
-        helpText: "(One is totally fine)",
+        text: "🍿 Drop your all-time TOP 3 Movies, Series or Docs",
+        helpText: "(Any combination works — and just one is totally fine too!)",
         type: "textarea",
-        placeholder: "Type title here..."
+        placeholder: "Type titles here..."
       },
       {
         id: "first_fascination✨",
@@ -277,6 +277,7 @@ export const surveySections = [
       },
       {
         id: "power_watch",
+        hidden: true,
         text: "Is there a film that genuinely shifted something in you? Could be a turning point, a breakup companion, a film you return to when you need to feel like yourself again.",
         helpText: "One answer is more than enough. Skip if nothing comes to mind.",
         type: "textarea",
@@ -396,6 +397,7 @@ export const surveySections = [
       },
       {
         id: "top_3_series_detailed",
+        hidden: true,
         text: "What are your three favorite 3 series or tv shows of all time?🍿",
         helpText: "(TV, Streaming... all count - bonus points if you tell us why)",
         type: "textarea",
@@ -720,7 +722,7 @@ export const surveySections = [
         type: "text",
         uiType: "multi_entry",
         maxEntries: 3,
-        secondEntryPlaceholder: "And your shadow side — a villain or anti-hero you secretly get? (optional)",
+        secondEntryPlaceholder: "And your shadow side ? A villain or anti-hero you secretly get?",
         inspoPopup: "Examples for Inspo:\n\n• Fleabag (messy icon energy)\n• The Dude (Zen Chaos)\n• Amelie (whimsical dreamer)\n• Kim Kardashian (proof you can rebrand anything)\n• Robert De Niro - Taxi Driver (brooding outsider)\n• Shuri - Black Panther (playful genius)\n• Mr.T (chaotic protector)\n• Evelyn Wang EEAO (multidimensional self)\n• Jules - Euphoria (ethereal)\n• David Bowie (genderless cosmic alien)\n• Tony Soprano (misunderstood leader)\n• Grace Jones (futuristic icon)\n• Wednesday Addams (deadpan legend)\n\nDon’t know the name? Describe the vibe, we’ll get it.",
         skipButtonText: "Don’t have one? That’s okay too. ➡️"
       }
