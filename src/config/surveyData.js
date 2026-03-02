@@ -260,6 +260,7 @@ export const surveySections = [
       },
       {
         id: "life_changing",
+        hidden: true,
         text: "What film has left a lasting impact on you — or shaped who you are at a pivotal moment",
         helpText: "We're tracking your fate film. Turning point? Breakup comfort?",
         type: "textarea",

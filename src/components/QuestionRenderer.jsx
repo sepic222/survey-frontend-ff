@@ -742,8 +742,8 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
 
         {/* Separator & Shadow Side Input */}
         {question.secondEntryPlaceholder && (
-          <div className="pt-6 mt-6 border-t border-zinc-800 w-full text-left animate-fade-in">
-            <label className="block text-zinc-400 text-sm font-medium mb-3">
+          <div className="pt-6 mt-6 border-t border-zinc-800 w-full text-left animate-fade-in pl-1">
+            <label className="block text-xl text-zinc-400 font-light mb-4">
               {question.secondEntryPlaceholder}
             </label>
             <input
