@@ -625,23 +625,48 @@ const HeroStart = ({ question, onNext }) => (
 
 const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => {
   const [showInfo, setShowInfo] = useState(false);
-  const entries = Array.isArray(value) ? value : (value ? [value] : []);
+
+  // Parse incoming value based on whether we have a compound setup
+  const isCompound = !!question.secondEntryPlaceholder;
+  const entries = isCompound
+    ? (Array.isArray(value) ? value : (value?.selected || []))
+    : (Array.isArray(value) ? value : (value ? [value] : []));
+
+  const shadowSide = isCompound ? (value?.otherText || '') : '';
 
   const handleEntryChange = (index, newValue) => {
     const newEntries = [...entries];
     newEntries[index] = newValue;
-    onChange(newEntries.filter(e => e.trim() !== '')); // Remove empty entries
+    const cleanEntries = newEntries.filter(e => e.trim() !== '');
+
+    if (isCompound) {
+      onChange({ selected: cleanEntries, otherText: shadowSide });
+    } else {
+      onChange(cleanEntries);
+    }
   };
 
   const handleAddEntry = () => {
     if (entries.length < maxEntries) {
-      onChange([...entries, '']);
+      if (isCompound) {
+        onChange({ selected: [...entries, ''], otherText: shadowSide });
+      } else {
+        onChange([...entries, '']);
+      }
     }
   };
 
   const handleRemoveEntry = (index) => {
     const newEntries = entries.filter((_, i) => i !== index);
-    onChange(newEntries);
+    if (isCompound) {
+      onChange({ selected: newEntries, otherText: shadowSide });
+    } else {
+      onChange(newEntries);
+    }
+  };
+
+  const handleShadowChange = (newShadow) => {
+    onChange({ selected: entries, otherText: newShadow });
   };
 
   // Always show at least one input field
@@ -686,7 +711,7 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
               type="text"
               value={entry}
               onChange={(e) => handleEntryChange(index, e.target.value)}
-              placeholder={index === 1 && question.secondEntryPlaceholder ? question.secondEntryPlaceholder : `Character ${index + 1}...`}
+              placeholder={`Character ${index + 1}...`}
               className="flex-1 bg-black border-2 border-orange-500/50 rounded-lg p-4 text-lg text-white placeholder:text-zinc-600 outline-none focus:border-orange-500 focus:shadow-[0_0_15px_rgba(249,115,22,0.2)] transition-all duration-300"
             />
             {entries.length > 1 && (
@@ -713,6 +738,22 @@ const MultiEntryInput = ({ question, value = [], onChange, maxEntries = 5 }) => 
             </svg>
             Add Another ({entries.length}/{maxEntries})
           </button>
+        )}
+
+        {/* Separator & Shadow Side Input */}
+        {question.secondEntryPlaceholder && (
+          <div className="pt-6 mt-6 border-t border-zinc-800 w-full text-left animate-fade-in">
+            <label className="block text-zinc-400 text-sm font-medium mb-3">
+              {question.secondEntryPlaceholder}
+            </label>
+            <input
+              type="text"
+              value={shadowSide}
+              onChange={(e) => handleShadowChange(e.target.value)}
+              placeholder="e.g. Hannibal Lecter..."
+              className="w-full bg-black border-2 border-purple-500/30 rounded-lg p-4 text-lg text-white placeholder:text-zinc-600 outline-none focus:border-purple-500 focus:shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all duration-300"
+            />
+          </div>
         )}
       </div>
 
