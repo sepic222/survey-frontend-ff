@@ -2,26 +2,9 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { SurveyProvider, useSurvey } from '../context/SurveyContext';
 import { QuestionRenderer, QRShare } from './QuestionRenderer';
 import { ErrorModal } from './ErrorModal';
+import WalkOfFameProgress from './WalkOfFameProgress';
 
-const ProgressBar = () => {
-  const { currentStep, totalSteps, currentSection } = useSurvey();
-
-  // Hide progress bar on Intro Hero
-  if (currentSection.id === 'intro-hero') return null;
-
-  const progress = ((currentStep + 1) / totalSteps) * 100;
-
-  return (
-    <div className="w-full bg-zinc-900 h-1.5 mb-12 rounded-full overflow-hidden relative shadow-[0_0_15px_rgba(249,115,22,0.15)]">
-      <div
-        className="h-full bg-gradient-to-r from-orange-500 via-orange-400 to-slate-50 transition-all duration-700 ease-out relative"
-        style={{ width: `${progress}%` }}
-      >
-        <div className="absolute right-0 top-0 h-full w-12 bg-white/40 blur-lg animate-pulse" />
-      </div>
-    </div>
-  );
-};
+// ProgressBar replaced by WalkOfFameProgress (imported above)
 
 // Iframe component to isolate and render full HTML documents
 const ResultIframe = ({ content, title }) => {
@@ -127,8 +110,97 @@ const ShareBadgeButton = ({ submissionId, compact = false }) => {
   );
 };
 
+// ── Revel Card (Sun / Moon / Venus personalised summary) ─────────────────────
+const RevelCard = ({ submissionId }) => {
+  const [revel, setRevel] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!submissionId) return;
+    const apiBase = typeof window !== 'undefined'
+      ? (window.location.hostname === 'localhost' ? 'http://localhost:3001' : '')
+      : '';
+    fetch(`${apiBase}/reading/${submissionId}/revel`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { setRevel(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [submissionId]);
+
+  if (loading) {
+    return (
+      <div className="w-full rounded-2xl border border-white/5 bg-white/[0.02] p-6 animate-pulse">
+        <div className="h-3 bg-white/10 rounded w-2/3 mb-3" />
+        <div className="h-4 bg-white/10 rounded w-full mb-2" />
+        <div className="h-4 bg-white/10 rounded w-5/6" />
+      </div>
+    );
+  }
+  if (!revel) return null;
+
+  const planets = [
+    { label: '☀️ SUN', sign: revel.sunSign, core: revel.sunCore },
+    { label: '🌙 MOON', sign: revel.moonSign, core: revel.moonPrefix },
+    { label: '♀ VENUS', sign: revel.venusSign, core: revel.venusPull },
+  ];
+
+  return (
+    <div className="w-full rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-950/30 via-black to-zinc-950/50 p-6 md:p-8 shadow-[0_0_60px_rgba(232,98,10,0.06)]">
+      {/* Eyebrow */}
+      <p className="text-[9px] font-bold tracking-[0.35em] uppercase text-orange-500/60 mb-3">
+        Your Astro-Cinematic Identity
+      </p>
+
+      {/* Revel Name */}
+      <h2
+        className="text-xl md:text-2xl font-bold leading-snug mb-4"
+        style={{
+          background: 'linear-gradient(90deg, #ffd580, #fffdf0, #E8620A, #ffd580)',
+          backgroundSize: '200%',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          animation: 'goldSlideRevel 4s linear infinite',
+        }}
+      >
+        {revel.revelName}
+      </h2>
+
+      {/* Flattery description */}
+      <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 italic">
+        {revel.flattery}
+      </p>
+
+      {/* Planet pills */}
+      <div className="flex flex-wrap gap-3">
+        {planets.map(p => (
+          <div
+            key={p.label}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              color: 'rgba(255,255,255,0.55)',
+            }}
+          >
+            <span className="text-orange-400/80">{p.label}</span>
+            <span className="text-white/80">{p.sign}</span>
+          </div>
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes goldSlideRevel {
+          0%   { background-position: 0% 0%; }
+          100% { background-position: 200% 0%; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// ── Results Dashboard ─────────────────────────────────────────────────────────
 const ResultsDashboard = ({ results }) => {
-  const { submissionId } = useSurvey();
+  const { submissionId, resetSurvey } = useSurvey();
 
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
@@ -136,82 +208,103 @@ const ResultsDashboard = ({ results }) => {
 
   return (
     <div
-      className="min-h-screen bg-black text-white font-sans selection:bg-orange-500 selection:text-white p-6"
+      className="min-h-screen bg-black text-white font-sans selection:bg-orange-500 selection:text-white"
       style={{ backgroundColor: '#000000', minHeight: '100vh' }}
     >
-      <div className="max-w-6xl mx-auto space-y-12 animate-fade-in">
-        {/* Sticky top nav - Jony Ive Style */}
-        <div className="sticky top-6 z-50 flex justify-center pb-8 pointer-events-none">
-          <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
-            <a href="#badge" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-              Badge
-            </a>
-            {/* Chart nav hidden for now */}
-            <a href="#reading1" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-              Part I
-            </a>
-            <a href="#reading2" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
-              Part II
-            </a>
-            {/* Share icon — always accessible from the sticky bar */}
-            <div className="w-px h-4 bg-white/10 mx-0.5" aria-hidden="true" />
-            <ShareBadgeButton submissionId={submissionId} compact />
+      {/* ── Sticky nav ── */}
+      <div className="sticky top-0 z-50 flex justify-center pt-4 pb-2 pointer-events-none px-4">
+        <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
+          <a href="#badge" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+            Badge
+          </a>
+          <a href="#revel" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+            Identity
+          </a>
+          <a href="#reading1" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+            Part I
+          </a>
+          <a href="#reading2" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+            Part II
+          </a>
+          <div className="w-px h-4 bg-white/10 mx-0.5" aria-hidden="true" />
+          <ShareBadgeButton submissionId={submissionId} compact />
+        </div>
+      </div>
+
+      {/* ── Main content — responsive grid ── */}
+      <div className="w-full max-w-screen-xl mx-auto px-4 md:px-8 py-8 animate-fade-in">
+
+        {/*
+          Layout:
+          Mobile  → single column (badge → revel → part I → part II)
+          Desktop → left column: badge + revel card (sticky)
+                    right column: part I + part II stacked
+        */}
+        <div className="flex flex-col xl:flex-row gap-8 xl:gap-12 xl:items-start">
+
+          {/* ── Left column: Badge + Identity ── */}
+          <div className="xl:w-[420px] xl:flex-shrink-0 xl:sticky xl:top-24 flex flex-col items-center gap-6">
+
+            {/* Badge */}
+            <div id="badge" className="flex flex-col items-center w-full">
+              <div
+                className="transform hover:scale-105 transition-transform duration-500"
+                dangerouslySetInnerHTML={{ __html: results.badge }}
+              />
+              <div className="flex flex-col items-center gap-2 mt-3">
+                <ShareBadgeButton submissionId={submissionId} />
+                <p className="text-zinc-600 text-[10px] tracking-widest uppercase">
+                  or press &amp; hold badge to save
+                </p>
+              </div>
+            </div>
+
+            {/* Revel Card (Sun / Moon / Venus) */}
+            <div id="revel" className="w-full scroll-mt-24">
+              <RevelCard submissionId={submissionId} />
+            </div>
+
+          </div>
+
+          {/* ── Right column: Readings ── */}
+          <div className="flex-1 min-w-0 flex flex-col gap-8">
+
+            {/* Part I */}
+            <div id="reading1" className="scroll-mt-24 rounded-2xl border border-gray-800 bg-gray-900/30 shadow-2xl shadow-orange-900/5 overflow-hidden">
+              <div className="px-4 pt-3 pb-1 border-b border-white/5">
+                <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-orange-500/50">Part I</span>
+              </div>
+              <ResultIframe content={results.html1} title="Cosmic Chart Part I" />
+            </div>
+
+            {/* Part II */}
+            <div id="reading2" className="scroll-mt-24 rounded-2xl border border-gray-800 bg-gray-900/30 shadow-2xl shadow-cyan-900/5 overflow-hidden">
+              <div className="px-4 pt-3 pb-1 border-b border-white/5">
+                <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-cyan-500/50">Part II</span>
+              </div>
+              <ResultIframe content={results.html2} title="Cosmic Chart Part II" />
+            </div>
+
+            {/* Replay */}
+            <div className="text-center pt-4 pb-16">
+              <button
+                id="replay-survey-btn"
+                onClick={() => {
+                  resetSurvey();
+                  window.history.pushState({}, '', '/');
+                  window.location.reload();
+                }}
+                className="px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full font-bold tracking-wider transition-all text-sm"
+              >
+                Replay Survey
+              </button>
+            </div>
+
           </div>
         </div>
-
-
-        {/* Badge Section */}
-        <div id="badge" className="flex flex-col items-center mb-4">
-          <div
-            className="transform hover:scale-105 transition-transform duration-500"
-            dangerouslySetInnerHTML={{ __html: results.badge }}
-          />
-          {/* Primary share CTA — placed right below the badge where eyes land first */}
-          <div className="flex flex-col items-center gap-2 mt-2 mb-10">
-            <ShareBadgeButton submissionId={submissionId} />
-            <p className="text-zinc-600 text-[10px] tracking-widest uppercase">
-              or press &amp; hold badge to save
-            </p>
-          </div>
-        </div>
-
-        {/* Chart Section hidden for now */}
-
-        {/* Reading Content via Iframes */}
-        <div className="space-y-12">
-          {/* HTML 1 */}
-          <div id="reading1" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-orange-900/5">
-            <ResultIframe content={results.html1} title="Cosmic Chart" />
-          </div>
-
-          {/* HTML 2 */}
-          <div id="reading2" className="bg-gray-900/50 p-4 rounded-2xl border border-gray-800 shadow-2xl shadow-cyan-900/5">
-            <ResultIframe content={results.html2} title="Chart Details" />
-          </div>
-
-        </div>
-
-        {/* Replay Button */}
-        <div className="text-center pt-12 pb-24">
-          <button
-            id="replay-survey-btn"
-            onClick={() => {
-              // Explicitly reset the survey state and clear localStorage
-              resetSurvey();
-              // Clear URL and reload
-              window.history.pushState({}, '', '/');
-              window.location.reload();
-            }}
-            className="px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full font-bold tracking-wider transition-all text-sm"
-          >
-            Replay Survey
-          </button>
-        </div>
-
       </div>
     </div>
   );
-
 };
 
 const SurveyControls = ({ submitStatus, setSubmitStatus, setResults, setErrorModal }) => {
@@ -625,7 +718,7 @@ const SurveyContent = ({ initialSubmissionId }) => {
           </header>
         )}
 
-        <ProgressBar />
+        <WalkOfFameProgress />
 
         <div className={`${!isIntroHero ? '' : ''} w-full max-w-2xl bg-transparent flex flex-col gap-8 p-8 md:p-12 transition-all duration-500`}>
           <CurrentSection nextStep={nextStep} />
