@@ -50,8 +50,85 @@ const ResultIframe = ({ content, title }) => {
   );
 };
 
+// ── Share Badge Button ────────────────────────────────────────────────────────
+// Uses Web Share API on mobile, falls back to clipboard copy on desktop.
+const ShareBadgeButton = ({ submissionId, compact = false }) => {
+  const [state, setState] = useState('idle'); // 'idle' | 'copied' | 'shared'
+
+  const readingUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/reading/${submissionId}`
+    : '';
+  const shareText = 'I just got my FateFlix Astro-Cinematic Chart ✨ Cosmic Curator · Alpha Tester 🎟️';
+
+  const fallbackCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(`${shareText}\n${readingUrl}`);
+      setState('copied');
+      setTimeout(() => setState('idle'), 2500);
+    } catch {
+      // Last-resort: open share URL in new tab
+      window.open(readingUrl, '_blank');
+    }
+  };
+
+  const handleShare = async () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My FateFlix Early Access Badge',
+          text: shareText,
+          url: readingUrl,
+        });
+        setState('shared');
+        setTimeout(() => setState('idle'), 2500);
+      } catch (err) {
+        if (err.name !== 'AbortError') fallbackCopy();
+      }
+    } else {
+      fallbackCopy();
+    }
+  };
+
+  // compact = icon-only version for the sticky tab bar
+  if (compact) {
+    return (
+      <button
+        onClick={handleShare}
+        title="Share your badge"
+        aria-label="Share"
+        className="px-3 py-2.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round"
+            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+      </button>
+    );
+  }
+
+  const label =
+    state === 'copied' ? '✓ Link copied!' :
+    state === 'shared' ? '✓ Shared!' :
+    '🎟️ Share Your Badge';
+
+  return (
+    <button
+      onClick={handleShare}
+      className="mt-4 px-8 py-3 rounded-full font-bold text-sm tracking-widest uppercase
+        bg-gradient-to-r from-orange-500/20 to-orange-400/10
+        border border-orange-500/40 text-orange-300
+        hover:border-orange-400 hover:text-white hover:bg-orange-500/20
+        hover:shadow-[0_0_30px_rgba(249,115,22,0.3)]
+        active:scale-95
+        transition-all duration-300 backdrop-blur-sm"
+    >
+      {label}
+    </button>
+  );
+};
+
 const ResultsDashboard = ({ results }) => {
-  const { currentStep } = useSurvey(); // Just need useSurvey for other things if any, but actually ResultsDashboard might not need it now if we removed its condition
+  const { submissionId } = useSurvey();
 
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
@@ -76,16 +153,26 @@ const ResultsDashboard = ({ results }) => {
             <a href="#reading2" className="px-5 py-2.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300">
               Part II
             </a>
+            {/* Share icon — always accessible from the sticky bar */}
+            <div className="w-px h-4 bg-white/10 mx-0.5" aria-hidden="true" />
+            <ShareBadgeButton submissionId={submissionId} compact />
           </div>
         </div>
 
 
         {/* Badge Section */}
-        <div id="badge" className="flex justify-center mb-12">
+        <div id="badge" className="flex flex-col items-center mb-4">
           <div
             className="transform hover:scale-105 transition-transform duration-500"
             dangerouslySetInnerHTML={{ __html: results.badge }}
           />
+          {/* Primary share CTA — placed right below the badge where eyes land first */}
+          <div className="flex flex-col items-center gap-2 mt-2 mb-10">
+            <ShareBadgeButton submissionId={submissionId} />
+            <p className="text-zinc-600 text-[10px] tracking-widest uppercase">
+              or press &amp; hold badge to save
+            </p>
+          </div>
         </div>
 
         {/* Chart Section hidden for now */}
