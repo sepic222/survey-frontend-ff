@@ -117,7 +117,12 @@ const RevelCard = ({ submissionId }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!submissionId) return;
+    if (!submissionId) {
+      // No id yet — stop skeleton; RevelCard will remount when submissionId arrives
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
     fetch(`${apiBase}/reading/${submissionId}/revel`)
       .then(r => r.ok ? r.json() : null)
@@ -610,7 +615,7 @@ const CurrentSection = ({ nextStep }) => {
 };
 
 const SurveyContent = ({ initialSubmissionId }) => {
-  const { currentSection, currentStep, nextStep } = useSurvey();
+  const { currentSection, currentStep, nextStep, setSubmissionId } = useSurvey();
   const [submitStatus, setSubmitStatus] = useState('idle'); // 'idle', 'loading', 'success', 'error'
   const [results, setResults] = useState(null);
   const [errorModal, setErrorModal] = useState({ isOpen: false, title: '', message: '', details: null });
@@ -648,6 +653,9 @@ const SurveyContent = ({ initialSubmissionId }) => {
           if (!svgRes.ok || !badgeRes.ok || !html1Res.ok || !html2Res.ok) {
             throw new Error('Failed to load results');
           }
+
+          // Ensure submissionId is in context so RevelCard can fetch /revel
+          setSubmissionId(submissionId);
 
           setResults({
             svg: await svgRes.text(),
