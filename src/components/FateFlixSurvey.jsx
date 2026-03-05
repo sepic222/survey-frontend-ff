@@ -178,7 +178,7 @@ const RevelCard = ({ submissionId }) => {
           position: 'absolute',
           top: '-28px',
           right: '-28px',
-          width: '110px',
+          width: '440px',
           opacity: 0.55,
           pointerEvents: 'none',
           userSelect: 'none',
@@ -200,23 +200,6 @@ const RevelCard = ({ submissionId }) => {
           pointerEvents: 'none',
           userSelect: 'none',
           filter: 'drop-shadow(0 0 8px rgba(255,140,200,0.6))',
-        }}
-      />
-
-      {/* — Decorative: purple-ring planet bottom-right — */}
-      <img
-        src="/assets/planet_purple_ring.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: '-18px',
-          right: '10px',
-          width: '64px',
-          opacity: 0.4,
-          pointerEvents: 'none',
-          userSelect: 'none',
-          filter: 'drop-shadow(0 0 10px rgba(160,100,255,0.4))',
         }}
       />
 
