@@ -191,6 +191,29 @@ const ResultsDashboard = ({ results, viewSubmissionId }) => {
     console.log("ResultsDashboard mounted with results:", results);
   }, [results]);
 
+  // ── Nav scroll helper ──────────────────────────────────────────────────────
+  // Badge and Identity live inside the xl:sticky left column. Anchor href="#id"
+  // resolves their *natural* document position (before sticking), which lands
+  // somewhere in Part I. Instead we use JS: on desktop both are always visible
+  // in the sticky sidebar so we scroll to top; on mobile we scroll to the element.
+  const navScrollTo = (id) => {
+    const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
+    if (id === 'badge' || id === 'revel') {
+      if (isDesktop) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) {
+      const navHeight = 72;
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div
       className="min-h-screen text-white font-sans selection:bg-white/20 selection:text-white"
@@ -199,18 +222,18 @@ const ResultsDashboard = ({ results, viewSubmissionId }) => {
       {/* ── Sticky nav ── */}
       <div className="sticky top-0 z-50 flex justify-center pt-4 pb-2 pointer-events-none px-4">
         <div className="pointer-events-auto flex items-center gap-1 p-1.5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-all duration-500 hover:scale-[1.02]">
-          <a href="#badge" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+          <button onClick={() => navScrollTo('badge')} className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
             Badge
-          </a>
-          <a href="#revel" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+          </button>
+          <button onClick={() => navScrollTo('revel')} className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
             Identity
-          </a>
-          <a href="#reading1" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+          </button>
+          <button onClick={() => navScrollTo('reading1')} className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
             Part I
-          </a>
-          <a href="#reading2" className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
+          </button>
+          <button onClick={() => navScrollTo('reading2')} className="px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-300">
             Part II
-          </a>
+          </button>
           <div className="w-px h-4 bg-white/10 mx-0.5" aria-hidden="true" />
           <ShareBadgeButton submissionId={submissionId} compact />
         </div>
