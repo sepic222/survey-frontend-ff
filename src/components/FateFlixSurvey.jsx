@@ -148,24 +148,53 @@ const RevelCard = ({ submissionId }) => {
   ];
 
   return (
-    <div className="w-full rounded-2xl border border-white/8 bg-zinc-900/60 backdrop-blur-sm p-6 md:p-8">
-      {/* Eyebrow */}
-      <p className="text-[9px] font-bold tracking-[0.35em] uppercase text-zinc-500 mb-3">
+    <div className="w-full rounded-2xl border border-white/8 bg-zinc-900/60 backdrop-blur-sm p-6 md:p-8 flex flex-col items-center text-center">
+
+      {/* Title — matches "MY ASTRO-CINEMATIC CHART" from the reading */}
+      <p style={{
+        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        color: '#FFFFFF',
+        textTransform: 'uppercase',
+        fontSize: '18px',
+        fontWeight: 600,
+        letterSpacing: '0.15em',
+        textShadow: '0 0 20px rgba(142,197,252,0.6), 0 0 40px rgba(142,197,252,0.3), 0 2px 4px rgba(0,0,0,0.5)',
+        marginBottom: '20px',
+        lineHeight: 1.3,
+      }}>
         Your Astro-Cinematic Identity
       </p>
 
-      {/* Revel Name */}
-      <h2 className="text-xl md:text-2xl font-bold leading-snug mb-4 text-white">
+      {/* Revel Name — matches "Your planets = the cast." style */}
+      <h2 style={{
+        fontFamily: "'Futura', 'Century Gothic', 'Trebuchet MS', sans-serif",
+        fontStyle: 'italic',
+        fontSize: '20px',
+        color: '#F3DCBC',
+        lineHeight: 1.4,
+        textShadow: '0 2px 10px rgba(0,0,0,0.7)',
+        marginBottom: '14px',
+        fontWeight: 'normal',
+      }}>
         {revel.revelName}
       </h2>
 
-      {/* Flattery description */}
-      <p className="text-zinc-400 text-sm md:text-base leading-relaxed mb-6 italic">
+      {/* Flattery — same style, slightly smaller */}
+      <p style={{
+        fontFamily: "'Futura', 'Century Gothic', 'Trebuchet MS', sans-serif",
+        fontStyle: 'italic',
+        fontSize: '15px',
+        color: '#F3DCBC',
+        lineHeight: 1.55,
+        textShadow: '0 2px 10px rgba(0,0,0,0.7)',
+        marginBottom: '24px',
+        opacity: 0.85,
+      }}>
         {revel.flattery}
       </p>
 
       {/* Planet pills */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {planets.map(p => (
           <div
             key={p.label}
