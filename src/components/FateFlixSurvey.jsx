@@ -97,13 +97,14 @@ const ShareBadgeButton = ({ submissionId, compact = false }) => {
   return (
     <button
       onClick={handleShare}
-      className="mt-4 px-8 py-3 rounded-full font-bold text-sm tracking-widest uppercase
-        bg-gradient-to-r from-orange-500/20 to-orange-400/10
-        border border-orange-500/40 text-orange-300
-        hover:border-orange-400 hover:text-white hover:bg-orange-500/20
-        hover:shadow-[0_0_30px_rgba(249,115,22,0.3)]
+      className="mt-4 px-8 py-3 rounded-full font-bold text-xs tracking-widest uppercase
+        bg-zinc-900/80 backdrop-blur-xl
+        border border-white/10
+        text-zinc-300
+        hover:text-white hover:bg-white/10 hover:border-white/20
+        hover:shadow-[0_0_20px_rgba(255,255,255,0.06)]
         active:scale-95
-        transition-all duration-300 backdrop-blur-sm"
+        transition-all duration-300"
     >
       {label}
     </button>
@@ -142,56 +143,34 @@ const RevelCard = ({ submissionId }) => {
   ];
 
   return (
-    <div className="w-full rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-950/30 via-black to-zinc-950/50 p-6 md:p-8 shadow-[0_0_60px_rgba(232,98,10,0.06)]">
+    <div className="w-full rounded-2xl border border-white/8 bg-zinc-900/60 backdrop-blur-sm p-6 md:p-8">
       {/* Eyebrow */}
-      <p className="text-[9px] font-bold tracking-[0.35em] uppercase text-orange-500/60 mb-3">
+      <p className="text-[9px] font-bold tracking-[0.35em] uppercase text-zinc-500 mb-3">
         Your Astro-Cinematic Identity
       </p>
 
       {/* Revel Name */}
-      <h2
-        className="text-xl md:text-2xl font-bold leading-snug mb-4"
-        style={{
-          background: 'linear-gradient(90deg, #ffd580, #fffdf0, #E8620A, #ffd580)',
-          backgroundSize: '200%',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          animation: 'goldSlideRevel 4s linear infinite',
-        }}
-      >
+      <h2 className="text-xl md:text-2xl font-bold leading-snug mb-4 text-white">
         {revel.revelName}
       </h2>
 
       {/* Flattery description */}
-      <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 italic">
+      <p className="text-zinc-400 text-sm md:text-base leading-relaxed mb-6 italic">
         {revel.flattery}
       </p>
 
       {/* Planet pills */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         {planets.map(p => (
           <div
             key={p.label}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              color: 'rgba(255,255,255,0.55)',
-            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider bg-white/5 border border-white/10 text-zinc-400"
           >
-            <span className="text-orange-400/80">{p.label}</span>
-            <span className="text-white/80">{p.sign}</span>
+            <span className="text-zinc-300">{p.label}</span>
+            <span className="text-white">{p.sign}</span>
           </div>
         ))}
       </div>
-
-      <style>{`
-        @keyframes goldSlideRevel {
-          0%   { background-position: 0% 0%; }
-          100% { background-position: 200% 0%; }
-        }
-      `}</style>
     </div>
   );
 };
@@ -206,8 +185,8 @@ const ResultsDashboard = ({ results }) => {
 
   return (
     <div
-      className="min-h-screen bg-black text-white font-sans selection:bg-orange-500 selection:text-white"
-      style={{ backgroundColor: '#000000', minHeight: '100vh' }}
+      className="min-h-screen text-white font-sans selection:bg-white/20 selection:text-white"
+      style={{ backgroundColor: '#080c18', minHeight: '100vh' }}
     >
       {/* ── Sticky nav ── */}
       <div className="sticky top-0 z-50 flex justify-center pt-4 pb-2 pointer-events-none px-4">
