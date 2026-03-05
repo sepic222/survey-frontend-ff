@@ -616,6 +616,9 @@ const SurveyContent = ({ initialSubmissionId }) => {
   const [errorModal, setErrorModal] = useState({ isOpen: false, title: '', message: '', details: null });
 
   const isIntroHero = currentSection?.id === 'intro-hero';
+  // Show the header logo only on the astro-data section.
+  // On all envelope sections (Cinematic Taste onward) the planet lives on the envelope seal instead.
+  const isAstroData = currentSection?.id === 'astro-data';
 
   // Auto-scroll to top whenever the step changes
   useEffect(() => {
@@ -679,7 +682,7 @@ const SurveyContent = ({ initialSubmissionId }) => {
   return (
     <div className="min-h-screen w-full bg-zinc-950 text-white flex flex-col items-center py-8 px-4 md:px-0 font-sans selection:bg-orange-500 selection:text-white">
       <div className="w-full max-w-2xl bg-transparent flex flex-col gap-8">
-        {!isIntroHero && (
+        {isAstroData && (
           <header className="mb-16 flex flex-col items-center">
             <div className="w-20 h-20 md:w-24 md:h-24 relative group mb-4">
               <div className="absolute inset-0 bg-orange-500/10 blur-2xl rounded-full scale-75" />

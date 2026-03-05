@@ -1,37 +1,24 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useSurvey } from '../context/SurveyContext';
 
-// ── Cinematic section labels & sassy console copy ────────────────────────────
+// ── Cinematic section labels ──────────────────────────────────────────────────
 const SECTIONS = [
-  { tag: 'Opening Night',       text: "The envelope trembles in the presenter's hands." },
-  { tag: 'Venus Is Watching',   text: "She's been following your taste for years. Tonight she confirms it." },
-  { tag: 'Best Cinematography', text: 'Your eye for beauty has been noted. The Academy is taking notes.' },
-  { tag: 'Your Cinema Soul',    text: 'The films that made you — now making your chart.' },
-  { tag: 'Mercury Is Talking',  text: "Can't stop, won't stop. Your narrative preferences are being gossiped about." },
+  { tag: 'Opening Night',         text: "The envelope trembles in the presenter's hands." },
+  { tag: 'Venus Is Watching',     text: "She's been following your taste for years. Tonight she confirms it." },
+  { tag: 'Best Cinematography',   text: 'Your eye for beauty has been noted. The Academy is taking notes.' },
+  { tag: 'Your Cinema Soul',      text: 'The films that made you — now making your chart.' },
+  { tag: 'Mercury Is Talking',    text: "Can't stop, won't stop. Your narrative preferences are being gossiped about." },
   { tag: 'Best Original Craving', text: 'What you want on screen says everything. The jury has decided.' },
-  { tag: 'Mars Has Opinions',   text: 'Conflict, tension, and your villain era. Mars filed a full report.' },
-  { tag: 'Your Cosmic Identity', text: 'Birth chart unlocked. The stars are arguing over who gets credit.' },
-  { tag: 'Best Performance',    text: 'The category you were born for. The card has your name on it.' },
-  { tag: 'The Envelope Is Open', text: "The card is out. It's you. It was always going to be you." },
-];
-
-const SASSY = [
-  "The lights dim. Someone in the front row is stress-eating popcorn. That's you.",
-  "Venus has been gossiping about your taste for months. Tonight she finally gets to say it out loud.",
-  "The presenter squints at the card. Takes a sip of water they didn't need. The audacity. The theatre.",
-  "The camera cuts to you. You look incredible. Suspiciously calm. The internet will have opinions by morning.",
-  "Mercury retrograde tried to delay this. The stars said absolutely not. Your chart pushed through.",
-  "The flap is nearly open. Three new streaming services launched while you waited. You deserve this.",
-  "Mars filed a 40-page report on your conflict preferences. The Academy read every page. Impressed.",
-  "Your birth chart entered the room twenty minutes before you did. It's been working the crowd.",
-  "One corner of the card is visible. It's your initial. Or an extremely dramatic font. Hard to say.",
-  "The card is out. The room holds its breath. Venus leans in from the third row. She already knew.",
+  { tag: 'Mars Has Opinions',     text: 'Conflict, tension, and your villain era. Mars filed a full report.' },
+  { tag: 'Your Cosmic Identity',  text: 'Birth chart unlocked. The stars are arguing over who gets credit.' },
+  { tag: 'Best Performance',      text: 'The category you were born for. The card has your name on it.' },
+  { tag: 'The Envelope Is Open',  text: "The card is out. It's you. It was always going to be you." },
 ];
 
 const DOTS_EMOJI = { done: '🏆', curr: '✦', empty: '·' };
 
-// ── SVG Envelope (reconstructed from animation code) ─────────────────────────
-const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, userName }) => (
+// ── SVG Envelope ─────────────────────────────────────────────────────────────
+const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, userName, showName }) => (
   <svg
     className="env-svg w-full h-full overflow-visible"
     viewBox="0 0 230 148"
@@ -55,10 +42,6 @@ const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, 
         <stop offset="45%" stopColor="#fff0a0" />
         <stop offset="100%" stopColor="#E8620A" />
       </linearGradient>
-      <linearGradient id="eG" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#7a5200" />
-        <stop offset="100%" stopColor="#3a2800" />
-      </linearGradient>
       <filter id="envGlow" x="-20%" y="-20%" width="140%" height="140%">
         <feGaussianBlur stdDeviation="4" result="blur" />
         <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
@@ -80,6 +63,8 @@ const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, 
       <line x1="62" y1="72" x2="168" y2="72" stroke="rgba(180,140,60,0.18)" strokeWidth="0.8" />
       <line x1="62" y1="82" x2="168" y2="82" stroke="rgba(180,140,60,0.18)" strokeWidth="0.8" />
     </g>
+
+    {/* ── Name inside card (only on last step) ── */}
     <g ref={svgNameRef} opacity="0" style={{ willChange: 'transform' }}>
       <text
         x="115" y="44"
@@ -91,39 +76,41 @@ const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, 
       >
         FATEFLIX AWARDS 2026
       </text>
-      <text
-        x="115" y="80"
-        textAnchor="middle"
-        fontFamily="'Bebas Neue', sans-serif"
-        fontSize="15"
-        fill="url(#rG)"
-        letterSpacing="3"
-        style={{ opacity: 0.9 }}
-      >
-        {(userName || '').substring(0, 12)}
-      </text>
+      {showName && (
+        <text
+          x="115" y="80"
+          textAnchor="middle"
+          fontFamily="'Bebas Neue', sans-serif"
+          fontSize="15"
+          fill="url(#rG)"
+          letterSpacing="3"
+          style={{ opacity: 0.9 }}
+        >
+          {(userName || '').substring(0, 12)}
+        </text>
+      )}
     </g>
 
     {/* ── Envelope body ── */}
     <rect x="8" y="48" width="214" height="96" rx="7" fill="url(#envG)" filter="url(#envGlow)" />
     {/* Fold lines */}
-    <line x1="8" y1="144" x2="115" y2="96" stroke="#c49200" strokeWidth="0.9" opacity="0.45" />
+    <line x1="8"   y1="144" x2="115" y2="96" stroke="#c49200" strokeWidth="0.9" opacity="0.45" />
     <line x1="222" y1="144" x2="115" y2="96" stroke="#c49200" strokeWidth="0.9" opacity="0.45" />
-    <line x1="8" y1="48" x2="115" y2="96" stroke="#b88a00" strokeWidth="0.8" opacity="0.35" />
-    <line x1="222" y1="48" x2="115" y2="96" stroke="#b88a00" strokeWidth="0.8" opacity="0.35" />
+    <line x1="8"   y1="48"  x2="115" y2="96" stroke="#b88a00" strokeWidth="0.8" opacity="0.35" />
+    <line x1="222" y1="48"  x2="115" y2="96" stroke="#b88a00" strokeWidth="0.8" opacity="0.35" />
 
-    {/* ── Wax seal ── */}
+    {/* ── Wax seal — FateFlix planet logo ── */}
     <g ref={sealRef} filter="url(#sealGlow)">
-      <circle cx="115" cy="96" r="15" fill="#9a6e00" opacity="0.95" />
-      <circle cx="115" cy="96" r="12" fill="none" stroke="#e8c050" strokeWidth="1.2" opacity="0.8" />
-      <text
-        x="115" y="101"
-        textAnchor="middle"
-        fontFamily="'Bebas Neue', sans-serif"
-        fontSize="9"
-        fill="#fff0a0"
-        letterSpacing="1"
-      >FF</text>
+      <circle cx="115" cy="96" r="16" fill="#7a5200" opacity="0.95" />
+      <circle cx="115" cy="96" r="14" fill="none" stroke="#e8c050" strokeWidth="1.2" opacity="0.8" />
+      {/* Planet logo image as the seal emblem */}
+      <image
+        x="103" y="84"
+        width="24" height="24"
+        href="/assets/fateflix-planet.png"
+        preserveAspectRatio="xMidYMid meet"
+        style={{ imageRendering: 'crisp-edges' }}
+      />
     </g>
 
     {/* ── Flap (folds open on progress) ── */}
@@ -138,28 +125,30 @@ const EnvelopeSVG = ({ flapRef, sealRef, cardBgRef, cardContentRef, svgNameRef, 
 const WalkOfFameProgress = () => {
   const { currentStep, totalSteps, currentSection, answers } = useSurvey();
 
-  // Hide on intro hero
+  // Hide on intro hero and astro-data section — envelope only shows from Cinematic Taste onward
   if (currentSection?.id === 'intro-hero') return null;
+  if (currentSection?.id === 'astro-data') return null;
 
-  const flapRef       = useRef(null);
-  const sealRef       = useRef(null);
-  const cardBgRef     = useRef(null);
+  const flapRef        = useRef(null);
+  const sealRef        = useRef(null);
+  const cardBgRef      = useRef(null);
   const cardContentRef = useRef(null);
-  const svgNameRef    = useRef(null);
+  const svgNameRef     = useRef(null);
 
-  const userName = ((answers?.username) || '').toUpperCase();
-  const MAX = totalSteps || 10;
-  const progress = currentStep / MAX;
-  const pct = Math.round(progress * 100);
+  const userName   = ((answers?.username) || '').toUpperCase();
+  const MAX        = totalSteps || 10;
+  const progress   = currentStep / MAX;
+  const pct        = Math.round(progress * 100);
+  const isLastStep = currentStep === totalSteps - 1;
+
   const sectionIdx = Math.min(currentStep, SECTIONS.length - 1);
-  const section = SECTIONS[sectionIdx];
-  const sassy = SASSY[Math.min(currentStep, SASSY.length - 1)];
+  const section    = SECTIONS[sectionIdx];
 
   // ── Envelope animation ────────────────────────────────────────────────────
-  const updateEnvelope = useCallback((p) => {
+  const updateEnvelope = useCallback((p, showName) => {
     if (!flapRef.current) return;
 
-    const fo = Math.min(1, p * 1.7);
+    const fo  = Math.min(1, p * 1.7);
     const scY = 1 - fo * 2;
 
     const flap = flapRef.current;
@@ -177,8 +166,8 @@ const WalkOfFameProgress = () => {
       sealRef.current.style.transition = 'opacity 0.4s ease';
     }
 
-    const peek = Math.max(0, Math.min(1, (p - 0.08) / 0.82));
-    const ty = -peek * 42;
+    const peek  = Math.max(0, Math.min(1, (p - 0.08) / 0.82));
+    const ty    = -peek * 42;
     const trans = `translateY(${ty}px)`;
 
     if (cardBgRef.current) {
@@ -191,13 +180,14 @@ const WalkOfFameProgress = () => {
     }
     if (svgNameRef.current) {
       svgNameRef.current.style.transform = trans;
-      svgNameRef.current.setAttribute('opacity', Math.max(0, (peek - 0.52) / 0.48));
+      // Name text only revealed on last step
+      svgNameRef.current.setAttribute('opacity', showName ? Math.max(0, (peek - 0.52) / 0.48) : 0);
     }
   }, []);
 
   useEffect(() => {
-    updateEnvelope(progress);
-  }, [currentStep, updateEnvelope]);
+    updateEnvelope(progress, isLastStep);
+  }, [currentStep, isLastStep, updateEnvelope]);
 
   return (
     <div className="w-full mb-8 select-none">
@@ -215,13 +205,14 @@ const WalkOfFameProgress = () => {
         >
           BEST PERFORMANCE
         </span>
+        {/* AS YOURSELF — very subtle glow, Jony Ive aesthetic */}
         <span
           className="block font-bold tracking-[2px] uppercase"
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: '32px',
             color: '#ff5c3a',
-            textShadow: '0 0 8px #ff5c3a, 0 0 20px #ff3d1a, 0 0 40px rgba(255,60,20,0.4)',
+            textShadow: '0 0 6px rgba(255,92,58,0.18)',
             lineHeight: 1.05,
           }}
         >
@@ -244,9 +235,10 @@ const WalkOfFameProgress = () => {
           cardContentRef={cardContentRef}
           svgNameRef={svgNameRef}
           userName={userName}
+          showName={isLastStep}
         />
-        {/* Name overlay on card */}
-        {pct > 52 && userName && (
+        {/* Name overlay on card — only on last step */}
+        {isLastStep && userName && (
           <div
             className="absolute left-1/2 -translate-x-1/2 pointer-events-none whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] text-[13px] tracking-[3px] transition-opacity duration-700"
             style={{
@@ -265,7 +257,7 @@ const WalkOfFameProgress = () => {
         )}
       </div>
 
-      {/* ── Section tag + progress bar ── */}
+      {/* ── Section tag + flavour text ── */}
       <div className="w-full mb-2 text-center">
         <span
           className="inline-block text-[8px] font-bold tracking-[2px] uppercase px-2.5 py-1 rounded-full mb-1.5"
@@ -285,6 +277,7 @@ const WalkOfFameProgress = () => {
         </span>
       </div>
 
+      {/* ── Progress bar ── */}
       <div className="w-full mb-2">
         <div className="flex justify-between mb-1">
           <span className="text-[7px] font-bold tracking-[2px] uppercase" style={{ color: 'rgba(255,255,255,0.25)' }}>
@@ -325,9 +318,9 @@ const WalkOfFameProgress = () => {
               key={i}
               className="w-[18px] h-[18px] text-[11px] flex items-center justify-center transition-all duration-300"
               style={{
-                opacity: isDone || isCurr ? 1 : 0.18,
-                filter: isDone ? 'none' : isCurr ? 'none' : 'grayscale(1)',
-                animation: isDone
+                opacity:    isDone || isCurr ? 1 : 0.18,
+                filter:     isDone ? 'none' : isCurr ? 'none' : 'grayscale(1)',
+                animation:  isDone
                   ? 'dotGlow 2s ease-in-out infinite alternate'
                   : isCurr
                   ? 'dotPulse 0.9s ease-in-out infinite alternate'
@@ -339,36 +332,6 @@ const WalkOfFameProgress = () => {
             </div>
           );
         })}
-      </div>
-
-      {/* ── Sassy "planets are saying" box ── */}
-      <div
-        className="w-full rounded-2xl px-3 py-2.5 mb-1"
-        style={{
-          background: 'rgba(255,255,255,0.025)',
-          border: '1px solid rgba(255,255,255,0.06)',
-        }}
-      >
-        <div
-          className="flex items-center gap-1.5 text-[7px] font-bold tracking-[2px] uppercase mb-1"
-          style={{ color: 'rgba(232,98,10,0.7)' }}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-            style={{
-              background: '#E8620A',
-              boxShadow: '0 0 6px #E8620A',
-              animation: 'liveDot 1.5s ease-in-out infinite',
-            }}
-          />
-          THE PLANETS ARE SAYING
-        </div>
-        <p
-          className="text-[11px] leading-[1.55] italic"
-          style={{ color: 'rgba(255,255,255,0.65)', fontFamily: "'Nunito', sans-serif", fontWeight: 900 }}
-        >
-          {sassy}
-        </p>
       </div>
 
       {/* ── Keyframe injections ── */}
@@ -384,14 +347,6 @@ const WalkOfFameProgress = () => {
         @keyframes dotPulse {
           from { transform: scale(1);   filter: drop-shadow(0 0 4px rgba(255,150,80,0.5)); }
           to   { transform: scale(1.4); filter: drop-shadow(0 0 12px rgba(255,150,80,1)); }
-        }
-        @keyframes liveDot {
-          0%,100% { opacity: 1; }
-          50%     { opacity: 0.3; }
-        }
-        @keyframes pinkFlicker {
-          0%,88%,92%,100% { text-shadow: 0 0 8px #ff5c3a, 0 0 20px #ff3d1a, 0 0 40px rgba(255,60,20,0.4); }
-          90%             { text-shadow: 0 0 3px #ff5c3a, 0 0 6px #ff3d1a; }
         }
       `}</style>
     </div>
