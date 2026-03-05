@@ -181,8 +181,11 @@ const RevelCard = ({ submissionId }) => {
 };
 
 // ── Results Dashboard ─────────────────────────────────────────────────────────
-const ResultsDashboard = ({ results }) => {
-  const { submissionId, resetSurvey } = useSurvey();
+const ResultsDashboard = ({ results, viewSubmissionId }) => {
+  const { submissionId: contextSubmissionId, resetSurvey } = useSurvey();
+  // For URL-loaded results viewSubmissionId is passed directly (no context write).
+  // For freshly submitted results, contextSubmissionId is set by SurveyControls.
+  const submissionId = viewSubmissionId || contextSubmissionId;
 
   useEffect(() => {
     console.log("ResultsDashboard mounted with results:", results);
@@ -615,9 +618,12 @@ const CurrentSection = ({ nextStep }) => {
 };
 
 const SurveyContent = ({ initialSubmissionId }) => {
-  const { currentSection, currentStep, nextStep, setSubmissionId } = useSurvey();
+  const { currentSection, currentStep, nextStep } = useSurvey();
   const [submitStatus, setSubmitStatus] = useState('idle'); // 'idle', 'loading', 'success', 'error'
   const [results, setResults] = useState(null);
+  // Holds the submissionId for a URL-loaded result view — kept in local state so it
+  // never touches SurveyContext / localStorage and can't corrupt an in-progress session.
+  const [viewSubmissionId, setViewSubmissionId] = useState(null);
   const [errorModal, setErrorModal] = useState({ isOpen: false, title: '', message: '', details: null });
 
   const isIntroHero = currentSection?.id === 'intro-hero';
@@ -654,8 +660,9 @@ const SurveyContent = ({ initialSubmissionId }) => {
             throw new Error('Failed to load results');
           }
 
-          // Ensure submissionId is in context so RevelCard can fetch /revel
-          setSubmissionId(submissionId);
+          // Store in local state only — never write to context/localStorage so we
+          // don't overwrite an in-progress survey session on the same device.
+          setViewSubmissionId(submissionId);
 
           setResults({
             svg: await svgRes.text(),
@@ -684,7 +691,7 @@ const SurveyContent = ({ initialSubmissionId }) => {
   }, []); // Only run on mount
 
   if (submitStatus === 'success' && results) {
-    return <ResultsDashboard results={results} />;
+    return <ResultsDashboard results={results} viewSubmissionId={viewSubmissionId} />;
   }
 
   return (
