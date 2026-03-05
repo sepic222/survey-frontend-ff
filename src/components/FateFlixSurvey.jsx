@@ -175,6 +175,7 @@ const RevelCard = ({ submissionId }) => {
         alt=""
         aria-hidden="true"
         style={{
+          display: 'none',
           position: 'absolute',
           top: '-28px',
           right: '-28px',
