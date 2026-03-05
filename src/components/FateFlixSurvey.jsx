@@ -117,9 +117,7 @@ const RevelCard = ({ submissionId }) => {
 
   useEffect(() => {
     if (!submissionId) return;
-    const apiBase = typeof window !== 'undefined'
-      ? (window.location.hostname === 'localhost' ? 'http://localhost:3001' : '')
-      : '';
+    const apiBase = import.meta.env.PUBLIC_API_BASE || (import.meta.env.DEV ? 'http://localhost:3001' : '');
     fetch(`${apiBase}/reading/${submissionId}/revel`)
       .then(r => r.ok ? r.json() : null)
       .then(data => { setRevel(data); setLoading(false); })
