@@ -91,8 +91,8 @@ const ShareBadgeButton = ({ submissionId, compact = false }) => {
 
   const label =
     state === 'copied' ? '✓ Link copied!' :
-    state === 'shared' ? '✓ Shared!' :
-    '🎟️ Share Your Badge';
+      state === 'shared' ? '✓ Shared!' :
+        '🎟️ Share Your Badge';
 
   return (
     <button
@@ -148,10 +148,81 @@ const RevelCard = ({ submissionId }) => {
   ];
 
   return (
-    <div className="w-full rounded-2xl border border-white/8 bg-zinc-900/60 backdrop-blur-sm p-6 md:p-8 flex flex-col items-center text-center">
+    <div className="w-full rounded-2xl border border-white/8 bg-zinc-900/60 backdrop-blur-sm p-6 md:p-8 flex flex-col items-center text-center"
+      style={{ position: 'relative', overflow: 'hidden' }}
+    >
+
+      {/* — Decorative: large starglow behind content — */}
+      <img
+        src="/assets/starglow_large.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '110%',
+          opacity: 0.18,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      />
+
+      {/* — Decorative: blue planet peeking in from top-right — */}
+      <img
+        src="/assets/blue_planet.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-28px',
+          right: '-28px',
+          width: '110px',
+          opacity: 0.55,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          filter: 'drop-shadow(0 0 18px rgba(142,197,252,0.45))',
+        }}
+      />
+
+      {/* — Decorative: pink star accent bottom-left — */}
+      <img
+        src="/assets/star_pink.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '12px',
+          left: '14px',
+          width: '36px',
+          opacity: 0.5,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          filter: 'drop-shadow(0 0 8px rgba(255,140,200,0.6))',
+        }}
+      />
+
+      {/* — Decorative: purple-ring planet bottom-right — */}
+      <img
+        src="/assets/planet_purple_ring.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-18px',
+          right: '10px',
+          width: '64px',
+          opacity: 0.4,
+          pointerEvents: 'none',
+          userSelect: 'none',
+          filter: 'drop-shadow(0 0 10px rgba(160,100,255,0.4))',
+        }}
+      />
 
       {/* Title — matches "MY ASTRO-CINEMATIC CHART" from the reading */}
       <p style={{
+        position: 'relative',
         fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: '#FFFFFF',
         textTransform: 'uppercase',
@@ -165,8 +236,9 @@ const RevelCard = ({ submissionId }) => {
         Your Astro-Cinematic Identity
       </p>
 
-      {/* Revel Name — matches "Your planets = the cast." style */}
+      {/* Revel Name */}
       <h2 style={{
+        position: 'relative',
         fontFamily: "'Futura', 'Century Gothic', 'Trebuchet MS', sans-serif",
         fontStyle: 'italic',
         fontSize: '20px',
@@ -179,8 +251,9 @@ const RevelCard = ({ submissionId }) => {
         {revel.revelName}
       </h2>
 
-      {/* Flattery — same style, slightly smaller */}
+      {/* Flattery */}
       <p style={{
+        position: 'relative',
         fontFamily: "'Futura', 'Century Gothic', 'Trebuchet MS', sans-serif",
         fontStyle: 'italic',
         fontSize: '15px',
@@ -194,11 +267,17 @@ const RevelCard = ({ submissionId }) => {
       </p>
 
       {/* Planet pills */}
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2" style={{ position: 'relative' }}>
         {planets.map(p => (
           <div
             key={p.label}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider bg-white/5 border border-white/10 text-zinc-400"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider border text-zinc-400"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              borderColor: 'rgba(142,197,252,0.18)',
+              backdropFilter: 'blur(6px)',
+              boxShadow: '0 0 10px rgba(142,197,252,0.06)',
+            }}
           >
             <span className="text-zinc-300">{p.label}</span>
             <span className="text-white">{p.sign}</span>
